@@ -1,0 +1,275 @@
+// ==================== BADGES ====================
+
+.badge {
+  @include badge-base;
+
+  // Size variants
+  &-sm {
+    padding: 2px $spacing-2;
+    font-size: 10px;
+  }
+
+  &-lg {
+    padding: $spacing-2 $spacing-3;
+    font-size: $font-size-sm;
+  }
+
+  // Color variants
+  &-primary {
+    background: $accent-muted;
+    color: $accent-primary;
+    border: 1px solid rgba($accent-primary, 0.3);
+  }
+
+  &-success {
+    background: $success-muted;
+    color: $success;
+    border: 1px solid rgba($success, 0.3);
+  }
+
+  &-warning {
+    background: $warning-muted;
+    color: $warning;
+    border: 1px solid rgba($warning, 0.3);
+  }
+
+  &-danger {
+    background: $danger-muted;
+    color: $danger;
+    border: 1px solid rgba($danger, 0.3);
+  }
+
+  &-info {
+    background: $info-muted;
+    color: $info;
+    border: 1px solid rgba($info, 0.3);
+  }
+
+  &-secondary {
+    background: var(--bg-hover);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-primary);
+  }
+}
+
+// Level Badge Component
+.level-badge {
+  @include badge-base;
+  @include flex-center;
+  gap: $spacing-2;
+  padding: $spacing-2 $spacing-3;
+  font-weight: $font-weight-semibold;
+  position: relative;
+
+  .level-number {
+    width: 20px;
+    height: 20px;
+    border-radius: $radius-full;
+    background: rgba(255, 255, 255, 0.2);
+    @include flex-center;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+  }
+
+  .level-name {
+    font-size: $font-size-sm;
+  }
+
+  // Level variants
+  &.novice {
+    @include level-badge($level-novice);
+  }
+
+  &.student {
+    @include level-badge($level-student);
+  }
+
+  &.scholar {
+    @include level-badge($level-scholar);
+  }
+
+  &.expert {
+    @include level-badge($level-expert);
+  }
+
+  &.master {
+    @include level-badge($level-master);
+    
+    &::before {
+      content: '👑';
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      font-size: 16px;
+    }
+  }
+}
+
+// Inline level badge (smaller, for lists)
+.level-badge-inline {
+  @include badge-base;
+  font-size: $font-size-xs;
+  padding: 2px $spacing-2;
+  font-weight: $font-weight-semibold;
+
+  &.novice { @include level-badge($level-novice); }
+  &.student { @include level-badge($level-student); }
+  &.scholar { @include level-badge($level-scholar); }
+  &.expert { @include level-badge($level-expert); }
+  &.master { @include level-badge($level-master); }
+}
+
+// Difficulty Badge
+.difficulty-badge {
+  @include badge-base;
+
+  &.beginner {
+    background: $success-muted;
+    color: $success;
+    border: 1px solid rgba($success, 0.3);
+  }
+
+  &.intermediate {
+    background: $warning-muted;
+    color: $warning;
+    border: 1px solid rgba($warning, 0.3);
+  }
+
+  &.advanced {
+    background: $danger-muted;
+    color: $danger;
+    border: 1px solid rgba($danger, 0.3);
+  }
+}
+
+// Orb Points Indicator
+.orb-points-badge {
+  @include flex-center;
+  gap: $spacing-1;
+  padding: $spacing-1 $spacing-2;
+  background: $accent-muted;
+  color: $accent-primary;
+  border-radius: $radius-full;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+
+  .orb-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  // Weight indicator
+  &[data-weight] {
+    position: relative;
+
+    &::after {
+      content: '×' attr(data-weight);
+      margin-left: $spacing-1;
+      font-size: $font-size-xs;
+      color: $success;
+    }
+  }
+}
+
+// Streak Badge
+.streak-badge {
+  @include flex-center;
+  gap: $spacing-2;
+  padding: $spacing-2 $spacing-3;
+  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+  color: white;
+  border-radius: $radius-md;
+  font-weight: $font-weight-bold;
+
+  .streak-icon {
+    font-size: $font-size-lg;
+  }
+
+  .streak-number {
+    font-size: $font-size-xl;
+  }
+
+  .streak-label {
+    font-size: $font-size-xs;
+    opacity: 0.9;
+  }
+}
+
+// Status badges
+.status-badge {
+  @include badge-base;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &.draft {
+    background: $warning-muted;
+    color: $warning;
+    border: 1px solid rgba($warning, 0.3);
+  }
+
+  &.published {
+    background: $success-muted;
+    color: $success;
+    border: 1px solid rgba($success, 0.3);
+  }
+
+  &.archived {
+    background: var(--bg-hover);
+    color: var(--text-muted);
+    border: 1px solid var(--border-primary);
+  }
+}
+
+// Resource type badge
+.resource-type-badge {
+  @include badge-base;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &.note {
+    background: rgba($orb-programming, 0.15);
+    color: $orb-programming;
+    border: 1px solid rgba($orb-programming, 0.3);
+  }
+
+  &.article {
+    background: rgba($orb-web-dev, 0.15);
+    color: $orb-web-dev;
+    border: 1px solid rgba($orb-web-dev, 0.3);
+  }
+
+  &.code {
+    background: rgba($orb-data-science, 0.15);
+    color: $orb-data-science;
+    border: 1px solid rgba($orb-data-science, 0.3);
+  }
+
+  &.link {
+    background: rgba($orb-design, 0.15);
+    color: $orb-design;
+    border: 1px solid rgba($orb-design, 0.3);
+  }
+}
+
+// Hot/New indicator
+.resource-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+
+  &.hot {
+    background: $danger;
+    box-shadow: 0 0 8px $danger;
+  }
+
+  &.new {
+    background: $success;
+    box-shadow: 0 0 8px $success;
+  }
+
+  &.trending {
+    background: $warning;
+    box-shadow: 0 0 8px $warning;
+  }
+}

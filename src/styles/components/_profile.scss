@@ -1,0 +1,27 @@
+// ==================== PROFILE ====================
+
+.profile-header {
+  @include card-base;
+  padding: $spacing-8;
+  margin-bottom: $spacing-6;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: $radius-full;
+  @include gradient-bg;
+  @include flex-center;
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-bold;
+  color: white;
+  margin: 0 auto $spacing-4;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $spacing-4;
+  margin-top: $spacing-6;
+}

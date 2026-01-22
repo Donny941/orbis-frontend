@@ -1,0 +1,30 @@
+// ==================== LIGHT THEME ====================
+
+[data-theme='light'] {
+  // Backgrounds
+  --bg-body: #{$light-bg-body};
+  --bg-surface: #{$light-bg-surface};
+  --bg-card: #{$light-bg-card};
+  --bg-card-elevated: #{$light-bg-card-elevated};
+  --bg-input: #{$light-bg-input};
+  --bg-hover: #{$light-bg-hover};
+
+  // Borders
+  --border-primary: #{$light-border-primary};
+  --border-secondary: #{$light-border-secondary};
+  --border-accent: #{$dark-border-accent}; // Accent border stays same
+
+  // Text
+  --text-primary: #{$light-text-primary};
+  --text-secondary: #{$light-text-secondary};
+  --text-tertiary: #{$light-text-tertiary};
+  --text-muted: #{$light-text-muted};
+
+  // Shadows (lighter versions)
+  --shadow-sm: #{$shadow-sm-light};
+  --shadow-md: #{$shadow-md-light};
+  --shadow-lg: #{$shadow-lg-light};
+  --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.15);
+
+  // Accent & Semantic colors stay the same
+}

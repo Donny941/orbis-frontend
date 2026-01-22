@@ -1,0 +1,278 @@
+// ==================== CARDS ====================
+
+.card {
+  @include card-base;
+  padding: $spacing-6;
+
+  &:hover {
+    @include card-hover;
+  }
+
+  // No hover variant
+  &-static {
+    &:hover {
+      transform: none;
+      box-shadow: $shadow-sm;
+    }
+  }
+
+  // Elevated variant
+  &-elevated {
+    background: var(--bg-card-elevated);
+    box-shadow: $shadow-md;
+  }
+
+  // Compact variant
+  &-compact {
+    padding: $spacing-4;
+  }
+
+  // Header
+  &-header {
+    @include flex-between;
+    margin-bottom: $spacing-4;
+    padding-bottom: $spacing-3;
+    border-bottom: 1px solid var(--border-secondary);
+  }
+
+  &-title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: var(--text-primary);
+  }
+
+  // Body
+  &-body {
+    color: var(--text-secondary);
+    line-height: $line-height-relaxed;
+  }
+
+  // Footer
+  &-footer {
+    @include flex-between;
+    margin-top: $spacing-4;
+    padding-top: $spacing-3;
+    border-top: 1px solid var(--border-secondary);
+  }
+}
+
+// Orb Card (sphere card from template)
+.orb-card {
+  @include orb-card;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-3;
+
+  .orb-icon-wrapper {
+    @include icon-wrapper(64px, transparent);
+    @include gradient-bg(var(--orb-color, $accent-primary), darken($accent-primary, 10%));
+    color: white;
+  }
+
+  .orb-name {
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: var(--text-primary);
+  }
+
+  .orb-description {
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    text-align: center;
+    @include line-clamp(2);
+  }
+
+  .orb-stats {
+    @include flex-center;
+    gap: $spacing-4;
+    margin-top: $spacing-2;
+    width: 100%;
+  }
+
+  .orb-stat {
+    @include flex-center;
+    gap: $spacing-1;
+    font-size: $font-size-xs;
+    color: var(--text-muted);
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    span {
+      font-weight: $font-weight-medium;
+    }
+  }
+
+  .orb-count {
+    font-size: $font-size-sm;
+    color: var(--text-muted);
+  }
+
+  // Joined state
+  &.joined {
+    border-color: var(--orb-color, $accent-primary);
+    
+    .orb-name {
+      color: var(--orb-color, $accent-primary);
+    }
+  }
+}
+
+// Resource Card
+.resource-card {
+  @include card-base;
+  padding: $spacing-5;
+  transition: all $transition-base;
+
+  &:hover {
+    @include card-hover;
+  }
+
+  .resource-header {
+    @include flex-between;
+    margin-bottom: $spacing-3;
+  }
+
+  .resource-title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: var(--text-primary);
+    @include line-clamp(2);
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $accent-primary;
+    }
+  }
+
+  .resource-type-badge {
+    @include badge-base;
+    background: var(--bg-hover);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .resource-content {
+    color: var(--text-secondary);
+    line-height: $line-height-relaxed;
+    margin-bottom: $spacing-4;
+    @include line-clamp(3);
+  }
+
+  .resource-meta {
+    @include flex-start;
+    gap: $spacing-3;
+    margin-bottom: $spacing-4;
+    font-size: $font-size-sm;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+  }
+
+  .resource-author {
+    @include flex-start;
+    gap: $spacing-2;
+    color: var(--text-secondary);
+    font-weight: $font-weight-medium;
+
+    .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: $radius-full;
+      background: $accent-muted;
+      color: $accent-primary;
+      @include flex-center;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  .resource-footer {
+    @include flex-between;
+    padding-top: $spacing-3;
+    border-top: 1px solid var(--border-secondary);
+  }
+
+  .resource-stats {
+    @include flex-start;
+    gap: $spacing-4;
+  }
+
+  .resource-stat {
+    @include flex-center;
+    gap: $spacing-1;
+    color: var(--text-muted);
+    font-size: $font-size-sm;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover {
+      color: var(--text-primary);
+    }
+  }
+
+  .resource-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-2;
+    margin-top: $spacing-3;
+  }
+
+  .tag {
+    @include badge-base;
+    background: var(--bg-hover);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-primary);
+
+    &:hover {
+      background: $accent-muted;
+      color: $accent-primary;
+      border-color: $accent-primary;
+      cursor: pointer;
+    }
+  }
+
+  // Draft indicator
+  &.draft {
+    border-left: 3px solid $warning;
+    
+    .draft-badge {
+      @include badge-base;
+      background: $warning-muted;
+      color: $warning;
+      border: 1px solid $warning;
+    }
+  }
+}
+
+// Profile Stats Card
+.stats-card {
+  @include card-base;
+  padding: $spacing-4;
+  text-align: center;
+
+  .stat-value {
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $accent-primary;
+    line-height: 1;
+    margin-bottom: $spacing-2;
+  }
+
+  .stat-label {
+    font-size: $font-size-sm;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &:hover {
+    @include card-hover;
+  }
+}

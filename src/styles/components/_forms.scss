@@ -1,0 +1,342 @@
+// ==================== FORMS ====================
+
+.form-group {
+  margin-bottom: $spacing-4;
+
+  label {
+    display: block;
+    margin-bottom: $spacing-2;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: var(--text-primary);
+  }
+
+  &.required label::after {
+    content: ' *';
+    color: $danger;
+  }
+}
+
+.form-control {
+  @include input-base;
+
+  &-sm {
+    padding: $spacing-2 $spacing-3;
+    font-size: $font-size-xs;
+  }
+
+  &-lg {
+    padding: $spacing-4 $spacing-5;
+    font-size: $font-size-base;
+  }
+}
+
+textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+  font-family: $font-sans;
+}
+
+// Select
+.form-select {
+  @include input-base;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a1a1aa' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $spacing-3 center;
+  padding-right: $spacing-8;
+  cursor: pointer;
+}
+
+// Checkbox & Radio
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  margin-bottom: $spacing-3;
+
+  input[type='checkbox'],
+  input[type='radio'] {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--border-primary);
+    background: var(--bg-input);
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:checked {
+      background: $accent-primary;
+      border-color: $accent-primary;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px $accent-muted;
+    }
+  }
+
+  input[type='checkbox'] {
+    border-radius: $radius-xs;
+  }
+
+  input[type='radio'] {
+    border-radius: $radius-full;
+  }
+
+  label {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    cursor: pointer;
+    user-select: none;
+  }
+}
+
+// Input group (with icon)
+.input-group {
+  position: relative;
+
+  .input-icon {
+    position: absolute;
+    left: $spacing-3;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .form-control {
+    padding-left: $spacing-10;
+  }
+
+  &.has-icon-right {
+    .input-icon {
+      left: auto;
+      right: $spacing-3;
+    }
+
+    .form-control {
+      padding-left: $spacing-4;
+      padding-right: $spacing-10;
+    }
+  }
+}
+
+// Search input
+.search-input {
+  @include input-base;
+  padding-left: $spacing-10;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left $spacing-3 center;
+}
+
+// Form validation
+.form-control {
+  &.is-invalid {
+    border-color: $danger;
+
+    &:focus {
+      box-shadow: 0 0 0 3px $danger-muted;
+    }
+  }
+
+  &.is-valid {
+    border-color: $success;
+
+    &:focus {
+      box-shadow: 0 0 0 3px $success-muted;
+    }
+  }
+}
+
+.invalid-feedback,
+.valid-feedback {
+  display: block;
+  margin-top: $spacing-2;
+  font-size: $font-size-xs;
+}
+
+.invalid-feedback {
+  color: $danger;
+}
+
+.valid-feedback {
+  color: $success;
+}
+
+// Help text
+.form-text {
+  display: block;
+  margin-top: $spacing-2;
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+}
+
+// File upload
+.file-upload {
+  @include card-base;
+  padding: $spacing-6;
+  text-align: center;
+  cursor: pointer;
+  transition: all $transition-base;
+  border: 2px dashed var(--border-primary);
+
+  &:hover {
+    border-color: $accent-primary;
+    background: $accent-muted;
+  }
+
+  input[type='file'] {
+    display: none;
+  }
+
+  .upload-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto $spacing-3;
+    color: var(--text-muted);
+  }
+
+  .upload-text {
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    margin-bottom: $spacing-2;
+  }
+
+  .upload-hint {
+    font-size: $font-size-xs;
+    color: var(--text-muted);
+  }
+}
+
+// Switch toggle
+.form-switch {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+
+  input[type='checkbox'] {
+    width: 44px;
+    height: 24px;
+    appearance: none;
+    background: var(--bg-hover);
+    border: 1px solid var(--border-primary);
+    border-radius: $radius-full;
+    position: relative;
+    cursor: pointer;
+    transition: all $transition-base;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: $radius-full;
+      background: white;
+      top: 2px;
+      left: 2px;
+      transition: all $transition-base;
+    }
+
+    &:checked {
+      background: $accent-primary;
+      border-color: $accent-primary;
+
+      &::before {
+        left: 22px;
+      }
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px $accent-muted;
+    }
+  }
+
+  label {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+}
+
+// Tag input
+.tag-input-wrapper {
+  @include input-base;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-2;
+  padding: $spacing-2;
+
+  .tag-item {
+    @include badge-base;
+    background: $accent-muted;
+    color: $accent-primary;
+    @include flex-center;
+    gap: $spacing-1;
+
+    button {
+      background: none;
+      border: none;
+      color: inherit;
+      padding: 0;
+      @include flex-center;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+
+  input {
+    flex: 1;
+    min-width: 120px;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    padding: $spacing-1;
+    outline: none;
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+  }
+}
+
+// Filter controls
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-3;
+  padding: $spacing-4;
+  background: var(--bg-card);
+  border-radius: $radius-lg;
+  margin-bottom: $spacing-6;
+
+  .filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2;
+
+    label {
+      font-size: $font-size-xs;
+      font-weight: $font-weight-medium;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-select,
+    .form-control {
+      min-width: 150px;
+    }
+  }
+}

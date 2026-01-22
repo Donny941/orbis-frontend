@@ -1,0 +1,11 @@
+// ==================== ORBS ====================
+
+.orbs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: $spacing-4;
+}
+
+.orb-card {
+  @include orb-card;
+}

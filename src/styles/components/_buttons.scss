@@ -1,0 +1,155 @@
+// ==================== BUTTONS ====================
+
+.btn {
+  @include button-base;
+
+  // Size variants
+  &-sm {
+    padding: $spacing-1 $spacing-3;
+    font-size: $font-size-xs;
+  }
+
+  &-lg {
+    padding: $spacing-3 $spacing-6;
+    font-size: $font-size-base;
+  }
+
+  // Color variants (override Bootstrap)
+  &-primary {
+    @include button-primary;
+  }
+
+  &-secondary {
+    @include button-secondary;
+  }
+
+  &-ghost {
+    @include button-ghost;
+  }
+
+  &-danger {
+    background: $danger;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: darken($danger, 10%);
+    }
+  }
+
+  &-success {
+    background: $success;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: darken($success, 10%);
+    }
+  }
+
+  // Icon button
+  &-icon {
+    padding: $spacing-2;
+    width: 36px;
+    height: 36px;
+    @include flex-center;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  // Outline variant
+  &-outline-primary {
+    background: transparent;
+    color: $accent-primary;
+    border: 1px solid $accent-primary;
+
+    &:hover:not(:disabled) {
+      background: $accent-muted;
+    }
+  }
+
+  // Full width
+  &-block {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+// Orb button (special component)
+.orb-button {
+  @include button-base;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  color: var(--text-secondary);
+  position: relative;
+
+  &:hover:not(:disabled) {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    border-color: var(--accent);
+  }
+
+  &.orbed {
+    background: $accent-muted;
+    color: $accent-primary;
+    border-color: $accent-primary;
+
+    .orb-icon {
+      animation: pulse 0.3s ease-in-out;
+    }
+  }
+
+  .orb-icon {
+    font-size: $font-size-lg;
+  }
+
+  .orb-count {
+    font-weight: $font-weight-semibold;
+  }
+
+  .orb-weight {
+    font-size: $font-size-xs;
+    color: $success;
+    margin-left: $spacing-1;
+  }
+}
+
+// Button group
+.btn-group {
+  display: flex;
+  gap: $spacing-2;
+
+  &.vertical {
+    flex-direction: column;
+  }
+}
+
+// Floating action button
+.fab {
+  position: fixed;
+  bottom: $spacing-6;
+  right: $spacing-6;
+  width: 56px;
+  height: 56px;
+  border-radius: $radius-full;
+  background: $accent-primary;
+  color: white;
+  @include flex-center;
+  box-shadow: $shadow-lg;
+  z-index: $z-fixed;
+  transition: all $transition-base;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: $shadow-glow, $shadow-lg;
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+// Include animations
+@include pulse-animation;

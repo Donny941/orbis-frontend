@@ -1,0 +1,11 @@
+// ==================== RESOURCES ====================
+
+.resource-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+}
+
+.resource-card {
+  // Styles already defined in _cards.scss
+}

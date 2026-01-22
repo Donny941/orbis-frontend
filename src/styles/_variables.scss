@@ -1,0 +1,189 @@
+// Colors - Dark Theme (Default)
+$dark-bg-body: #09090b;
+$dark-bg-surface: #0f0f12;
+$dark-bg-card: #16161a;
+$dark-bg-card-elevated: #1c1c21;
+$dark-bg-input: #111114;
+$dark-bg-hover: #1f1f24;
+
+$dark-border-primary: #27272a;
+$dark-border-secondary: #1e1e22;
+$dark-border-accent: #8b5cf6;
+
+$dark-text-primary: #fafafa;
+$dark-text-secondary: #a1a1aa;
+$dark-text-tertiary: #71717a;
+$dark-text-muted: #52525b;
+
+// Colors - Light Theme
+$light-bg-body: #f8f8fa;
+$light-bg-surface: #ffffff;
+$light-bg-card: #ffffff;
+$light-bg-card-elevated: #fafafa;
+$light-bg-input: #f4f4f5;
+$light-bg-hover: #f0f0f2;
+
+$light-border-primary: #e4e4e7;
+$light-border-secondary: #f0f0f2;
+
+$light-text-primary: #09090b;
+$light-text-secondary: #52525b;
+$light-text-tertiary: #71717a;
+$light-text-muted: #a1a1aa;
+
+// Accent Colors (theme-independent)
+$accent-primary: #8b5cf6; // Purple
+$accent-hover: #a78bfa;
+$accent-muted: rgba(139, 92, 246, 0.12);
+$accent-glow: rgba(139, 92, 246, 0.25);
+
+// Orb Colors (matching MVP documentation)
+$orb-programming: #6366f1;
+$orb-web-dev: #8b5cf6;
+$orb-data-science: #ec4899;
+$orb-design: #f59e0b;
+$orb-languages: #10b981;
+$orb-science: #06b6d4;
+
+// Semantic Colors
+$success: #22c55e;
+$success-muted: rgba(34, 197, 94, 0.12);
+$warning: #eab308;
+$warning-muted: rgba(234, 179, 8, 0.12);
+$danger: #ef4444;
+$danger-muted: rgba(239, 68, 68, 0.12);
+$info: #3b82f6;
+$info-muted: rgba(59, 130, 246, 0.12);
+
+// Typography
+$font-sans:
+  "Inter",
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  sans-serif;
+$font-mono: "SF Mono", "Fira Code", "Consolas", monospace;
+
+// Font Sizes
+$font-size-xs: 0.75rem; // 12px
+$font-size-sm: 0.875rem; // 14px
+$font-size-base: 1rem; // 16px
+$font-size-lg: 1.125rem; // 18px
+$font-size-xl: 1.25rem; // 20px
+$font-size-2xl: 1.5rem; // 24px
+$font-size-3xl: 2rem; // 32px
+$font-size-4xl: 2.5rem; // 40px
+
+// Font Weights
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Line Heights
+$line-height-tight: 1.25;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+
+// Spacing Scale
+$spacing-0: 0;
+$spacing-1: 0.25rem; // 4px
+$spacing-2: 0.5rem; // 8px
+$spacing-3: 0.75rem; // 12px
+$spacing-4: 1rem; // 16px
+$spacing-5: 1.25rem; // 20px
+$spacing-6: 1.5rem; // 24px
+$spacing-8: 2rem; // 32px
+$spacing-10: 2.5rem; // 40px
+$spacing-12: 3rem; // 48px
+$spacing-16: 4rem; // 64px
+
+// Border Radius
+$radius-xs: 4px;
+$radius-sm: 6px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-xl: 16px;
+$radius-2xl: 20px;
+$radius-full: 9999px;
+
+// Shadows
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+$shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+$shadow-glow: 0 0 20px $accent-glow;
+
+$shadow-sm-light: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-md-light: 0 4px 12px rgba(0, 0, 0, 0.08);
+$shadow-lg-light: 0 12px 40px rgba(0, 0, 0, 0.12);
+
+// Transitions
+$transition-fast: 150ms ease;
+$transition-base: 200ms ease;
+$transition-slow: 300ms ease;
+
+// Z-index Scale
+$z-dropdown: 1000;
+$z-sticky: 1020;
+$z-fixed: 1030;
+$z-modal-backdrop: 1040;
+$z-modal: 1050;
+$z-popover: 1060;
+$z-tooltip: 1070;
+
+// Breakpoints (Bootstrap default)
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+);
+
+// Container Max Widths
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1320px,
+);
+
+// Level Badge Colors
+$level-novice: #94a3b8;
+$level-student: #6366f1;
+$level-scholar: #8b5cf6;
+$level-expert: #ec4899;
+$level-master: #f59e0b;
+
+// Bootstrap Override Variables
+$primary: $accent-primary;
+$secondary: #71717a;
+$success: $success;
+$warning: $warning;
+$danger: $danger;
+$info: $info;
+
+$body-bg: $dark-bg-body;
+$body-color: $dark-text-primary;
+
+$border-radius: $radius-md;
+$border-radius-sm: $radius-sm;
+$border-radius-lg: $radius-lg;
+
+$input-bg: $dark-bg-input;
+$input-border-color: $dark-border-primary;
+$input-color: $dark-text-primary;
+$input-placeholder-color: $dark-text-muted;
+
+$card-bg: $dark-bg-card;
+$card-border-color: $dark-border-secondary;
+$card-border-radius: $radius-lg;
+
+$btn-border-radius: $radius-md;
+$btn-font-weight: $font-weight-semibold;
+
+$navbar-dark-color: $dark-text-secondary;
+$navbar-dark-hover-color: $dark-text-primary;
+$navbar-dark-active-color: $accent-primary;

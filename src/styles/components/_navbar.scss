@@ -1,0 +1,38 @@
+// ==================== NAVBAR ====================
+
+.navbar {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-secondary);
+  padding: $spacing-4 0;
+
+  .navbar-brand {
+    @include flex-center;
+    gap: $spacing-3;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: var(--text-primary);
+  }
+
+  .navbar-nav {
+    @include flex-center;
+    gap: $spacing-2;
+  }
+
+  .nav-link {
+    padding: $spacing-2 $spacing-4;
+    color: var(--text-secondary);
+    font-weight: $font-weight-medium;
+    border-radius: $radius-md;
+    transition: all $transition-fast;
+
+    &:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    &.active {
+      background: $accent-muted;
+      color: $accent-primary;
+    }
+  }
+}

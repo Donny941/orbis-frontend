@@ -1,0 +1,45 @@
+// ==================== DARK THEME ====================
+
+[data-theme='dark'],
+:root {
+  // Backgrounds
+  --bg-body: #{$dark-bg-body};
+  --bg-surface: #{$dark-bg-surface};
+  --bg-card: #{$dark-bg-card};
+  --bg-card-elevated: #{$dark-bg-card-elevated};
+  --bg-input: #{$dark-bg-input};
+  --bg-hover: #{$dark-bg-hover};
+
+  // Borders
+  --border-primary: #{$dark-border-primary};
+  --border-secondary: #{$dark-border-secondary};
+  --border-accent: #{$dark-border-accent};
+
+  // Text
+  --text-primary: #{$dark-text-primary};
+  --text-secondary: #{$dark-text-secondary};
+  --text-tertiary: #{$dark-text-tertiary};
+  --text-muted: #{$dark-text-muted};
+
+  // Accent
+  --accent: #{$accent-primary};
+  --accent-hover: #{$accent-hover};
+  --accent-muted: #{$accent-muted};
+  --accent-glow: #{$accent-glow};
+
+  // Semantic
+  --success: #{$success};
+  --success-muted: #{$success-muted};
+  --warning: #{$warning};
+  --warning-muted: #{$warning-muted};
+  --danger: #{$danger};
+  --danger-muted: #{$danger-muted};
+  --info: #{$info};
+  --info-muted: #{$info-muted};
+
+  // Shadows
+  --shadow-sm: #{$shadow-sm};
+  --shadow-md: #{$shadow-md};
+  --shadow-lg: #{$shadow-lg};
+  --shadow-glow: #{$shadow-glow};
+}

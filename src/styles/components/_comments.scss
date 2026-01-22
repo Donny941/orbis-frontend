@@ -1,0 +1,22 @@
+// ==================== COMMENTS ====================
+
+.comments-section {
+  margin-top: $spacing-8;
+}
+
+.comment {
+  @include card-base;
+  padding: $spacing-4;
+  margin-bottom: $spacing-3;
+}
+
+.comment-author {
+  @include flex-start;
+  gap: $spacing-2;
+  margin-bottom: $spacing-3;
+}
+
+.comment-content {
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+}
