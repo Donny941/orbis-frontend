@@ -1,0 +1,335 @@
+// ==================== LANDING PAGE ====================
+
+// Hero Section
+.hero-section {
+  min-height: calc(100vh - 80px);
+  @include flex-center;
+  text-align: center;
+  padding: $spacing-16 $spacing-4;
+  background: var(--bg-body);
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-logo {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto $spacing-8;
+  background: linear-gradient(135deg, $accent-primary 0%, #6366f1 100%);
+  border-radius: $radius-xl;
+  @include flex-center;
+  color: white;
+  @include pulse-animation;
+}
+
+.hero-title {
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin-bottom: $spacing-6;
+  line-height: $line-height-tight;
+
+  @include respond-below(md) {
+    font-size: $font-size-3xl;
+  }
+}
+
+.hero-subtitle {
+  font-size: $font-size-xl;
+  color: var(--text-secondary);
+  margin-bottom: $spacing-10;
+  line-height: $line-height-relaxed;
+
+  @include respond-below(md) {
+    font-size: $font-size-lg;
+  }
+}
+
+.hero-cta {
+  @include flex-center;
+  gap: $spacing-4;
+  margin-bottom: $spacing-12;
+  flex-wrap: wrap;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-8;
+  max-width: 600px;
+  margin: 0 auto;
+
+  @include respond-below(md) {
+    grid-template-columns: 1fr;
+    gap: $spacing-4;
+  }
+}
+
+.hero-stat {
+  @include flex-column;
+  gap: $spacing-1;
+}
+
+.hero-stat-value {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  color: $accent-primary;
+}
+
+.hero-stat-label {
+  font-size: $font-size-sm;
+  color: var(--text-tertiary);
+}
+
+// Features Section
+.features-section {
+  padding: $spacing-16 $spacing-4;
+  background: var(--bg-surface);
+}
+
+.section-header-center {
+  text-align: center;
+  margin-bottom: $spacing-12;
+}
+
+.section-title {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin-bottom: $spacing-4;
+}
+
+.section-subtitle {
+  font-size: $font-size-lg;
+  color: var(--text-secondary);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: $spacing-6;
+}
+
+.feature-card {
+  text-align: center;
+  padding: $spacing-8 $spacing-6;
+  transition: transform $transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+}
+
+.feature-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto $spacing-6;
+  border-radius: $radius-xl;
+  @include flex-center;
+
+  &.purple {
+    background: $accent-muted;
+    color: $accent-primary;
+  }
+
+  &.green {
+    background: $success-muted;
+    color: $success;
+  }
+
+  &.yellow {
+    background: $warning-muted;
+    color: $warning;
+  }
+
+  &.pink {
+    background: rgba(236, 72, 153, 0.12);
+    color: #ec4899;
+  }
+
+  &.blue {
+    background: $info-muted;
+    color: $info;
+  }
+}
+
+.feature-title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin-bottom: $spacing-3;
+}
+
+.feature-description {
+  font-size: $font-size-base;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+}
+
+// How It Works Section
+.how-it-works-section {
+  padding: $spacing-16 $spacing-4;
+  background: var(--bg-body);
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-8;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.step-card {
+  text-align: center;
+}
+
+.step-number {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto $spacing-6;
+  background: $accent-muted;
+  border-radius: $radius-full;
+  @include flex-center;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $accent-primary;
+}
+
+.step-title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin-bottom: $spacing-3;
+}
+
+.step-description {
+  font-size: $font-size-base;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+}
+
+// Orbs Section
+.orbs-section {
+  padding: $spacing-16 $spacing-4;
+  background: var(--bg-surface);
+}
+
+.orbs-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: $spacing-6;
+}
+
+.orb-preview-card {
+  @include card-base;
+  padding: $spacing-6;
+  border-top: 3px solid var(--orb-color);
+  transition: all $transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-top-color: var(--orb-color);
+    box-shadow: 0 0 20px rgba(var(--orb-color), 0.3);
+  }
+}
+
+.orb-preview-header {
+  @include flex-between;
+  margin-bottom: $spacing-4;
+}
+
+.orb-preview-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--bg-surface);
+  border-radius: $radius-md;
+  @include flex-center;
+  color: var(--orb-color);
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.orb-preview-badge {
+  font-size: $font-size-xs;
+  color: var(--text-tertiary);
+}
+
+.orb-preview-title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin-bottom: $spacing-2;
+}
+
+.orb-preview-description {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  line-height: $line-height-relaxed;
+}
+
+// CTA Section
+.cta-section {
+  padding: $spacing-16 $spacing-4;
+  background: linear-gradient(135deg, $accent-primary 0%, #6366f1 100%);
+}
+
+.cta-content {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-title {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  color: white;
+  margin-bottom: $spacing-4;
+}
+
+.cta-subtitle {
+  font-size: $font-size-lg;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: $spacing-8;
+}
+
+// Footer
+.footer {
+  padding: $spacing-8 $spacing-4;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-secondary);
+}
+
+.footer-content {
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-4;
+}
+
+.footer-brand {
+  @include flex-center;
+  gap: $spacing-3;
+}
+
+.footer-text {
+  font-size: $font-size-sm;
+  color: var(--text-tertiary);
+}
+
+// Utilities
+.text-center {
+  text-align: center;
+}
+
+.btn-lg {
+  padding: $spacing-4 $spacing-8;
+  font-size: $font-size-lg;
+  @include flex-center;
+  gap: $spacing-2;
+}

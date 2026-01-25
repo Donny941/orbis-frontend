@@ -1,3 +1,4 @@
+import { Navbar } from "../components/layout/Navbar";
 import { useAppSelector } from "../store/hooks";
 
 export const DashboardPage = () => {
@@ -5,13 +6,13 @@ export const DashboardPage = () => {
 
   return (
     <div className="container" style={{ padding: "2rem" }}>
+      <Navbar variant="app" />
       <div className="page-header">
         <h1>Welcome back, {user?.displayName}! 👋</h1>
         <p style={{ color: "var(--text-secondary)" }}>
           Level {user?.level} • {user?.totalOrbPoints} Orb Points
         </p>
       </div>
-
       <div className="grid grid-3" style={{ marginTop: "2rem" }}>
         <div className="card">
           <h3>Total Points</h3>

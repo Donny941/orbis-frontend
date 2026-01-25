@@ -16,6 +16,7 @@ export const RegisterPage = () => {
     email: "",
     password: "",
     displayName: "",
+    confirmPassword: "",
   });
 
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -46,7 +47,12 @@ export const RegisterPage = () => {
     }
 
     try {
-      await dispatch(registerThunk(formData)).unwrap();
+      await dispatch(
+        registerThunk({
+          ...formData,
+          confirmPassword,
+        }),
+      ).unwrap();
       navigate("/dashboard");
     } catch (err) {
       console.error("Registration failed:", err);

@@ -1,18 +1,35 @@
 // ==================== ANIMATIONS ====================
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.3); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideInRight {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .fade-in {
@@ -21,4 +38,61 @@
 
 .slide-in {
   animation: slideInRight 0.3s ease;
+}
+
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  filter: blur(70px);
+  will-change: transform;
+  // NO transition - solo transform diretto
+}
+
+.orb-purple {
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.5) 0%, transparent 70%);
+}
+
+.orb-pink {
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.5) 0%, transparent 70%);
+  width: 320px;
+  height: 320px;
+}
+
+.orb-green {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.5) 0%, transparent 70%);
+}
+
+.orb-blue {
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.45) 0%, transparent 70%);
+  top: 25vh;
+  width: 280px;
+  height: 280px;
+}
+
+.orb-orange {
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.45) 0%, transparent 70%);
+  top: 60vh;
+  width: 280px;
+  height: 280px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb {
+    display: none;
+  }
 }

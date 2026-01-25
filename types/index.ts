@@ -86,6 +86,7 @@ export interface RegisterData {
   email: string;
   password: string;
   displayName: string;
+  confirmPassword: string;
 }
 
 export interface AuthResponse {
