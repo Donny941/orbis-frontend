@@ -1,33 +1,44 @@
 import { Navbar } from "../components/layout/Navbar";
-import { useAppSelector } from "../store/hooks";
+import { Sidebar } from "../components/layout/Sidebar";
+import { UserStatsCard } from "../components/dashboard/UserStatsCard";
+import { MyOrbsCard } from "../components/dashboard/MyOrbsCard";
+import { RecentResourcesCard } from "../components/dashboard/RecentResourcesCard";
+import { Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const DashboardPage = () => {
-  const { user } = useAppSelector((state) => state.auth);
-
   return (
-    <div className="container" style={{ padding: "2rem" }}>
-      <Navbar variant="app" />
-      <div className="page-header">
-        <h1>Welcome back, {user?.displayName}! 👋</h1>
-        <p style={{ color: "var(--text-secondary)" }}>
-          Level {user?.level} • {user?.totalOrbPoints} Orb Points
-        </p>
-      </div>
-      <div className="grid grid-3" style={{ marginTop: "2rem" }}>
-        <div className="card">
-          <h3>Total Points</h3>
-          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "var(--accent)" }}>{user?.totalOrbPoints}</p>
-        </div>
+    <div className="app-layout">
+      <Sidebar />
+      <div className="main-content">
+        <Navbar variant="app" />
+        <main className="main">
+          {/* Page Header */}
+          <div className="page-header">
+            <div>
+              <h1 className="page-title">Dashboard</h1>
+              <p className="page-subtitle">Welcome back! Here's what's happening in your learning journey.</p>
+            </div>
+            <Link to="/resources/new" className="btn btn-primary">
+              <Plus size={20} />
+              New Resource
+            </Link>
+          </div>
 
-        <div className="card">
-          <h3>Current Streak</h3>
-          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "var(--success)" }}>{user?.currentStreak} 🔥</p>
-        </div>
+          {/* Dashboard Grid */}
+          <div className="dashboard-grid">
+            {/* Left Column */}
+            <div className="dashboard-main">
+              <RecentResourcesCard />
+            </div>
 
-        <div className="card">
-          <h3>Level</h3>
-          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "var(--warning)" }}>{user?.level}</p>
-        </div>
+            {/* Right Sidebar */}
+            <div className="dashboard-sidebar">
+              <UserStatsCard />
+              <MyOrbsCard />
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   );

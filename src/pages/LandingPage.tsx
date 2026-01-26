@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Navbar } from "../components/layout/Navbar";
 import { Compass, Zap, Users, TrendingUp, Sparkles, Target, Award } from "lucide-react";
 import { AnimatedBackground } from "../components/ui/AnimatedBackground";
+import logoImg from "../assets/logo.png";
 
 export const LandingPage = () => {
   return (
@@ -15,7 +16,7 @@ export const LandingPage = () => {
           <div className="hero-content">
             {/* Logo Icon */}
             <div className="hero-logo">
-              <Compass size={48} />
+              <img src={logoImg} alt="Orbis Logo" />
             </div>
 
             {/* Title */}

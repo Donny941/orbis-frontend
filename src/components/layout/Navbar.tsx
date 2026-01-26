@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Bell, Compass, LogOut, User, Settings, FileText, Award, HelpCircle, ChevronDown, Menu, X } from "lucide-react";
+import { Search, Bell, LogOut, User, Settings, FileText, Award, HelpCircle, ChevronDown, Menu, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { logout } from "../../store/slices/authSlice";
 import { useState } from "react";
+import logoImg from "../../assets/logo.png";
 
 interface NavbarProps {
   variant?: "landing" | "app";
@@ -42,7 +43,7 @@ export const Navbar = ({ variant = "app" }: NavbarProps) => {
         <div className="container">
           <Link to="/" className="navbar-brand">
             <div className="logo-icon">
-              <Compass size={24} />
+              <img src={logoImg} alt="Orbis Logo" />
             </div>
             <span className="logo-text">Orbis</span>
           </Link>

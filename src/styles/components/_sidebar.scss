@@ -5,14 +5,63 @@
   background: var(--bg-surface);
   border-right: 1px solid var(--border-secondary);
   padding: $spacing-5 $spacing-3;
+  display: flex;
+  flex-direction: column;
   position: fixed;
   height: 100vh;
   overflow-y: auto;
+  z-index: 100;
   @include custom-scrollbar;
 }
 
+// ==================== LOGO ====================
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-2 $spacing-3;
+  margin-bottom: $spacing-6;
+  text-decoration: none;
+  transition: opacity $transition-fast;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: $radius-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .logo-text {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+}
+
+// ==================== NAVIGATION ====================
+
 .nav-section {
   margin-bottom: $spacing-6;
+
+  &.nav-section-bottom {
+    margin-top: auto;
+    margin-bottom: $spacing-3;
+  }
 }
 
 .nav-label {
@@ -23,4 +72,117 @@
   color: var(--text-muted);
   padding: 0 $spacing-3;
   margin-bottom: $spacing-2;
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-3 $spacing-3;
+  border-radius: $radius-md;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  transition: all $transition-fast;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+
+  svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+  }
+
+  span:not(.nav-badge):not(.orb-indicator) {
+    flex: 1;
+  }
+
+  &:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+
+  &.active {
+    background: var(--accent-muted);
+    color: var(--accent);
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 20px;
+      background: var(--accent);
+      border-radius: 0 $radius-xs $radius-xs 0;
+    }
+  }
+
+  &.nav-item-action {
+    color: var(--text-muted);
+    margin-top: $spacing-2;
+
+    &:hover {
+      color: var(--accent);
+      background: var(--accent-muted);
+    }
+  }
+}
+
+// ==================== NAV BADGES ====================
+
+.nav-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 $spacing-1;
+  background: var(--bg-card-elevated);
+  border-radius: $radius-full;
+  font-size: 11px;
+  font-weight: $font-weight-semibold;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.nav-item.active .nav-badge {
+  background: var(--accent);
+  color: white;
+}
+
+// ==================== ORB INDICATORS ====================
+
+.orb-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--orb-color, var(--accent));
+  flex-shrink: 0;
+}
+
+// ==================== MOBILE ====================
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform $transition-base;
+    z-index: 1000;
+
+    &.sidebar-open {
+      transform: translateX(0);
+    }
+  }
 }
