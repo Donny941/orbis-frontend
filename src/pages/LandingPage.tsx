@@ -237,7 +237,7 @@ export const LandingPage = () => {
             </div>
           </div>
 
-          <div className="text-center" style={{ marginTop: "3rem" }}>
+          <div className="text-center mt-large">
             <Link to="/register" className="btn btn-primary btn-lg">
               Explore All Orbs
             </Link>
@@ -264,7 +264,7 @@ export const LandingPage = () => {
         <div className="container">
           <div className="footer-content">
             <div className="footer-brand">
-              <div className="logo-icon" style={{ width: "32px", height: "32px" }}>
+              <div className="logo-icon">
                 <Compass size={20} />
               </div>
               <span className="logo-text">Orbis</span>

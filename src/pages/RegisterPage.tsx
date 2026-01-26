@@ -35,7 +35,6 @@ export const RegisterPage = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    // Validation
     if (formData.password !== confirmPassword) {
       setValidationError("Passwords do not match");
       return;
@@ -60,50 +59,30 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "1.5rem",
-      }}
-    >
-      <div className="card" style={{ width: "100%", maxWidth: "440px" }}>
+    <div className="login-page">
+      <div className="card login-card">
         {/* Logo & Title */}
-        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-          <div
-            style={{
-              width: "64px",
-              height: "64px",
-              margin: "0 auto 1rem",
-              background: "linear-gradient(135deg, var(--accent) 0%, #6366f1 100%)",
-              borderRadius: "12px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-            }}
-          >
+        <div className="auth-header">
+          <div className="auth-logo">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="10" />
               <circle cx="12" cy="12" r="6" />
               <circle cx="12" cy="12" r="2" />
             </svg>
           </div>
-          <h1 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "0.5rem" }}>Create Account</h1>
-          <p style={{ color: "var(--text-secondary)" }}>Join the Orbis community</p>
+          <h1 className="auth-title">Create Account</h1>
+          <p className="auth-subtitle">Join the Orbis community</p>
         </div>
 
         {/* Error Alert */}
         {(error || validationError) && (
-          <div className="alert alert-danger" role="alert" style={{ marginBottom: "1.5rem" }}>
+          <div className="alert alert-danger" role="alert">
             {error || validationError}
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="auth-form">
           {/* Username */}
           <div className="form-group">
             <label htmlFor="username">Username</label>
@@ -115,13 +94,12 @@ export const RegisterPage = () => {
                 type="text"
                 id="username"
                 name="username"
-                className="form-control"
+                className="form-control input-with-icon"
                 placeholder="johndoe"
                 value={formData.username}
                 onChange={handleChange}
                 required
                 autoComplete="username"
-                style={{ paddingLeft: "2.5rem" }}
               />
             </div>
           </div>
@@ -137,12 +115,11 @@ export const RegisterPage = () => {
                 type="text"
                 id="displayName"
                 name="displayName"
-                className="form-control"
+                className="form-control input-with-icon"
                 placeholder="John Doe"
                 value={formData.displayName}
                 onChange={handleChange}
                 required
-                style={{ paddingLeft: "2.5rem" }}
               />
             </div>
           </div>
@@ -158,13 +135,12 @@ export const RegisterPage = () => {
                 type="email"
                 id="email"
                 name="email"
-                className="form-control"
+                className="form-control input-with-icon"
                 placeholder="you@example.com"
                 value={formData.email}
                 onChange={handleChange}
                 required
                 autoComplete="email"
-                style={{ paddingLeft: "2.5rem" }}
               />
             </div>
           </div>
@@ -180,31 +156,14 @@ export const RegisterPage = () => {
                 type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
-                className="form-control"
+                className="form-control input-with-toggle"
                 placeholder="Min. 8 characters"
                 value={formData.password}
                 onChange={handleChange}
                 required
                 autoComplete="new-password"
-                style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                style={{
-                  position: "absolute",
-                  right: "0.75rem",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  background: "none",
-                  border: "none",
-                  color: "var(--text-muted)",
-                  cursor: "pointer",
-                  padding: "0.25rem",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="password-toggle">
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
@@ -221,7 +180,7 @@ export const RegisterPage = () => {
                 type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
                 name="confirmPassword"
-                className="form-control"
+                className="form-control input-with-toggle"
                 placeholder="Repeat your password"
                 value={confirmPassword}
                 onChange={(e) => {
@@ -230,25 +189,8 @@ export const RegisterPage = () => {
                 }}
                 required
                 autoComplete="new-password"
-                style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
               />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                style={{
-                  position: "absolute",
-                  right: "0.75rem",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  background: "none",
-                  border: "none",
-                  color: "var(--text-muted)",
-                  cursor: "pointer",
-                  padding: "0.25rem",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
+              <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="password-toggle">
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
@@ -257,10 +199,10 @@ export const RegisterPage = () => {
           {/* Submit */}
           <button type="submit" className="btn btn-primary btn-block" disabled={isLoading}>
             {isLoading ? (
-              <>
-                <Loader2 size={18} style={{ animation: "spin 1s linear infinite" }} />
-                <span style={{ marginLeft: "0.5rem" }}>Creating account...</span>
-              </>
+              <span className="btn-loading">
+                <Loader2 size={18} className="spinner" />
+                <span>Creating account...</span>
+              </span>
             ) : (
               "Create Account"
             )}
@@ -268,7 +210,7 @@ export const RegisterPage = () => {
         </form>
 
         {/* Divider */}
-        <div className="divider-text" style={{ margin: "1.5rem 0" }}>
+        <div className="auth-divider">
           <span>Already have an account?</span>
         </div>
 

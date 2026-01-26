@@ -473,3 +473,10 @@
     padding: 6px;
   }
 }
+.dropdown-chevron {
+  transition: transform $transition-base;
+
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}

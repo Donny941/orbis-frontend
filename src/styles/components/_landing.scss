@@ -333,3 +333,20 @@
   @include flex-center;
   gap: $spacing-2;
 }
+.text-center {
+  text-align: center;
+
+  &.mt-large {
+    margin-top: 3rem;
+  }
+}
+
+.footer {
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

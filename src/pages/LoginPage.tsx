@@ -1,11 +1,10 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "../../src/store/hooks";
-import { loginThunk } from "../../src/store/thunks/authThunks";
-import { clearError } from "../../src/store/slices/authSlice";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { loginThunk } from "../store/thunks/authThunks";
+import { clearError } from "../store/slices/authSlice";
 import type { LoginCredentials } from "../../types";
-
 export const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -22,7 +21,6 @@ export const LoginPage = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Clear error quando l'utente inizia a digitare
     if (error) {
       dispatch(clearError());
     }
@@ -35,56 +33,35 @@ export const LoginPage = () => {
       await dispatch(loginThunk(formData)).unwrap();
       navigate("/dashboard");
     } catch (err) {
-      // Error già gestito dal slice
       console.error("Login failed:", err);
     }
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "1.5rem",
-      }}
-    >
-      <div className="card" style={{ width: "100%", maxWidth: "440px" }}>
+    <div className="login-page">
+      <div className="card login-card">
         {/* Logo & Title */}
-        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-          <div
-            style={{
-              width: "64px",
-              height: "64px",
-              margin: "0 auto 1rem",
-              background: "linear-gradient(135deg, var(--accent) 0%, #6366f1 100%)",
-              borderRadius: "12px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-            }}
-          >
+        <div className="auth-header">
+          <div className="auth-logo">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="10" />
               <circle cx="12" cy="12" r="6" />
               <circle cx="12" cy="12" r="2" />
             </svg>
           </div>
-          <h1 style={{ fontSize: "2rem", fontWeight: "700", marginBottom: "0.5rem" }}>Welcome back</h1>
-          <p style={{ color: "var(--text-secondary)" }}>Sign in to your Orbis account</p>
+          <h1 className="auth-title">Welcome back</h1>
+          <p className="auth-subtitle">Sign in to your Orbis account</p>
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div className="alert alert-danger" role="alert" style={{ marginBottom: "1.5rem" }}>
+          <div className="alert alert-danger" role="alert">
             {error}
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="auth-form">
           {/* Email */}
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -96,13 +73,12 @@ export const LoginPage = () => {
                 type="email"
                 id="email"
                 name="email"
-                className="form-control"
+                className="form-control input-with-icon"
                 placeholder="you@example.com"
                 value={formData.email}
                 onChange={handleChange}
                 required
                 autoComplete="email"
-                style={{ paddingLeft: "2.5rem" }}
               />
             </div>
           </div>
@@ -118,43 +94,26 @@ export const LoginPage = () => {
                 type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
-                className="form-control"
+                className="form-control input-with-toggle"
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleChange}
                 required
                 autoComplete="current-password"
-                style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                style={{
-                  position: "absolute",
-                  right: "0.75rem",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  background: "none",
-                  border: "none",
-                  color: "var(--text-muted)",
-                  cursor: "pointer",
-                  padding: "0.25rem",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="password-toggle">
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
           </div>
 
           {/* Remember & Forgot */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+          <div className="auth-remember-forgot">
             <div className="form-check">
               <input type="checkbox" id="remember" />
               <label htmlFor="remember">Remember me</label>
             </div>
-            <Link to="/forgot-password" style={{ fontSize: "0.875rem", color: "var(--accent)" }}>
+            <Link to="/forgot-password" className="forgot-link">
               Forgot password?
             </Link>
           </div>
@@ -162,10 +121,10 @@ export const LoginPage = () => {
           {/* Submit */}
           <button type="submit" className="btn btn-primary btn-block" disabled={isLoading}>
             {isLoading ? (
-              <>
-                <Loader2 size={18} style={{ animation: "spin 1s linear infinite" }} />
-                <span style={{ marginLeft: "0.5rem" }}>Signing in...</span>
-              </>
+              <span className="btn-loading">
+                <Loader2 size={18} className="spinner" />
+                <span>Signing in...</span>
+              </span>
             ) : (
               "Sign In"
             )}
@@ -173,7 +132,7 @@ export const LoginPage = () => {
         </form>
 
         {/* Divider */}
-        <div className="divider-text" style={{ margin: "1.5rem 0" }}>
+        <div className="auth-divider">
           <span>Don't have an account?</span>
         </div>
 

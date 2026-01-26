@@ -1,0 +1,130 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-6;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: $spacing-8;
+
+  .auth-logo {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto $spacing-4;
+    background: linear-gradient(135deg, var(--accent) 0%, #6366f1 100%);
+    border-radius: $radius-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  .auth-title {
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-2;
+  }
+
+  .auth-subtitle {
+    color: var(--text-secondary);
+  }
+}
+
+.auth-form {
+  .input-with-icon {
+    padding-left: 2.5rem;
+  }
+
+  .input-with-toggle {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: $spacing-3;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: $spacing-1;
+    display: flex;
+    align-items: center;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: var(--text-secondary);
+    }
+  }
+}
+
+.auth-remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-6;
+
+  .forgot-link {
+    font-size: $font-size-sm;
+    color: var(--accent);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.auth-divider {
+  margin: $spacing-6 0;
+  text-align: center;
+  position: relative;
+
+  span {
+    background: var(--bg-card);
+    padding: 0 $spacing-4;
+    color: var(--text-secondary);
+    position: relative;
+    z-index: 1;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border-primary);
+  }
+}
+
+.btn-loading {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  justify-content: center;
+
+  .spinner {
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

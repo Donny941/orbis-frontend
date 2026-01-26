@@ -154,7 +154,7 @@ export const Navbar = ({ variant = "app" }: NavbarProps) => {
                 {user && getLevelName(user.level)} · Lv.{user?.level}
               </span>
             </div>
-            <ChevronDown size={16} className="dropdown-chevron desktop-only" style={{ transform: showProfileMenu ? "rotate(180deg)" : "rotate(0)" }} />
+            <ChevronDown size={16} className={`dropdown-chevron desktop-only ${showProfileMenu ? "rotated" : ""}`} />
           </button>
 
           {/* Dropdown Menu */}
