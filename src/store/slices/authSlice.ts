@@ -1,10 +1,6 @@
-// ==================== AUTH SLICE ====================
-
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { User } from "../../../types";
 import { loginThunk, registerThunk, fetchUserThunk } from "../thunks/authThunks";
-
-//  STATE
 
 interface AuthState {
   user: User | null;
@@ -19,18 +15,15 @@ const initialState: AuthState = {
   user: null,
   token: localStorage.getItem("token"),
   refreshToken: localStorage.getItem("refreshToken"),
-  isAuthenticated: false,
+  isAuthenticated: !!localStorage.getItem("token"),
   isLoading: false,
   error: null,
 };
-
-// SLICE
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    // Logout (sync)
     logout: (state) => {
       state.user = null;
       state.token = null;
@@ -41,18 +34,16 @@ const authSlice = createSlice({
       localStorage.removeItem("refreshToken");
     },
 
-    // Clear error
     clearError: (state) => {
       state.error = null;
     },
 
-    // Update user (dopo edit profilo)
     updateUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
   },
   extraReducers: (builder) => {
-    //LOGIN
+    // LOGIN
     builder
       .addCase(loginThunk.pending, (state) => {
         state.isLoading = true;
@@ -72,7 +63,7 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       });
 
-    //  REGISTER
+    // REGISTER
     builder
       .addCase(registerThunk.pending, (state) => {
         state.isLoading = true;
@@ -107,7 +98,6 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload as string;
         state.isAuthenticated = false;
-        // Token non valido - clear tutto
         state.token = null;
         state.refreshToken = null;
         localStorage.removeItem("token");

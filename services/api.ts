@@ -2,7 +2,7 @@
 /// <reference types="vite/client" />
 
 import axios, { AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from "axios";
-import type { AuthResponse, ApiError } from "../types";
+import type { ApiError } from "../types";
 
 // Base URL - cambierà in produzione
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -33,7 +33,7 @@ api.interceptors.request.use(
   },
 );
 
-//  RESPONSE INTERCEPTOR
+// RESPONSE INTERCEPTOR
 
 interface QueueItem {
   resolve: (token: string | null) => void;
@@ -94,9 +94,10 @@ api.interceptors.response.use(
 
       try {
         // Call refresh endpoint
-        const response = await axios.post<AuthResponse>(`${BASE_URL}/auth/refresh`, { refreshToken });
+        const response = await axios.post(`${BASE_URL}/auth/refresh`, { refreshToken });
 
-        const { token: newToken, refreshToken: newRefreshToken } = response.data;
+        // ✅ Il backend restituisce "accessToken" invece di "token"
+        const { accessToken: newToken, refreshToken: newRefreshToken } = response.data;
 
         // Save new tokens
         localStorage.setItem("token", newToken);
@@ -130,7 +131,7 @@ api.interceptors.response.use(
   },
 );
 
-//  HELPER FUNCTIONS
+// HELPER FUNCTIONS
 
 const handleLogout = () => {
   localStorage.removeItem("token");

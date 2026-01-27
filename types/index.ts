@@ -4,6 +4,7 @@
 export interface User {
   id: string;
   username: string;
+  userName?: string; // Backend usa userName
   email: string;
   displayName: string;
   bio?: string;
@@ -22,30 +23,32 @@ export interface Orb {
   id: string;
   name: string;
   description: string;
-  iconUrl: string;
+  iconName: string; // Backend usa iconName invece di iconUrl
   color: string;
   memberCount: number;
   resourceCount: number;
   createdAt: string;
-  isJoined?: boolean; // Client-side flag
+  joinedAt?: string; // Presente quando chiamiamo my-orbs
+  isJoined?: boolean;
 }
 
 // Resource
 export interface Resource {
   id: string;
   title: string;
-  content: string;
+  content?: string;
   type: ResourceType;
-  status: ResourceStatus;
+  status?: ResourceStatus;
   author: User;
   orb: Orb;
   difficulty?: Difficulty;
   tags: string[];
   viewCount: number;
   totalOrbsReceived: number;
-  hasUserOrbed: boolean;
+  hasUserOrbed?: boolean;
+  isAuthor?: boolean;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
   publishedAt?: string;
 }
 
@@ -60,19 +63,9 @@ export interface Comment {
   content: string;
   author: User;
   orbsReceived: number;
-  hasUserOrbed: boolean;
+  hasUserOrbed?: boolean;
+  isAuthor?: boolean;
   createdAt: string;
-}
-
-// User Stats
-export interface UserStats {
-  totalOrbPoints: number;
-  level: number;
-  currentStreak: number;
-  longestStreak: number;
-  resourcesCreated: number;
-  orbsJoined: number;
-  orbsGiven: number;
 }
 
 // Auth
@@ -107,30 +100,4 @@ export interface PaginatedResponse<T> {
   pageSize: number;
   totalCount: number;
   totalPages: number;
-}
-
-// Level System
-export interface LevelInfo {
-  level: number;
-  name: LevelName;
-  minPoints: number;
-  maxPoints: number;
-  orbWeight: number;
-  color: string;
-}
-
-export type LevelName = "Novice" | "Student" | "Scholar" | "Expert" | "Master";
-
-// Filter & Sort
-export interface ResourceFilters {
-  orbId?: string;
-  type?: ResourceType;
-  difficulty?: Difficulty;
-  sort?: "recent" | "popular" | "trending";
-  search?: string;
-}
-
-// Form States
-export interface FormErrors {
-  [key: string]: string;
 }

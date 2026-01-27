@@ -1,63 +1,78 @@
 import { Link } from "react-router-dom";
-import { Clock, MessageCircle, Eye, Circle } from "lucide-react";
-
-interface Resource {
-  id: string;
-  title: string;
-  author: string;
-  authorLevel: string;
-  orbName: string;
-  orbColor: string;
-  timeAgo: string;
-  views: number;
-  comments: number;
-  orbPoints: number;
-  isHot?: boolean;
-  isNew?: boolean;
-}
-
-const mockResources: Resource[] = [
-  {
-    id: "1",
-    title: "Complete Guide to React Hooks",
-    author: "alandonati",
-    authorLevel: "Scholar",
-    orbName: "Programming",
-    orbColor: "#6366f1",
-    timeAgo: "2h ago",
-    views: 234,
-    comments: 12,
-    orbPoints: 42,
-    isHot: true,
-  },
-  {
-    id: "2",
-    title: "CSS Grid vs Flexbox: When to Use Which",
-    author: "mariarossi",
-    authorLevel: "Master",
-    orbName: "Web Development",
-    orbColor: "#8b5cf6",
-    timeAgo: "5h ago",
-    views: 567,
-    comments: 24,
-    orbPoints: 89,
-    isNew: true,
-  },
-  {
-    id: "3",
-    title: "Introduction to Pandas for Data Analysis",
-    author: "luigiverdi",
-    authorLevel: "Expert",
-    orbName: "Data Science",
-    orbColor: "#ec4899",
-    timeAgo: "1d ago",
-    views: 145,
-    comments: 8,
-    orbPoints: 31,
-  },
-];
+import { Clock, MessageCircle, Eye, Circle, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { resourceService } from "../../../services/resourceService";
+import type { Resource } from "../../../types";
 
 export const RecentResourcesCard = () => {
+  const [resources, setResources] = useState<Resource[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        setIsLoading(true);
+        const data = await resourceService.getRecentFromMyOrbs(10);
+        setResources(data);
+      } catch (err) {
+        setError("Failed to load resources");
+        console.error("Error fetching resources:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchResources();
+  }, []);
+
+  const getTimeAgo = (date: string) => {
+    const now = new Date();
+    const past = new Date(date);
+    const diffMs = now.getTime() - past.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffDays > 0) return `${diffDays}d ago`;
+    if (diffHours > 0) return `${diffHours}h ago`;
+    if (diffMins > 0) return `${diffMins}m ago`;
+    return "just now";
+  };
+
+  const isHot = (resource: Resource) => {
+    return resource.totalOrbsReceived > 50 && resource.viewCount > 200;
+  };
+
+  const isNew = (resource: Resource) => {
+    const hoursSincePublished = (new Date().getTime() - new Date(resource.publishedAt || resource.createdAt).getTime()) / (1000 * 60 * 60);
+    return hoursSincePublished < 24;
+  };
+
+  if (isLoading) {
+    return (
+      <div className="card">
+        <div className="card-header">
+          <h3 className="card-title">Recent Resources</h3>
+        </div>
+        <div className="card-loading">
+          <Loader2 size={24} className="spinner" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="card">
+        <div className="card-header">
+          <h3 className="card-title">Recent Resources</h3>
+        </div>
+        <div className="card-error">{error}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="card">
       <div className="card-header">
@@ -67,53 +82,66 @@ export const RecentResourcesCard = () => {
         </Link>
       </div>
 
-      <div className="card-content">
-        <div className="resource-list">
-          {mockResources.map((resource) => (
-            <div key={resource.id} className="resource-item">
-              {/* Indicator */}
-              <div className={`resource-indicator ${resource.isHot ? "hot" : resource.isNew ? "new" : ""}`}></div>
-
-              {/* Content */}
-              <div className="resource-main">
-                <Link to={`/resources/${resource.id}`} className="resource-title">
-                  {resource.title}
-                </Link>
-                <div className="resource-meta">
-                  <div className="resource-author-badge">
-                    <span className="author-initial">{resource.author.charAt(0).toUpperCase()}</span>
-                    <span className="author-name">{resource.author}</span>
-                  </div>
-                  <span className={`level-badge-small ${resource.authorLevel.toLowerCase()}`}>{resource.authorLevel}</span>
-                  <span className="orb-badge" style={{ backgroundColor: resource.orbColor }}>
-                    {resource.orbName}
-                  </span>
-                  <span className="resource-time">
-                    <Clock size={12} />
-                    {resource.timeAgo}
-                  </span>
-                </div>
-              </div>
-
-              {/* Stats */}
-              <div className="resource-stats">
-                <div className="resource-stat">
-                  <Circle size={16} />
-                  <span>{resource.orbPoints}</span>
-                </div>
-                <div className="resource-stat">
-                  <MessageCircle size={16} />
-                  <span>{resource.comments}</span>
-                </div>
-                <div className="resource-stat">
-                  <Eye size={16} />
-                  <span>{resource.views}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+      {resources.length === 0 ? (
+        <div className="card-empty">
+          <p>No resources yet. Start exploring orbs!</p>
+          <Link to="/dashboard/orbs" className="btn btn-primary btn-sm">
+            Explore Orbs
+          </Link>
         </div>
-      </div>
+      ) : (
+        <div className="card-content">
+          <div className="resource-list">
+            {resources.map((resource) => (
+              <div key={resource.id} className="resource-item">
+                {/* Indicator */}
+                <div className={`resource-indicator ${isHot(resource) ? "hot" : isNew(resource) ? "new" : ""}`}></div>
+
+                {/* Content */}
+                <div className="resource-main">
+                  <Link to={`/resources/${resource.id}`} className="resource-title">
+                    {resource.title}
+                  </Link>
+                  <div className="resource-meta">
+                    <div className="resource-author-badge">
+                      <span className="author-initial">
+                        {(resource.author.displayName || resource.author.username || resource.author.userName || "U").charAt(0).toUpperCase()}
+                      </span>
+                      <span className="author-name">
+                        <span className="author-name">{resource.author.username || resource.author.userName}</span>
+                      </span>
+                    </div>
+                    <span className={`level-badge-small level-${resource.author.level}`}>Level {resource.author.level}</span>
+                    <span className="orb-badge" style={{ backgroundColor: resource.orb.color }}>
+                      {resource.orb.name}
+                    </span>
+                    <span className="resource-time">
+                      <Clock size={12} />
+                      {getTimeAgo(resource.publishedAt || resource.createdAt)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Stats */}
+                <div className="resource-stats">
+                  <div className="resource-stat">
+                    <Circle size={16} />
+                    <span>{resource.totalOrbsReceived}</span>
+                  </div>
+                  <div className="resource-stat">
+                    <MessageCircle size={16} />
+                    <span>0</span>
+                  </div>
+                  <div className="resource-stat">
+                    <Eye size={16} />
+                    <span>{resource.viewCount}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

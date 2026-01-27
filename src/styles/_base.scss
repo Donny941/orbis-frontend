@@ -175,3 +175,83 @@ body {
   white-space: nowrap;
   border-width: 0;
 }
+.app-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 1rem;
+  color: var(--text-secondary);
+
+  .spinner {
+    animation: spin 1s linear infinite;
+    color: var(--accent);
+  }
+}
+// Error Boundary
+.error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: $spacing-8;
+  background: var(--bg-body);
+}
+
+.error-boundary-content {
+  text-align: center;
+  max-width: 480px;
+
+  h1 {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: var(--text-primary);
+    margin-bottom: $spacing-2;
+  }
+
+  > p {
+    color: var(--text-secondary);
+    margin-bottom: $spacing-6;
+  }
+}
+
+.error-boundary-icon {
+  @include flex-center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto $spacing-6;
+  background: $danger-muted;
+  border-radius: $radius-full;
+  color: $danger;
+}
+
+.error-boundary-details {
+  text-align: left;
+  margin-bottom: $spacing-6;
+  padding: $spacing-4;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: $radius-md;
+
+  summary {
+    cursor: pointer;
+    font-weight: $font-weight-medium;
+    color: var(--text-secondary);
+    margin-bottom: $spacing-2;
+  }
+
+  pre {
+    font-family: $font-mono;
+    font-size: $font-size-xs;
+    color: $danger;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
+
+.error-boundary-actions {
+  display: flex;
+  gap: $spacing-3;
+  justify-content: center;
+}

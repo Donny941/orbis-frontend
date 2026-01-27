@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { fetchUserThunk } from "../../store/thunks/authThunks";
+import { Loader2 } from "lucide-react";
 
 interface InitAuthProps {
   children: React.ReactNode;
@@ -8,14 +9,23 @@ interface InitAuthProps {
 
 export const InitAuth = ({ children }: InitAuthProps) => {
   const dispatch = useAppDispatch();
-  const { token, user } = useAppSelector((state) => state.auth);
+  const { token, user, isLoading } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    // Se c'è token ma non user, carica l'utente
+    console.log("InitAuth - token:", token, "user:", user);
+
     if (token && !user) {
       dispatch(fetchUserThunk());
     }
   }, [dispatch, token, user]);
 
+  if (token && !user && isLoading) {
+    return (
+      <div className="app-loading">
+        <Loader2 className="spinner" size={48} />
+        <p>Loading...</p>
+      </div>
+    );
+  }
   return <>{children}</>;
 };

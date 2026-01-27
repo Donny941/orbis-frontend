@@ -8,7 +8,6 @@ interface ProtectedRouteProps {
 export const ProtectedRoute = ({ redirectTo = "/login" }: ProtectedRouteProps) => {
   const { isAuthenticated, isLoading } = useAppSelector((state) => state.auth);
 
-  // Mostra loading mentre controlla l'auth
   if (isLoading) {
     return (
       <div className="loading-container">
@@ -18,11 +17,9 @@ export const ProtectedRoute = ({ redirectTo = "/login" }: ProtectedRouteProps) =
     );
   }
 
-  // Se non autenticato, redirect al login
   if (!isAuthenticated) {
     return <Navigate to={redirectTo} replace />;
   }
 
-  // Se autenticato, mostra le rotte figlie
   return <Outlet />;
 };
