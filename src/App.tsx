@@ -11,6 +11,10 @@ import { DashboardLayout } from "./components/layout/DashboardLayout";
 import { DashboardHome } from "./pages/DashboardHome";
 import { OrbDetailPage } from "./pages/OrbDetailPage";
 import { ErrorBoundary } from "./components/ui/ErrorBoundary";
+import { ResourcesPage } from "./pages/ResourcesPage";
+import { ResourceEditorPage } from "./pages/ResourceEditorPage";
+import { ResourceDetailPage } from "./pages/ResourceDetailPage";
+import { MyResourcesPage } from "./pages/MyResourcesPage";
 
 function App() {
   return (
@@ -28,9 +32,15 @@ function App() {
               <Route path="/dashboard" element={<DashboardLayout />}>
                 <Route index element={<DashboardHome />} />
                 <Route path="orbs" element={<OrbsPage />} />
+
+                <Route path="my-resources" element={<MyResourcesPage />} />
                 {/* Future routes */}
                 <Route path="orbs/:id" element={<OrbDetailPage />} />
-                {/* <Route path="resources" element={<ResourcesPage />} /> */}
+                <Route path="resources" element={<ResourcesPage />} />
+                <Route path="resources/new" element={<ResourceEditorPage />} />
+                <Route path="resources/:id" element={<ResourceDetailPage />} />
+                <Route path="resources/:id/edit" element={<ResourceEditorPage />} />
+
                 {/* <Route path="profile" element={<ProfilePage />} /> */}
               </Route>
             </Route>

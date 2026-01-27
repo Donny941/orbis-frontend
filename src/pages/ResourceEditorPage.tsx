@@ -1,0 +1,254 @@
+// src/pages/ResourceEditorPage.tsx
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { createResource, updateResource, fetchResource, clearCurrentResource } from "../store/slices/resourcesSlice";
+import { fetchAllOrbs } from "../store/slices/orbsSlice";
+import { TipTapEditor } from "../components/resources/TipTapEditor";
+import { ArrowLeft, Save, Send, Loader2, X } from "lucide-react";
+
+type ResourceType = "Note" | "Article" | "Code" | "Link";
+type Difficulty = "Beginner" | "Intermediate" | "Advanced";
+
+export const ResourceEditorPage = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const isEditing = !!id;
+
+  const { currentResource, isLoading, error } = useAppSelector((state) => state.resources);
+  const { allOrbs, myOrbs } = useAppSelector((state) => state.orbs);
+
+  // Form state
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [type, setType] = useState<ResourceType>("Note");
+  const [orbId, setOrbId] = useState("");
+  const [difficulty, setDifficulty] = useState<Difficulty | "">("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+
+  // Fetch orbs on mount
+  useEffect(() => {
+    if (allOrbs.length === 0) {
+      dispatch(fetchAllOrbs());
+    }
+  }, [dispatch, allOrbs.length]);
+
+  // Fetch resource if editing
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchResource(id));
+    }
+    return () => {
+      dispatch(clearCurrentResource());
+    };
+  }, [dispatch, id]);
+
+  // Nel useEffect che popola il form quando editing, cambia:
+  useEffect(() => {
+    if (currentResource && isEditing) {
+      setTitle(currentResource.title);
+      setContent(currentResource.content || "");
+      setType(currentResource.type as ResourceType);
+      setOrbId(currentResource.orb?.id || "");
+      setDifficulty((currentResource.difficulty as Difficulty) || "");
+
+      // Parse tags - può essere stringa o array
+      const parsedTags =
+        typeof currentResource.tags === "string"
+          ? currentResource.tags
+              .split(",")
+              .map((t) => t.trim())
+              .filter(Boolean)
+          : currentResource.tags || [];
+      setTags(parsedTags);
+    }
+  }, [currentResource, isEditing]);
+  // Set default orb
+  useEffect(() => {
+    if (!orbId && myOrbs.length > 0) {
+      setOrbId(myOrbs[0].id);
+    }
+  }, [myOrbs, orbId]);
+
+  const handleAddTag = () => {
+    const tag = tagInput.trim().toLowerCase();
+    if (tag && !tags.includes(tag) && tags.length < 5) {
+      setTags([...tags, tag]);
+      setTagInput("");
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    setTags(tags.filter((t) => t !== tagToRemove));
+  };
+
+  const handleTagKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      handleAddTag();
+    }
+  };
+
+  const handleSave = async (status: "Draft" | "Published") => {
+    if (!title.trim() || !content.trim() || !orbId) {
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      const data = {
+        title: title.trim(),
+        content,
+        type,
+        orbId,
+        difficulty: difficulty || undefined,
+        tags,
+        status,
+      };
+
+      if (isEditing && id) {
+        await dispatch(updateResource({ id, data })).unwrap();
+      } else {
+        await dispatch(createResource(data)).unwrap();
+      }
+
+      navigate("/dashboard/resources");
+    } catch {
+      // Error handled by Redux
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const isValid = title.trim() && content.trim() && orbId;
+
+  // Get available orbs (only joined orbs)
+  const availableOrbs = myOrbs.length > 0 ? myOrbs : allOrbs;
+
+  return (
+    <div className="resource-editor-page">
+      {/* Header */}
+      <div className="editor-header">
+        <button className="btn btn-ghost" onClick={() => navigate(-1)}>
+          <ArrowLeft size={20} />
+          Back
+        </button>
+        <h1>{isEditing ? "Edit Resource" : "Create Resource"}</h1>
+        <div className="editor-actions">
+          <button className="btn btn-secondary" onClick={() => handleSave("Draft")} disabled={!isValid || isSaving}>
+            {isSaving ? <Loader2 className="spin" size={16} /> : <Save size={16} />}
+            Save Draft
+          </button>
+          <button className="btn btn-primary" onClick={() => handleSave("Published")} disabled={!isValid || isSaving}>
+            {isSaving ? <Loader2 className="spin" size={16} /> : <Send size={16} />}
+            Publish
+          </button>
+        </div>
+      </div>
+
+      {error && <div className="alert alert-error">{error}</div>}
+
+      {/* Form */}
+      <div className="card">
+        <div className="editor-form">
+          {/* Title */}
+          <div className="form-group">
+            <label htmlFor="title">Title *</label>
+            <input
+              id="title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter a descriptive title..."
+              maxLength={200}
+              className="form-control"
+            />
+            <span className="char-count">{title.length}/200</span>
+          </div>
+
+          {/* Meta Row */}
+          <div className="editor-meta-row">
+            {/* Orb Select */}
+            <div className="form-group">
+              <label htmlFor="orb">Community *</label>
+              <select id="orb" value={orbId} onChange={(e) => setOrbId(e.target.value)} className="form-control">
+                <option value="">Select an Orb...</option>
+                {availableOrbs.map((orb) => (
+                  <option key={orb.id} value={orb.id}>
+                    {orb.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Type Select */}
+            <div className="form-group">
+              <label htmlFor="type">Type *</label>
+              <select id="type" value={type} onChange={(e) => setType(e.target.value as ResourceType)} className="form-control">
+                <option value="Note">📝 Note</option>
+                <option value="Article">📄 Article</option>
+                <option value="Code">💻 Code</option>
+                <option value="Link">🔗 Link</option>
+              </select>
+            </div>
+
+            {/* Difficulty Select */}
+            <div className="form-group">
+              <label htmlFor="difficulty">Difficulty</label>
+              <select id="difficulty" value={difficulty} onChange={(e) => setDifficulty(e.target.value as Difficulty | "")} className="form-control">
+                <option value="">None</option>
+                <option value="Beginner">🟢 Beginner</option>
+                <option value="Intermediate">🟡 Intermediate</option>
+                <option value="Advanced">🔴 Advanced</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Tags */}
+          <div className="form-group">
+            <label>Tags (max 5)</label>
+            <div className="tags-input-wrapper">
+              <div className="tags-list">
+                {tags.map((tag) => (
+                  <span key={tag} className="tag">
+                    #{tag}
+                    <button type="button" onClick={() => handleRemoveTag(tag)}>
+                      <X size={12} />
+                    </button>
+                  </span>
+                ))}
+              </div>
+              {tags.length < 5 && (
+                <input
+                  type="text"
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={handleTagKeyDown}
+                  onBlur={handleAddTag}
+                  placeholder="Add a tag..."
+                  className="tag-input"
+                />
+              )}
+            </div>
+          </div>
+
+          {/* Content Editor */}
+          <div className="form-group form-group-editor">
+            <label>Content *</label>
+            <TipTapEditor content={content} onChange={setContent} placeholder="Share your knowledge... You can use markdown formatting." />
+          </div>
+        </div>
+      </div>
+      {/* Loading Overlay */}
+      {isLoading && (
+        <div className="editor-loading-overlay">
+          <Loader2 className="spin" size={32} />
+        </div>
+      )}
+    </div>
+  );
+};

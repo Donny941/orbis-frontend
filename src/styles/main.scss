@@ -40,6 +40,8 @@
 // 6. Import component styles
 @import "./components/landing";
 @import "./components/dashboard";
+@import "./components/my-resources";
+
 @import "./components/auth";
 @import "./components/navbar";
 @import "./components/sidebar";
@@ -52,5 +54,6 @@
 @import "./components/comments";
 @import "./components/profile";
 @import "./components/editor";
+@import "./components/TipTapEditor";
 @import "./components/animations";
 @import "./components/layout";

@@ -32,26 +32,36 @@ export interface Orb {
   isJoined?: boolean;
 }
 
-// Resource
 export interface Resource {
   id: string;
   title: string;
   content?: string;
-  type: ResourceType;
-  status?: ResourceStatus;
-  author: User;
-  orb: Orb;
-  difficulty?: Difficulty;
-  tags: string[];
+  type: string;
+  status: string;
+  difficulty?: string;
+  tags: string | string[]; // Può essere stringa dal backend o array dal frontend
   viewCount: number;
   totalOrbsReceived: number;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
+  author: {
+    id: string;
+    userName: string;
+    displayName?: string;
+    profilePicture?: string;
+    level: number;
+  };
+  orb: {
+    id: string;
+    name: string;
+    description?: string;
+    iconUrl?: string;
+    color: string;
+  };
   hasUserOrbed?: boolean;
   isAuthor?: boolean;
-  createdAt: string;
-  updatedAt?: string;
-  publishedAt?: string;
 }
-
 export type ResourceType = "Note" | "Article" | "Code" | "Link";
 export type ResourceStatus = "Draft" | "Published";
 export type Difficulty = "Beginner" | "Intermediate" | "Advanced";

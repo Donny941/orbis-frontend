@@ -45,9 +45,9 @@ export const Sidebar = () => {
             <Compass size={18} />
             <span>Explore Orbs</span>
           </Link>
-          <Link to="/dashboard/my-learning" className={`nav-item ${isActive("/dashboard/my-learning") ? "active" : ""}`}>
+          <Link to="/dashboard/my-resources" className={`nav-item ${isActive("/dashboard/my-resources") ? "active" : ""}`}>
             <BookOpen size={18} />
-            <span>My Learning</span>
+            <span>My Resources</span>
           </Link>
           <Link to="/dashboard/progress" className={`nav-item ${isActive("/dashboard/progress") ? "active" : ""}`}>
             <TrendingUp size={18} />

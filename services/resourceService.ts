@@ -29,8 +29,6 @@ export const resourceService = {
 
   // Get recent resources from user's orbs (feed)
   getRecentFromMyOrbs: async (limit: number = 10): Promise<Resource[]> => {
-    // Il backend non ha endpoint dedicato, quindi usiamo /resources senza filtri
-    // Le risorse saranno dalle orbs pubbliche
     const response = await api.get("/resources", {
       params: {
         page: 1,
@@ -55,6 +53,12 @@ export const resourceService = {
     };
   },
 
+  // Get all my resources (published + drafts)
+  getMyResources: async (): Promise<Resource[]> => {
+    const response = await api.get("/resources/mine");
+    return response.data.data || response.data;
+  },
+
   // Get resource by ID
   getResourceById: async (id: string): Promise<Resource> => {
     const response = await api.get(`/resources/${id}`);
@@ -71,7 +75,16 @@ export const resourceService = {
     tags: string[];
     status?: "Draft" | "Published";
   }): Promise<Resource> => {
-    const response = await api.post("/resources", data);
+    const payload = {
+      title: data.title,
+      content: data.content,
+      orbId: data.orbId,
+      type: data.type,
+      difficulty: data.difficulty || null,
+      tags: data.tags.join(","),
+      status: data.status || "Draft",
+    };
+    const response = await api.post("/resources", payload);
     return response.data;
   },
 
@@ -86,7 +99,11 @@ export const resourceService = {
       tags?: string[];
     },
   ): Promise<Resource> => {
-    const response = await api.put(`/resources/${id}`, data);
+    const payload = {
+      ...data,
+      tags: data.tags ? data.tags.join(",") : undefined,
+    };
+    const response = await api.put(`/resources/${id}`, payload);
     return response.data;
   },
 
@@ -98,6 +115,12 @@ export const resourceService = {
   // Publish draft
   publishResource: async (id: string): Promise<Resource> => {
     const response = await api.post(`/resources/${id}/publish`);
+    return response.data;
+  },
+
+  // Unpublish (convert back to draft)
+  unpublishResource: async (id: string): Promise<Resource> => {
+    const response = await api.post(`/resources/${id}/unpublish`);
     return response.data;
   },
 
