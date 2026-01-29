@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { fetchMyResources, publishResource, unpublishResource, deleteResource } from "../store/slices/resourcesSlice";
+import { fetchMyResources, publishResource, deleteResource } from "../store/slices/resourcesSlice";
 import { Plus, FileText, BookOpen, Code, Link as LinkIcon, Eye, Clock, Edit, Trash2, Globe, Lock, Loader2 } from "lucide-react";
 
 type FilterStatus = "all" | "Published" | "Draft";
@@ -19,17 +19,15 @@ export const MyResourcesPage = () => {
   }, [dispatch]);
 
   const handleToggleStatus = async (resourceId: string, currentStatus: string) => {
-    setActionLoading(resourceId);
-    try {
-      if (currentStatus === "Draft") {
+    if (currentStatus === "Draft") {
+      setActionLoading(resourceId);
+      try {
         await dispatch(publishResource(resourceId)).unwrap();
-      } else {
-        await dispatch(unpublishResource(resourceId)).unwrap();
+      } catch (err) {
+        console.error("Failed to publish:", err);
+      } finally {
+        setActionLoading(null);
       }
-    } catch (err) {
-      console.error("Failed to toggle status:", err);
-    } finally {
-      setActionLoading(null);
     }
   };
 
@@ -231,27 +229,22 @@ export const MyResourcesPage = () => {
 
                 {/* Status Toggle */}
                 <div className="col-status">
-                  <button
-                    className={`status-toggle ${resource.status === "Published" ? "published" : "draft"}`}
-                    onClick={() => handleToggleStatus(resource.id, resource.status)}
-                    disabled={isActionLoading}
-                    title={resource.status === "Published" ? "Click to unpublish" : "Click to publish"}
-                  >
-                    {isActionLoading ? <Loader2 className="spin" size={14} /> : resource.status === "Published" ? <Globe size={14} /> : <Lock size={14} />}
-                    {resource.status}
-                  </button>
-                </div>
-
-                {/* Stats */}
-                <div className="col-stats">
-                  <span className="stat-item">
-                    <Eye size={14} />
-                    {resource.viewCount || 0}
-                  </span>
-                  <span className="stat-item">
-                    <span className="orb-mini">●</span>
-                    {resource.totalOrbsReceived || 0}
-                  </span>
+                  {resource.status === "Draft" ? (
+                    <button
+                      className="status-toggle draft"
+                      onClick={() => handleToggleStatus(resource.id, resource.status)}
+                      disabled={isActionLoading}
+                      title="Click to publish"
+                    >
+                      {isActionLoading ? <Loader2 className="spin" size={14} /> : <Lock size={14} />}
+                      Draft
+                    </button>
+                  ) : (
+                    <span className="status-badge published">
+                      <Globe size={14} />
+                      Published
+                    </span>
+                  )}
                 </div>
 
                 {/* Date */}

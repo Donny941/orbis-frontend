@@ -54,8 +54,10 @@ const getIcon = (iconName: string) => {
 };
 
 // Format date
-const formatDate = (dateString: string) => {
+const formatDate = (dateString?: string) => {
+  if (!dateString) return "Unknown";
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "Unknown";
   return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -64,9 +66,12 @@ const formatDate = (dateString: string) => {
 };
 
 // Time ago
-const timeAgo = (dateString: string) => {
-  const now = new Date();
+const timeAgo = (dateString?: string) => {
+  if (!dateString) return "Unknown";
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "Unknown";
+
+  const now = new Date();
   const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
   if (seconds < 60) return "just now";
@@ -74,6 +79,18 @@ const timeAgo = (dateString: string) => {
   if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
   if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
   return formatDate(dateString);
+};
+
+// Get author display name
+const getAuthorName = (author?: Resource["author"]) => {
+  if (!author) return "Unknown";
+  return author.displayName || author.userName || "Unknown";
+};
+
+// Get author initial
+const getAuthorInitial = (author?: Resource["author"]) => {
+  const name = getAuthorName(author);
+  return name.charAt(0).toUpperCase();
 };
 
 export const OrbDetailPage = () => {
@@ -216,22 +233,22 @@ export const OrbDetailPage = () => {
                   <h3 className="resource-title">{resource.title}</h3>
                   <div className="resource-meta">
                     <div className="resource-author">
-                      <div className="avatar">{resource.author.displayName?.charAt(0) || "U"}</div>
-                      <span>{resource.author.username}</span>
+                      <div className="avatar">{getAuthorInitial(resource.author)}</div>
+                      <span>{getAuthorName(resource.author)}</span>
                     </div>
                     <span>•</span>
-                    <span>{timeAgo(resource.createdAt)}</span>
+                    <span>{timeAgo(resource.publishedAt || resource.createdAt)}</span>
                   </div>
                 </div>
 
                 <div className="resource-stats">
                   <span>
                     <Circle size={14} />
-                    {resource.totalOrbsReceived}
+                    {resource.totalOrbsReceived || 0}
                   </span>
                   <span>
                     <Eye size={14} />
-                    {resource.viewCount}
+                    {resource.viewCount || 0}
                   </span>
                 </div>
               </Link>

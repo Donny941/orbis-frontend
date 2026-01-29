@@ -26,9 +26,12 @@ export const RecentResourcesCard = () => {
     fetchResources();
   }, []);
 
-  const getTimeAgo = (date: string) => {
+  const getTimeAgo = (date?: string) => {
+    if (!date) return "Unknown";
     const now = new Date();
     const past = new Date(date);
+    if (isNaN(past.getTime())) return "Unknown";
+
     const diffMs = now.getTime() - past.getTime();
     const diffMins = Math.floor(diffMs / 60000);
     const diffHours = Math.floor(diffMins / 60);
@@ -40,12 +43,23 @@ export const RecentResourcesCard = () => {
     return "just now";
   };
 
+  const getAuthorName = (author?: Resource["author"]) => {
+    if (!author) return "Unknown";
+    return author.displayName || author.userName || "Unknown";
+  };
+
+  const getAuthorInitial = (author?: Resource["author"]) => {
+    return getAuthorName(author).charAt(0).toUpperCase();
+  };
+
   const isHot = (resource: Resource) => {
-    return resource.totalOrbsReceived > 50 && resource.viewCount > 200;
+    return (resource.totalOrbsReceived || 0) > 50 && (resource.viewCount || 0) > 200;
   };
 
   const isNew = (resource: Resource) => {
-    const hoursSincePublished = (new Date().getTime() - new Date(resource.publishedAt || resource.createdAt).getTime()) / (1000 * 60 * 60);
+    const dateStr = resource.publishedAt || resource.createdAt;
+    if (!dateStr) return false;
+    const hoursSincePublished = (new Date().getTime() - new Date(dateStr).getTime()) / (1000 * 60 * 60);
     return hoursSincePublished < 24;
   };
 
@@ -77,7 +91,7 @@ export const RecentResourcesCard = () => {
     <div className="card">
       <div className="card-header">
         <h3 className="card-title">Recent Resources</h3>
-        <Link to="/feed" className="card-link">
+        <Link to="/dashboard/resources" className="card-link">
           View All
         </Link>
       </div>
@@ -99,22 +113,20 @@ export const RecentResourcesCard = () => {
 
                 {/* Content */}
                 <div className="resource-main">
-                  <Link to={`/resources/${resource.id}`} className="resource-title">
+                  <Link to={`/dashboard/resources/${resource.id}`} className="resource-title">
                     {resource.title}
                   </Link>
                   <div className="resource-meta">
                     <div className="resource-author-badge">
-                      <span className="author-initial">
-                        {(resource.author.displayName || resource.author.username || resource.author.userName || "U").charAt(0).toUpperCase()}
-                      </span>
-                      <span className="author-name">
-                        <span className="author-name">{resource.author.username || resource.author.userName}</span>
-                      </span>
+                      <span className="author-initial">{getAuthorInitial(resource.author)}</span>
+                      <span className="author-name">{getAuthorName(resource.author)}</span>
                     </div>
-                    <span className={`level-badge-small level-${resource.author.level}`}>Level {resource.author.level}</span>
-                    <span className="orb-badge" style={{ backgroundColor: resource.orb.color }}>
-                      {resource.orb.name}
-                    </span>
+                    <span className={`level-badge-small level-${resource.author?.level || 1}`}>Level {resource.author?.level || 1}</span>
+                    {resource.orb && (
+                      <span className="orb-badge" style={{ backgroundColor: resource.orb.color }}>
+                        {resource.orb.name}
+                      </span>
+                    )}
                     <span className="resource-time">
                       <Clock size={12} />
                       {getTimeAgo(resource.publishedAt || resource.createdAt)}
@@ -126,7 +138,7 @@ export const RecentResourcesCard = () => {
                 <div className="resource-stats">
                   <div className="resource-stat">
                     <Circle size={16} />
-                    <span>{resource.totalOrbsReceived}</span>
+                    <span>{resource.totalOrbsReceived || 0}</span>
                   </div>
                   <div className="resource-stat">
                     <MessageCircle size={16} />
@@ -134,7 +146,7 @@ export const RecentResourcesCard = () => {
                   </div>
                   <div className="resource-stat">
                     <Eye size={16} />
-                    <span>{resource.viewCount}</span>
+                    <span>{resource.viewCount || 0}</span>
                   </div>
                 </div>
               </div>
