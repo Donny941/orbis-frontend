@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, User, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { registerThunk } from "../store/thunks/authThunks";
-import { clearError } from "../store/slices/authSlice";
+import { clearError, logout } from "../store/slices/authSlice";
 import type { RegisterData } from "../../types";
 
 export const RegisterPage = () => {
@@ -52,7 +52,16 @@ export const RegisterPage = () => {
           confirmPassword,
         }),
       ).unwrap();
-      navigate("/dashboard");
+
+      // Logout automatico dopo registrazione per sicurezza
+      dispatch(logout());
+
+      // Redirect al login con messaggio di successo
+      navigate("/login", {
+        state: {
+          message: "Account created successfully! Please log in with your credentials.",
+        },
+      });
     } catch (err) {
       console.error("Registration failed:", err);
     }

@@ -1,14 +1,18 @@
 import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { loginThunk } from "../store/thunks/authThunks";
 import { clearError } from "../store/slices/authSlice";
 import type { LoginCredentials } from "../../types";
+
 export const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const location = useLocation();
   const { isLoading, error } = useAppSelector((state) => state.auth);
+
+  const successMessage = location.state?.message;
 
   const [formData, setFormData] = useState<LoginCredentials>({
     email: "",
@@ -52,6 +56,13 @@ export const LoginPage = () => {
           <h1 className="auth-title">Welcome back</h1>
           <p className="auth-subtitle">Sign in to your Orbis account</p>
         </div>
+
+        {/* Success Message */}
+        {successMessage && (
+          <div className="alert alert-success" role="alert">
+            {successMessage}
+          </div>
+        )}
 
         {/* Error Alert */}
         {error && (
@@ -107,15 +118,11 @@ export const LoginPage = () => {
             </div>
           </div>
 
-          {/* Remember & Forgot */}
-          <div className="auth-remember-forgot">
-            <div className="form-check">
-              <input type="checkbox" id="remember" />
-              <label htmlFor="remember">Remember me</label>
-            </div>
-            <Link to="/forgot-password" className="forgot-link">
+          {/* Forgot Password */}
+          <div className="form-footer">
+            <a href="#" className="link-secondary">
               Forgot password?
-            </Link>
+            </a>
           </div>
 
           {/* Submit */}

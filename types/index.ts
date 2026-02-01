@@ -1,10 +1,8 @@
-// ==================== ORBIS TYPES ====================
-
 // User
 export interface User {
   id: string;
   username: string;
-  userName?: string; // Backend usa userName
+  userName?: string;
   email: string;
   displayName: string;
   bio?: string;
@@ -23,12 +21,12 @@ export interface Orb {
   id: string;
   name: string;
   description: string;
-  iconName: string; // Backend usa iconName invece di iconUrl
+  iconName: string;
   color: string;
   memberCount: number;
   resourceCount: number;
   createdAt: string;
-  joinedAt?: string; // Presente quando chiamiamo my-orbs
+  joinedAt?: string;
   isJoined?: boolean;
 }
 
@@ -39,7 +37,7 @@ export interface Resource {
   type: string;
   status: string;
   difficulty?: string;
-  tags: string | string[]; // Può essere stringa dal backend o array dal frontend
+  tags: string | string[];
   viewCount: number;
   totalOrbsReceived: number;
   createdAt: string;

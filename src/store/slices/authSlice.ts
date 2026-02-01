@@ -41,6 +41,14 @@ const authSlice = createSlice({
     updateUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
+
+    setTokens: (state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) => {
+      state.token = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+      state.isAuthenticated = true;
+      localStorage.setItem("token", action.payload.accessToken);
+      localStorage.setItem("refreshToken", action.payload.refreshToken);
+    },
   },
   extraReducers: (builder) => {
     // LOGIN
@@ -106,5 +114,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, clearError, updateUser } = authSlice.actions;
+export const { logout, clearError, updateUser, setTokens } = authSlice.actions;
 export default authSlice.reducer;

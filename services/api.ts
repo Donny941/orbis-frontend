@@ -3,6 +3,8 @@
 
 import axios, { AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from "axios";
 import type { ApiError } from "../types";
+import { store } from "../src/store/store";
+import { setTokens, logout } from "../src/store/slices/authSlice";
 
 // Base URL - cambierà in produzione
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -103,6 +105,14 @@ api.interceptors.response.use(
         localStorage.setItem("token", newToken);
         localStorage.setItem("refreshToken", newRefreshToken);
 
+        // Update Redux store
+        store.dispatch(
+          setTokens({
+            accessToken: newToken,
+            refreshToken: newRefreshToken,
+          }),
+        );
+
         // Update authorization header
         if (api.defaults.headers.common) {
           api.defaults.headers.common.Authorization = `Bearer ${newToken}`;
@@ -132,10 +142,10 @@ api.interceptors.response.use(
 );
 
 // HELPER FUNCTIONS
-
 const handleLogout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("refreshToken");
+  store.dispatch(logout());
   window.location.href = "/login";
 };
 
