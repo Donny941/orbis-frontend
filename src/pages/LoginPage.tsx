@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { loginThunk } from "../store/thunks/authThunks";
+import { loginThunk } from "../store/slices/authThunks";
 import { clearError } from "../store/slices/authSlice";
 import type { LoginCredentials } from "../../types";
 

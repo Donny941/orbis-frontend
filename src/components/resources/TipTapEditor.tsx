@@ -3,6 +3,7 @@ import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import { Bold, Italic, Strikethrough, Code, List, ListOrdered, Quote, Heading1, Heading2, Heading3, Minus, Undo, Redo, FileCode } from "lucide-react";
+import { useEffect } from "react";
 
 interface TipTapEditorProps {
   content: string;
@@ -26,6 +27,14 @@ export const TipTapEditor = ({ content, onChange, placeholder = "Start writing y
     },
     immediatelyRender: false,
   });
+
+  useEffect(() => {
+    if (editor && content && editor.getHTML() !== content) {
+      if (!editor.isFocused) {
+        editor.commands.setContent(content);
+      }
+    }
+  }, [content, editor]);
 
   // useEditorState per rendere la toolbar reattiva
   const editorState = useEditorState({

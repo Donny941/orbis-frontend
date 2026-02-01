@@ -1,6 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { User } from "../../../types";
-import { loginThunk, registerThunk, fetchUserThunk } from "../thunks/authThunks";
+
+import { loginThunk, registerThunk, fetchUserThunk } from "./authThunks";
 
 interface AuthState {
   user: User | null;
@@ -33,15 +34,12 @@ const authSlice = createSlice({
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
     },
-
     clearError: (state) => {
       state.error = null;
     },
-
     updateUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
-
     setTokens: (state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) => {
       state.token = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
@@ -51,7 +49,7 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // LOGIN
+    // Gestione Login
     builder
       .addCase(loginThunk.pending, (state) => {
         state.isLoading = true;
@@ -71,7 +69,7 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       });
 
-    // REGISTER
+    // Gestione Register
     builder
       .addCase(registerThunk.pending, (state) => {
         state.isLoading = true;
@@ -91,7 +89,7 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       });
 
-    // FETCH USER
+    // Gestione FetchUser
     builder
       .addCase(fetchUserThunk.pending, (state) => {
         state.isLoading = true;

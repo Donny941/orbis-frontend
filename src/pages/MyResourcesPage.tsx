@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchMyResources, publishResource, deleteResource } from "../store/slices/resourcesSlice";
-import { Plus, FileText, BookOpen, Code, Link as LinkIcon, Eye, Clock, Edit, Trash2, Globe, Lock, Loader2 } from "lucide-react";
+import { Plus, FileText, BookOpen, Code, Link as LinkIcon, Eye, Clock, Edit, Globe, Lock, Loader2, Trash2 } from "lucide-react";
 
 type FilterStatus = "all" | "Published" | "Draft";
 
@@ -193,7 +193,7 @@ export const MyResourcesPage = () => {
             <div className="col-title">Resource</div>
             <div className="col-status">Status</div>
             <div className="col-stats">Stats</div>
-            <div className="col-date">Updated</div>
+
             <div className="col-actions">Actions</div>
           </div>
 

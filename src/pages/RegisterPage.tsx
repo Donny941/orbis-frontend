@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, User, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { registerThunk } from "../store/thunks/authThunks";
+import { registerThunk } from "../store/slices/authThunks";
 import { clearError, logout } from "../store/slices/authSlice";
 import type { RegisterData } from "../../types";
 

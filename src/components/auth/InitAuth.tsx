@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { fetchUserThunk } from "../../store/thunks/authThunks";
+import { fetchUserThunk } from "../../store/slices/authThunks";
 import { Loader2 } from "lucide-react";
 
 interface InitAuthProps {

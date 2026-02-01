@@ -282,6 +282,8 @@
 .col-actions {
   display: flex;
   gap: 0.5rem;
+  justify-content: flex-end;
+  min-width: 80px;
 
   .action-btn {
     display: flex;
@@ -310,6 +312,11 @@
     &:disabled {
       opacity: 0.4;
       cursor: not-allowed;
+    }
+    svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
     }
   }
 }
