@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { registerThunk } from "../store/slices/authThunks";
 import { clearError, logout } from "../store/slices/authSlice";
 import type { RegisterData } from "../../types";
+import logoImg from "../assets/logo.png";
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
@@ -73,11 +74,7 @@ export const RegisterPage = () => {
         {/* Logo & Title */}
         <div className="auth-header">
           <div className="auth-logo">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10" />
-              <circle cx="12" cy="12" r="6" />
-              <circle cx="12" cy="12" r="2" />
-            </svg>
+            <img src={logoImg} alt="Orbis Logo" className="logo-image" />
           </div>
           <h1 className="auth-title">Create Account</h1>
           <p className="auth-subtitle">Join the Orbis community</p>

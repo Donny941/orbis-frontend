@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { loginThunk } from "../store/slices/authThunks";
 import { clearError } from "../store/slices/authSlice";
 import type { LoginCredentials } from "../../types";
+import logoImg from "../assets/logo.png";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -47,11 +48,7 @@ export const LoginPage = () => {
         {/* Logo & Title */}
         <div className="auth-header">
           <div className="auth-logo">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10" />
-              <circle cx="12" cy="12" r="6" />
-              <circle cx="12" cy="12" r="2" />
-            </svg>
+            <img src={logoImg} alt="Orbis Logo" className="logo-image" />
           </div>
           <h1 className="auth-title">Welcome back</h1>
           <p className="auth-subtitle">Sign in to your Orbis account</p>
