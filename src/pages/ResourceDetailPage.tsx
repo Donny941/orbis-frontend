@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchResource, clearCurrentResource, toggleResourceOrb, deleteResource, publishResource } from "../store/slices/resourcesSlice";
 import { TipTapEditor } from "../components/resources/TipTapEditor";
 import { OrbButton } from "../components/resources/OrbButton";
+import { CommentList } from "../components/comments/CommentList";
 import { ArrowLeft, Edit, Trash2, Send, Eye, Clock, Loader2, AlertCircle } from "lucide-react";
 
 export const ResourceDetailPage = () => {
@@ -66,7 +67,6 @@ export const ResourceDetailPage = () => {
       .slice(0, 2);
   };
 
-  // Helper per parsare tags (può essere stringa o array)
   const parseTags = (tags: string | string[] | undefined): string[] => {
     if (!tags) return [];
     if (Array.isArray(tags)) return tags;
@@ -131,86 +131,90 @@ export const ResourceDetailPage = () => {
         )}
       </div>
 
-      {/* Content */}
-      <article className="resource-detail-content">
-        {/* Meta */}
-        <div className="resource-detail-meta">
-          {resource.orb && (
-            <Link
-              to={`/dashboard/orbs/${resource.orb.id}`}
-              className="orb-badge"
-              style={{
-                backgroundColor: `${resource.orb.color}20`,
-                color: resource.orb.color,
-              }}
-            >
-              {resource.orb.name}
-            </Link>
-          )}
-          <span className="resource-type">{resource.type}</span>
-          {resource.difficulty && <span className={`resource-difficulty difficulty-${resource.difficulty.toLowerCase()}`}>{resource.difficulty}</span>}
-          {resource.status === "Draft" && <span className="draft-badge">Draft</span>}
-        </div>
+      {/* Two Column Layout */}
+      <div className="resource-detail-layout">
+        {/* Left: Content */}
+        <article className="resource-detail-content">
+          {/* Meta */}
+          <div className="resource-detail-meta">
+            {resource.orb && (
+              <Link
+                to={`/dashboard/orbs/${resource.orb.id}`}
+                className="orb-badge"
+                style={{
+                  backgroundColor: `${resource.orb.color}20`,
+                  color: resource.orb.color,
+                }}
+              >
+                {resource.orb.name}
+              </Link>
+            )}
+            <span className="resource-type">{resource.type}</span>
+            {resource.difficulty && <span className={`resource-difficulty difficulty-${resource.difficulty.toLowerCase()}`}>{resource.difficulty}</span>}
+            {resource.status === "Draft" && <span className="draft-badge">Draft</span>}
+          </div>
 
-        {/* Title */}
-        <h1 className="resource-detail-title">{resource.title}</h1>
+          {/* Title */}
+          <h1 className="resource-detail-title">{resource.title}</h1>
 
-        {/* Author Info */}
-        {resource.author && (
-          <div className="resource-detail-author">
-            <div className="author-avatar" style={{ backgroundColor: resource.orb?.color || "#8b5cf6" }}>
-              {resource.author.profilePicture ? (
-                <img src={resource.author.profilePicture} alt={resource.author.displayName} />
-              ) : (
-                getInitials(resource.author.displayName || resource.author.userName)
-              )}
-            </div>
-            <div className="author-info">
-              <span className="author-name">{resource.author.displayName || resource.author.userName}</span>
-              <div className="resource-date">
-                <Clock size={14} />
-                {formatDate(resource.publishedAt || resource.createdAt)}
-                <span className="separator">·</span>
-                <Eye size={14} />
-                {resource.viewCount || 0} views
+          {/* Author Info */}
+          {resource.author && (
+            <div className="resource-detail-author">
+              <div className="author-avatar" style={{ backgroundColor: resource.orb?.color || "#8b5cf6" }}>
+                {resource.author.profilePicture ? (
+                  <img src={resource.author.profilePicture} alt={resource.author.displayName} />
+                ) : (
+                  getInitials(resource.author.displayName || resource.author.userName)
+                )}
+              </div>
+              <div className="author-info">
+                <span className="author-name">{resource.author.displayName || resource.author.userName}</span>
+                <div className="resource-date">
+                  <Clock size={14} />
+                  {formatDate(resource.publishedAt || resource.createdAt)}
+                  <span className="separator">·</span>
+                  <Eye size={14} />
+                  {resource.viewCount || 0} views
+                </div>
               </div>
             </div>
+          )}
+
+          {/* Tags */}
+          {tagsArray.length > 0 && (
+            <div className="resource-detail-tags">
+              {tagsArray.map((tag) => (
+                <span key={tag} className="tag">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Content */}
+          <div className="resource-detail-body">
+            <TipTapEditor content={resource.content || ""} onChange={() => {}} editable={false} />
           </div>
-        )}
 
-        {/* Tags */}
-        {tagsArray.length > 0 && (
-          <div className="resource-detail-tags">
-            {tagsArray.map((tag) => (
-              <span key={tag} className="tag">
-                #{tag}
-              </span>
-            ))}
+          {/* Actions */}
+          <div className="resource-detail-actions">
+            <OrbButton
+              count={resource.totalOrbsReceived || 0}
+              hasOrbed={resource.hasUserOrbed || false}
+              onToggle={handleOrbToggle}
+              disabled={resource.isAuthor}
+              size="lg"
+            />
           </div>
+        </article>
+
+        {/* Right: Comments Sidebar */}
+        {resource.status === "Published" && (
+          <aside className="resource-detail-sidebar">
+            <CommentList resourceId={resource.id} />
+          </aside>
         )}
-
-        {/* Content */}
-        <div className="resource-detail-body">
-          <TipTapEditor content={resource.content || ""} onChange={() => {}} editable={false} />
-        </div>
-
-        {/* Actions */}
-        <div className="resource-detail-actions">
-          <OrbButton
-            count={resource.totalOrbsReceived || 0}
-            hasOrbed={resource.hasUserOrbed || false}
-            onToggle={handleOrbToggle}
-            disabled={resource.isAuthor}
-            size="lg"
-          />
-        </div>
-      </article>
-
-      {/* Comments Section - TODO */}
-      <section className="resource-comments">
-        <h2>Comments</h2>
-        <p className="coming-soon">Comments coming soon...</p>
-      </section>
+      </div>
     </div>
   );
 };

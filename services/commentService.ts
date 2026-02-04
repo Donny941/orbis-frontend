@@ -1,36 +1,40 @@
+// src/services/commentService.ts
 import api from "./api";
 import type { Comment } from "../types";
 
 export const commentService = {
-  // Get comments for a resource
-  getResourceComments: async (resourceId: string): Promise<Comment[]> => {
-    const response = await api.get("/comments", {
+  // Get all comments for a resource
+  getComments: async (resourceId: string): Promise<Comment[]> => {
+    const response = await api.get<Comment[]>("/comments", {
       params: { resourceId },
     });
     return response.data;
   },
 
-  // Create comment
+  // Create a new comment
   createComment: async (resourceId: string, content: string): Promise<Comment> => {
-    const response = await api.post("/comments", {
-      resourceId,
-      content,
-    });
+    const response = await api.post<Comment>(
+      "/comments",
+      { content },
+      {
+        params: { resourceId },
+      },
+    );
     return response.data;
   },
 
-  // Delete comment
+  // Delete a comment
   deleteComment: async (commentId: string): Promise<void> => {
     await api.delete(`/comments/${commentId}`);
   },
 
-  // Give Orb to comment
-  giveOrbToComment: async (commentId: string): Promise<void> => {
+  // Give orb to a comment
+  giveOrb: async (commentId: string): Promise<void> => {
     await api.post(`/comments/${commentId}/orb`);
   },
 
-  // Remove Orb from comment
-  removeOrbFromComment: async (commentId: string): Promise<void> => {
+  // Remove orb from a comment
+  removeOrb: async (commentId: string): Promise<void> => {
     await api.delete(`/comments/${commentId}/orb`);
   },
 };

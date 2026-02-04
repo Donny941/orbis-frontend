@@ -6,6 +6,220 @@
   gap: $spacing-4;
 }
 
-.resource-card {
-  // Styles already defined in _cards.scss
+// ==================== RESOURCE DETAIL PAGE ====================
+
+.resource-detail-page {
+  margin: 0 auto;
+}
+
+.resource-detail-header {
+  @include flex-between;
+  margin-bottom: $spacing-6;
+}
+
+.author-actions {
+  display: flex;
+  gap: $spacing-2;
+}
+
+// === Two Column Layout ===
+.resource-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 500px;
+  gap: $spacing-6;
+  align-items: start;
+
+  @include respond-below(lg) {
+    grid-template-columns: 1fr 350px;
+  }
+
+  @include respond-below(md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.resource-detail-content {
+  @include card-base;
+  padding: $spacing-6;
+}
+
+.resource-detail-sidebar {
+  position: sticky;
+  top: $spacing-4;
+  max-height: calc(100vh - #{$spacing-8});
+  overflow-y: auto;
+  @include custom-scrollbar;
+
+  // Override comments section styles for sidebar
+  .comments-section {
+    @include card-base;
+    padding: $spacing-4;
+    margin-top: 0;
+    border-top: none;
+  }
+
+  .comments-title {
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-4;
+  }
+
+  .comment-input {
+    min-height: 70px;
+  }
+
+  .comments-list {
+    max-height: 500px;
+    overflow-y: auto;
+    @include custom-scrollbar;
+  }
+
+  @include respond-below(md) {
+    position: static;
+    max-height: none;
+
+    .comments-list {
+      max-height: none;
+    }
+  }
+}
+
+// === Resource Meta ===
+.resource-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-2;
+  margin-bottom: $spacing-4;
+}
+
+.resource-type,
+.resource-difficulty {
+  @include badge-base;
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+}
+
+.resource-difficulty {
+  &.difficulty-beginner {
+    background: $success-muted;
+    color: $success;
+  }
+  &.difficulty-intermediate {
+    background: $warning-muted;
+    color: $warning;
+  }
+  &.difficulty-advanced {
+    background: $danger-muted;
+    color: $danger;
+  }
+}
+
+.draft-badge {
+  @include badge-base;
+  background: $warning-muted;
+  color: $warning;
+}
+
+// === Title ===
+.resource-detail-title {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin-bottom: $spacing-4;
+  line-height: $line-height-tight;
+}
+
+// === Author ===
+.resource-detail-author {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  margin-bottom: $spacing-4;
+}
+
+.author-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: $radius-full;
+  @include flex-center;
+  color: white;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: $radius-full;
+    object-fit: cover;
+  }
+}
+
+.author-info {
+  .author-name {
+    font-weight: $font-weight-semibold;
+    color: var(--text-primary);
+  }
+}
+
+.resource-date {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+
+  .separator {
+    color: var(--text-muted);
+  }
+}
+
+// === Tags ===
+.resource-detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-2;
+  margin-bottom: $spacing-6;
+
+  .tag {
+    @include badge-base;
+    background: $accent-muted;
+    color: $accent-primary;
+  }
+}
+
+// === Body ===
+.resource-detail-body {
+  margin-bottom: $spacing-6;
+  padding-bottom: $spacing-6;
+  border-bottom: 1px solid var(--border-secondary);
+}
+
+// === Actions ===
+.resource-detail-actions {
+  @include flex-start;
+  gap: $spacing-4;
+}
+
+// === Loading/Error States ===
+.resource-detail-loading,
+.resource-detail-error {
+  @include flex-column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+  color: var(--text-secondary);
+  gap: $spacing-4;
+
+  h2 {
+    color: var(--text-primary);
+  }
+
+  .spin {
+    animation: spin 1s linear infinite;
+  }
+}
+
+.resource-detail-error {
+  color: $danger;
 }
