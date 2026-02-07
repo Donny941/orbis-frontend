@@ -1,4 +1,3 @@
-// src/components/comments/CommentForm.tsx
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { createComment } from "../../store/slices/commentSlice";

@@ -1,4 +1,3 @@
-// src/store/slices/commentsSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { commentService } from "../../../services/commentService";
 import type { Comment } from "../../../types";

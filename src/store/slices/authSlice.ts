@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { User } from "../../../types";
 
-import { loginThunk, registerThunk, fetchUserThunk } from "./authThunks";
+import { loginThunk, registerThunk, fetchUserThunk, updateProfileThunk } from "./authThunks";
 
 interface AuthState {
   user: User | null;
@@ -9,6 +9,7 @@ interface AuthState {
   refreshToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isUpdating: boolean;
   error: string | null;
 }
 
@@ -18,6 +19,7 @@ const initialState: AuthState = {
   refreshToken: localStorage.getItem("refreshToken"),
   isAuthenticated: !!localStorage.getItem("token"),
   isLoading: false,
+  isUpdating: false,
   error: null,
 };
 
@@ -108,6 +110,20 @@ const authSlice = createSlice({
         state.refreshToken = null;
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
+      });
+    // Gestione Update Profile
+    builder
+      .addCase(updateProfileThunk.pending, (state) => {
+        state.isUpdating = true;
+        state.error = null;
+      })
+      .addCase(updateProfileThunk.fulfilled, (state, action) => {
+        state.isUpdating = false;
+        state.user = action.payload;
+      })
+      .addCase(updateProfileThunk.rejected, (state, action) => {
+        state.isUpdating = false;
+        state.error = action.payload as string;
       });
   },
 });

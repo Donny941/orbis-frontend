@@ -1,4 +1,3 @@
-// src/pages/DashboardHome.tsx
 import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { UserStatsCard } from "../components/dashboard/UserStatsCard";

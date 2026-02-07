@@ -1,4 +1,3 @@
-// src/components/comments/CommentList.tsx
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { fetchComments, clearComments } from "../../store/slices/commentSlice";

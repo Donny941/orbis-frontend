@@ -1,4 +1,3 @@
-// components/ui/AnimatedBackground.tsx
 import { useEffect, useState, useRef } from "react";
 
 interface Particle {

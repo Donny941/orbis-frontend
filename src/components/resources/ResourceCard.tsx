@@ -1,4 +1,3 @@
-// src/components/resources/ResourceCard.tsx
 import { Link } from "react-router-dom";
 import { Eye, MessageCircle, Clock, FileText, BookOpen, Code, Link as LinkIcon } from "lucide-react";
 import { OrbButton } from "./OrbButton";

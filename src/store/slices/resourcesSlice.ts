@@ -1,4 +1,3 @@
-// src/store/slices/resourcesSlice.ts
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import { resourceService } from "../../../services/resourceService";
 import type { Resource } from "../../../types";
@@ -10,7 +9,7 @@ interface ResourcesState {
   isLoadingFavourites: boolean;
   currentResource: Resource | null;
   isLoading: boolean;
-  isLoadingMore: boolean; // Necessario per ResourceList.tsx
+  isLoadingMore: boolean;
   isLoadingMine: boolean;
   error: string | null;
   pagination: {

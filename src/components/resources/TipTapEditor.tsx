@@ -1,4 +1,3 @@
-// src/components/resources/TipTapEditor.tsx
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";

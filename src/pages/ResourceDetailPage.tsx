@@ -1,4 +1,3 @@
-// src/pages/ResourceDetailPage.tsx
 import { useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";

@@ -1,4 +1,3 @@
-// src/components/resources/EditorToolbar.tsx
 import type { Editor } from "@tiptap/react";
 import { Bold, Italic, Strikethrough, Code, List, ListOrdered, Quote, Heading1, Heading2, Heading3, Minus, Undo, Redo, FileCode } from "lucide-react";
 

@@ -1,10 +1,10 @@
-// src/pages/ResourceEditorPage.tsx
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { createResource, updateResource, fetchResource, clearCurrentResource } from "../store/slices/resourcesSlice";
 import { fetchAllOrbs } from "../store/slices/orbsSlice";
 import { TipTapEditor } from "../components/resources/TipTapEditor";
+import { FilterDropdown } from "../components/ui/FilterDropdown";
 import { ArrowLeft, Save, Send, Loader2, X } from "lucide-react";
 
 type ResourceType = "Note" | "Article" | "Code" | "Link";
@@ -46,7 +46,7 @@ export const ResourceEditorPage = () => {
     };
   }, [dispatch, id]);
 
-  // Nel useEffect che popola il form quando editing, cambia:
+  // Populate form when editing
   useEffect(() => {
     if (currentResource && isEditing) {
       setTitle(currentResource.title);
@@ -55,7 +55,6 @@ export const ResourceEditorPage = () => {
       setOrbId(currentResource.orb?.id || "");
       setDifficulty((currentResource.difficulty as Difficulty) || "");
 
-      // Parse tags - può essere stringa o array
       const parsedTags =
         typeof currentResource.tags === "string"
           ? currentResource.tags
@@ -66,6 +65,7 @@ export const ResourceEditorPage = () => {
       setTags(parsedTags);
     }
   }, [currentResource, isEditing]);
+
   // Set default orb
   useEffect(() => {
     if (!orbId && myOrbs.length > 0) {
@@ -129,6 +129,23 @@ export const ResourceEditorPage = () => {
   // Get available orbs (only joined orbs)
   const availableOrbs = myOrbs.length > 0 ? myOrbs : allOrbs;
 
+  // Dropdown options
+  const orbOptions = [{ value: "", label: "Select an Orb..." }, ...availableOrbs.map((orb) => ({ value: orb.id, label: orb.name }))];
+
+  const typeOptions = [
+    { value: "Note", label: "📝 Note" },
+    { value: "Article", label: "📄 Article" },
+    { value: "Code", label: "💻 Code" },
+    { value: "Link", label: "🔗 Link" },
+  ];
+
+  const difficultyOptions = [
+    { value: "", label: "None" },
+    { value: "Beginner", label: "🟢 Beginner" },
+    { value: "Intermediate", label: "🟡 Intermediate" },
+    { value: "Advanced", label: "🔴 Advanced" },
+  ];
+
   return (
     <div className="resource-editor-page">
       {/* Header */}
@@ -173,39 +190,19 @@ export const ResourceEditorPage = () => {
           {/* Meta Row */}
           <div className="editor-meta-row">
             {/* Orb Select */}
-            <div className="form-group">
-              <label htmlFor="orb">Community *</label>
-              <select id="orb" value={orbId} onChange={(e) => setOrbId(e.target.value)} className="form-control">
-                <option value="">Select an Orb...</option>
-                {availableOrbs.map((orb) => (
-                  <option key={orb.id} value={orb.id}>
-                    {orb.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <FilterDropdown label="Community *" value={orbId} options={orbOptions} onChange={(value) => setOrbId(value)} placeholder="Select an Orb..." />
 
             {/* Type Select */}
-            <div className="form-group">
-              <label htmlFor="type">Type *</label>
-              <select id="type" value={type} onChange={(e) => setType(e.target.value as ResourceType)} className="form-control">
-                <option value="Note">📝 Note</option>
-                <option value="Article">📄 Article</option>
-                <option value="Code">💻 Code</option>
-                <option value="Link">🔗 Link</option>
-              </select>
-            </div>
+            <FilterDropdown label="Type *" value={type} options={typeOptions} onChange={(value) => setType(value as ResourceType)} />
 
             {/* Difficulty Select */}
-            <div className="form-group">
-              <label htmlFor="difficulty">Difficulty</label>
-              <select id="difficulty" value={difficulty} onChange={(e) => setDifficulty(e.target.value as Difficulty | "")} className="form-control">
-                <option value="">None</option>
-                <option value="Beginner">🟢 Beginner</option>
-                <option value="Intermediate">🟡 Intermediate</option>
-                <option value="Advanced">🔴 Advanced</option>
-              </select>
-            </div>
+            <FilterDropdown
+              label="Difficulty"
+              value={difficulty}
+              options={difficultyOptions}
+              onChange={(value) => setDifficulty(value as Difficulty | "")}
+              placeholder="None"
+            />
           </div>
 
           {/* Tags */}
@@ -243,6 +240,7 @@ export const ResourceEditorPage = () => {
           </div>
         </div>
       </div>
+
       {/* Loading Overlay */}
       {isLoading && (
         <div className="editor-loading-overlay">

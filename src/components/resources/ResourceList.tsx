@@ -1,4 +1,3 @@
-// src/components/resources/ResourceList.tsx
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { fetchResources, fetchMoreResources, toggleResourceOrb } from "../../store/slices/resourcesSlice";

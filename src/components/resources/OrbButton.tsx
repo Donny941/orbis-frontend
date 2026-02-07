@@ -1,4 +1,3 @@
-// src/components/resources/OrbButton.tsx
 import { useState } from "react";
 
 interface OrbButtonProps {

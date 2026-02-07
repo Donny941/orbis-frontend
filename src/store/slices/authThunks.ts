@@ -35,6 +35,19 @@ export const registerThunk = createAsyncThunk<AuthResponse, RegisterData, { reje
   }
 });
 
+// UPDATE PROFILE
+export const updateProfileThunk = createAsyncThunk<User, { displayName?: string; bio?: string }, { rejectValue: string }>(
+  "auth/updateProfile",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await api.put("/auth/me", data);
+      return response.data.user;
+    } catch (error) {
+      return rejectWithValue(getErrorMessage(error));
+    }
+  },
+);
+
 // FETCH USER
 export const fetchUserThunk = createAsyncThunk<User, void, { rejectValue: string }>("auth/fetchUser", async (_, { rejectWithValue }) => {
   try {

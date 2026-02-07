@@ -1,10 +1,18 @@
-// src/pages/ProfilePage.tsx
-import { useAppSelector } from "../store/hooks";
-import { User, Star, Flame, Trophy, Calendar, FileText, TrendingUp, Award } from "lucide-react";
+import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { updateProfileThunk } from "../store/slices/authThunks";
+import { User, Star, Flame, Trophy, Calendar, FileText, TrendingUp, Award, Pencil, Check, X, Loader2 } from "lucide-react";
 
 export const ProfilePage = () => {
-  const { user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const { user, isUpdating } = useAppSelector((state) => state.auth);
   const { myResources } = useAppSelector((state) => state.resources);
+
+  // Edit states
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [isEditingBio, setIsEditingBio] = useState(false);
+  const [editName, setEditName] = useState("");
+  const [editBio, setEditBio] = useState("");
 
   if (!user) {
     return (
@@ -57,6 +65,41 @@ export const ProfilePage = () => {
     });
   };
 
+  // Edit handlers
+  const handleEditName = () => {
+    setEditName(user.displayName || "");
+    setIsEditingName(true);
+  };
+
+  const handleSaveName = async () => {
+    if (editName.trim() && editName !== user.displayName) {
+      await dispatch(updateProfileThunk({ displayName: editName.trim() }));
+    }
+    setIsEditingName(false);
+  };
+
+  const handleCancelName = () => {
+    setIsEditingName(false);
+    setEditName("");
+  };
+
+  const handleEditBio = () => {
+    setEditBio(user.bio || "");
+    setIsEditingBio(true);
+  };
+
+  const handleSaveBio = async () => {
+    if (editBio !== user.bio) {
+      await dispatch(updateProfileThunk({ bio: editBio }));
+    }
+    setIsEditingBio(false);
+  };
+
+  const handleCancelBio = () => {
+    setIsEditingBio(false);
+    setEditBio("");
+  };
+
   const publishedCount = myResources.filter((r) => r.status === "Published").length;
   const draftCount = myResources.filter((r) => r.status === "Draft").length;
 
@@ -71,9 +114,67 @@ export const ProfilePage = () => {
               {user.profilePicture ? <img src={user.profilePicture} alt={user.displayName} /> : getInitials(user.displayName || user.username)}
             </div>
             <div className="profile-info">
-              <h1 className="profile-name">{user.displayName || user.username}</h1>
+              {/* Editable Name */}
+              {isEditingName ? (
+                <div className="edit-field">
+                  <input
+                    type="text"
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    className="edit-input edit-input-name"
+                    autoFocus
+                    maxLength={100}
+                  />
+                  <div className="edit-actions">
+                    <button className="edit-btn save" onClick={handleSaveName} disabled={isUpdating}>
+                      {isUpdating ? <Loader2 size={16} className="spin" /> : <Check size={16} />}
+                    </button>
+                    <button className="edit-btn cancel" onClick={handleCancelName} disabled={isUpdating}>
+                      <X size={16} />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="editable-row">
+                  <h1 className="profile-name">{user.displayName || user.username}</h1>
+                  <button className="edit-icon-btn" onClick={handleEditName}>
+                    <Pencil size={14} />
+                  </button>
+                </div>
+              )}
+
               <p className="profile-username">@{user.username || user.userName}</p>
-              {user.bio && <p className="profile-bio">{user.bio}</p>}
+
+              {/* Editable Bio */}
+              {isEditingBio ? (
+                <div className="edit-field">
+                  <textarea
+                    value={editBio}
+                    onChange={(e) => setEditBio(e.target.value)}
+                    className="edit-input edit-input-bio"
+                    autoFocus
+                    maxLength={500}
+                    rows={3}
+                    placeholder="Write something about yourself..."
+                  />
+                  <div className="edit-actions">
+                    <button className="edit-btn save" onClick={handleSaveBio} disabled={isUpdating}>
+                      {isUpdating ? <Loader2 size={16} className="spin" /> : <Check size={16} />}
+                    </button>
+                    <button className="edit-btn cancel" onClick={handleCancelBio} disabled={isUpdating}>
+                      <X size={16} />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="editable-row bio-row">
+                  <p className="profile-bio">{user.bio || <span className="placeholder-text">Add a bio...</span>}</p>
+                  <button className="edit-icon-btn" onClick={handleEditBio}>
+                    <Pencil size={14} />
+                  </button>
+                </div>
+              )}
+
               <div className="profile-joined">
                 <Calendar size={14} />
                 Joined {formatDate(user.createdAt)}

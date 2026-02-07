@@ -63,7 +63,7 @@
   font-size: $font-size-xl;
   font-weight: $font-weight-bold;
   color: var(--text-primary);
-  margin: 0 0 $spacing-1;
+  margin: 0;
 }
 
 .profile-username {
@@ -75,7 +75,7 @@
 .profile-bio {
   font-size: $font-size-sm;
   color: var(--text-secondary);
-  margin: 0 0 $spacing-3;
+  margin: 0;
   line-height: $line-height-relaxed;
 }
 
@@ -84,6 +84,13 @@
   gap: $spacing-2;
   font-size: $font-size-xs;
   color: var(--text-muted);
+  margin-top: $spacing-3;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
 
   @include respond-below(sm) {
     justify-content: center;
@@ -107,6 +114,12 @@
   font-size: $font-size-lg;
   font-weight: $font-weight-bold;
   color: $accent-primary;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
 }
 
 .level-name {
@@ -164,6 +177,12 @@
     border-radius: $radius-md;
     @include flex-center;
     flex-shrink: 0;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
 
     &.purple {
       background: rgba($accent-primary, 0.15);
@@ -243,105 +262,15 @@
     font-weight: $font-weight-semibold;
     color: var(--text-primary);
     margin: 0;
-  }
 
-  .achievements-count {
-    font-size: $font-size-sm;
-    color: var(--text-muted);
-    font-weight: $font-weight-medium;
-  }
-}
-
-.achievements-list {
-  max-height: 600px;
-  overflow-y: auto;
-  @include custom-scrollbar;
-}
-
-.achievement-item {
-  display: flex;
-  align-items: center;
-  gap: $spacing-3;
-  padding: $spacing-4 $spacing-5;
-  border-bottom: 1px solid var(--border-secondary);
-  transition: background $transition-fast;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  &:hover {
-    background: var(--bg-hover);
-  }
-
-  &.locked {
-    opacity: 0.6;
-  }
-
-  &.unlocked {
-    .achievement-icon {
-      background: $accent-muted;
-      color: $accent-primary;
+    svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
     }
   }
 }
 
-.achievement-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: $radius-md;
-  @include flex-center;
-  flex-shrink: 0;
-  background: var(--bg-hover);
-  color: var(--text-muted);
-  transition: all $transition-base;
-}
-
-.achievement-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.achievement-name {
-  display: block;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  color: var(--text-primary);
-  margin-bottom: 2px;
-}
-
-.achievement-description {
-  display: block;
-  font-size: $font-size-xs;
-  color: var(--text-muted);
-  margin-bottom: $spacing-2;
-}
-
-.achievement-progress {
-  height: 4px;
-  background: var(--bg-input);
-  border-radius: $radius-full;
-  overflow: hidden;
-
-  .achievement-progress-fill {
-    height: 100%;
-    background: $accent-primary;
-    border-radius: $radius-full;
-    transition: width $transition-slow;
-  }
-}
-
-.achievement-check {
-  width: 24px;
-  height: 24px;
-  border-radius: $radius-full;
-  background: $success;
-  color: white;
-  @include flex-center;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-bold;
-  flex-shrink: 0;
-}
 // === Coming Soon State ===
 .coming-soon-badge {
   background: $warning-muted;
@@ -368,6 +297,12 @@
     @include flex-center;
     margin-bottom: $spacing-4;
     opacity: 0.5;
+
+    svg {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+    }
   }
 
   h3 {
@@ -381,5 +316,134 @@
     font-size: $font-size-sm;
     margin: 0;
     max-width: 250px;
+  }
+}
+
+// === Editable Fields ===
+.editable-row {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+
+  &.bio-row {
+    align-items: flex-start;
+    margin-bottom: $spacing-3;
+  }
+}
+
+.edit-icon-btn {
+  @include flex-center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: $radius-sm;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: all $transition-fast;
+  flex-shrink: 0;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: var(--bg-hover);
+    color: $accent-primary;
+  }
+
+  .editable-row:hover & {
+    opacity: 1;
+  }
+}
+
+.edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+  width: 100%;
+}
+
+.edit-input {
+  @include input-base;
+  font-family: inherit;
+
+  &.edit-input-name {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    padding: $spacing-2 $spacing-3;
+  }
+
+  &.edit-input-bio {
+    font-size: $font-size-sm;
+    resize: vertical;
+    min-height: 80px;
+  }
+}
+
+.edit-actions {
+  display: flex;
+  gap: $spacing-2;
+}
+
+.edit-btn {
+  @include flex-center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  &.save {
+    background: $success;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: darken($success, 10%);
+    }
+  }
+
+  &.cancel {
+    background: var(--bg-hover);
+    color: var(--text-secondary);
+
+    &:hover:not(:disabled) {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.placeholder-text {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+// === Animations ===
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }

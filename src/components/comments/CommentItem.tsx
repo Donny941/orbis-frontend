@@ -1,4 +1,3 @@
-// src/components/comments/CommentItem.tsx
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { deleteComment, toggleCommentOrb } from "../../store/slices/commentSlice";

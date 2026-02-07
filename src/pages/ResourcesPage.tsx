@@ -1,8 +1,8 @@
-// src/pages/ResourcesPage.tsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../store/hooks";
 import { ResourceList } from "../components/resources/ResourceList";
+import { FilterDropdown } from "../components/ui/FilterDropdown";
 import { Plus, Filter, SlidersHorizontal } from "lucide-react";
 
 export const ResourcesPage = () => {
@@ -12,7 +12,7 @@ export const ResourcesPage = () => {
     orbId: "",
     type: "",
     difficulty: "",
-    sort: "recent" as "recent" | "popular" | "views",
+    sort: "recent",
   });
   const [showFilters, setShowFilters] = useState(false);
 
@@ -30,6 +30,30 @@ export const ResourcesPage = () => {
   };
 
   const hasActiveFilters = filters.orbId || filters.type || filters.difficulty;
+
+  // Options
+  const sortOptions = [
+    { value: "recent", label: "Most Recent" },
+    { value: "popular", label: "Most Popular" },
+    { value: "views", label: "Most Viewed" },
+  ];
+
+  const orbOptions = [{ value: "", label: "All Communities" }, ...myOrbs.map((orb) => ({ value: orb.id, label: orb.name }))];
+
+  const typeOptions = [
+    { value: "", label: "All Types" },
+    { value: "Note", label: "📝 Note" },
+    { value: "Article", label: "📄 Article" },
+    { value: "Code", label: "💻 Code" },
+    { value: "Link", label: "🔗 Link" },
+  ];
+
+  const difficultyOptions = [
+    { value: "", label: "All Levels" },
+    { value: "Beginner", label: "🟢 Beginner" },
+    { value: "Intermediate", label: "🟡 Intermediate" },
+    { value: "Advanced", label: "🔴 Advanced" },
+  ];
 
   return (
     <>
@@ -49,11 +73,7 @@ export const ResourcesPage = () => {
       <div className="filters-bar">
         <div className="filters-left">
           {/* Sort */}
-          <select value={filters.sort} onChange={(e) => handleFilterChange("sort", e.target.value)} className="form-control filter-select">
-            <option value="recent">Most Recent</option>
-            <option value="popular">Most Popular</option>
-            <option value="views">Most Viewed</option>
-          </select>
+          <FilterDropdown value={filters.sort} options={sortOptions} onChange={(value) => handleFilterChange("sort", value)} />
 
           {/* Toggle Filters */}
           <button className={`btn btn-ghost filter-toggle ${showFilters ? "active" : ""}`} onClick={() => setShowFilters(!showFilters)}>
@@ -69,40 +89,31 @@ export const ResourcesPage = () => {
         <div className="filters-expanded">
           <div className="filters-grid">
             {/* Orb Filter */}
-            <div className="filter-group">
-              <label>Community</label>
-              <select value={filters.orbId} onChange={(e) => handleFilterChange("orbId", e.target.value)} className="form-control">
-                <option value="">All Communities</option>
-                {myOrbs.map((orb) => (
-                  <option key={orb.id} value={orb.id}>
-                    {orb.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <FilterDropdown
+              label="Community"
+              value={filters.orbId}
+              options={orbOptions}
+              onChange={(value) => handleFilterChange("orbId", value)}
+              placeholder="All Communities"
+            />
 
             {/* Type Filter */}
-            <div className="filter-group">
-              <label>Type</label>
-              <select value={filters.type} onChange={(e) => handleFilterChange("type", e.target.value)} className="form-control">
-                <option value="">All Types</option>
-                <option value="Note">Note</option>
-                <option value="Article">Article</option>
-                <option value="Code">Code</option>
-                <option value="Link">Link</option>
-              </select>
-            </div>
+            <FilterDropdown
+              label="Type"
+              value={filters.type}
+              options={typeOptions}
+              onChange={(value) => handleFilterChange("type", value)}
+              placeholder="All Types"
+            />
 
             {/* Difficulty Filter */}
-            <div className="filter-group">
-              <label>Difficulty</label>
-              <select value={filters.difficulty} onChange={(e) => handleFilterChange("difficulty", e.target.value)} className="form-control">
-                <option value="">All Levels</option>
-                <option value="Beginner">Beginner</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Advanced">Advanced</option>
-              </select>
-            </div>
+            <FilterDropdown
+              label="Difficulty"
+              value={filters.difficulty}
+              options={difficultyOptions}
+              onChange={(value) => handleFilterChange("difficulty", value)}
+              placeholder="All Levels"
+            />
           </div>
 
           {hasActiveFilters && (
@@ -115,7 +126,12 @@ export const ResourcesPage = () => {
       )}
 
       {/* Resource List */}
-      <ResourceList orbId={filters.orbId || undefined} type={filters.type || undefined} difficulty={filters.difficulty || undefined} sort={filters.sort} />
+      <ResourceList
+        orbId={filters.orbId || undefined}
+        type={filters.type || undefined}
+        difficulty={filters.difficulty || undefined}
+        sort={filters.sort as "recent" | "popular" | "views"}
+      />
     </>
   );
 };

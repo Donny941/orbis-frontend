@@ -12,7 +12,7 @@
   }
 
   &.required label::after {
-    content: ' *';
+    content: " *";
     color: $danger;
   }
 }
@@ -55,8 +55,8 @@ textarea.form-control {
   gap: $spacing-2;
   margin-bottom: $spacing-3;
 
-  input[type='checkbox'],
-  input[type='radio'] {
+  input[type="checkbox"],
+  input[type="radio"] {
     width: 18px;
     height: 18px;
     border: 1px solid var(--border-primary);
@@ -75,11 +75,11 @@ textarea.form-control {
     }
   }
 
-  input[type='checkbox'] {
+  input[type="checkbox"] {
     border-radius: $radius-xs;
   }
 
-  input[type='radio'] {
+  input[type="radio"] {
     border-radius: $radius-full;
   }
 
@@ -192,7 +192,7 @@ textarea.form-control {
     background: $accent-muted;
   }
 
-  input[type='file'] {
+  input[type="file"] {
     display: none;
   }
 
@@ -221,7 +221,7 @@ textarea.form-control {
   align-items: center;
   gap: $spacing-3;
 
-  input[type='checkbox'] {
+  input[type="checkbox"] {
     width: 44px;
     height: 24px;
     appearance: none;
@@ -233,7 +233,7 @@ textarea.form-control {
     transition: all $transition-base;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       width: 18px;
       height: 18px;
@@ -338,5 +338,158 @@ textarea.form-control {
     .form-control {
       min-width: 150px;
     }
+  }
+}
+// ==================== CUSTOM DROPDOWN ====================
+
+.filter-dropdown-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.filter-dropdown-label {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.filter-dropdown {
+  position: relative;
+  min-width: 160px;
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.filter-dropdown-trigger {
+  @include input-base;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-2;
+  cursor: pointer;
+  text-align: left;
+
+  .placeholder {
+    color: var(--text-muted);
+  }
+
+  .chevron {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: transform $transition-fast;
+
+    &.rotated {
+      transform: rotate(180deg);
+    }
+  }
+
+  &:hover {
+    border-color: var(--border-primary);
+  }
+
+  .filter-dropdown.open & {
+    border-color: $accent-primary;
+    box-shadow: 0 0 0 3px $accent-muted;
+  }
+}
+
+.filter-dropdown-menu {
+  position: absolute;
+  top: calc(100% + $spacing-2);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: $radius-md;
+  box-shadow: $shadow-lg;
+  overflow: hidden;
+  animation: dropdownFadeIn 0.15s ease;
+
+  max-height: 280px;
+  overflow-y: auto;
+  @include custom-scrollbar;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.filter-dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-2;
+  padding: $spacing-3 $spacing-4;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: $font-size-sm;
+  text-align: left;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  svg {
+    flex-shrink: 0;
+    color: $accent-primary;
+  }
+
+  &:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+
+  &.selected {
+    background: $accent-muted;
+    color: $accent-primary;
+    font-weight: $font-weight-medium;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--border-secondary);
+  }
+}
+
+// === Variant: Compact (for filter bars) ===
+.filter-dropdown.compact {
+  .filter-dropdown-trigger {
+    padding: $spacing-2 $spacing-3;
+    font-size: $font-size-sm;
+  }
+
+  .filter-dropdown-item {
+    padding: $spacing-2 $spacing-3;
+  }
+}
+
+// === Variant: With Icons ===
+.filter-dropdown-item-icon {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: var(--text-muted);
+  }
+
+  .filter-dropdown-item.selected & svg {
+    color: $accent-primary;
   }
 }
