@@ -139,4 +139,11 @@ export const resourceService = {
     const response = await api.get(`/resources/${id}/orbs`);
     return response.data;
   },
+  // Get user's favourite resources (resources they've orbed)
+  getFavourites: async (page = 1, size = 20): Promise<PaginatedResponse<Resource>> => {
+    const response = await api.get<PaginatedResponse<Resource>>("/resources/favourites", {
+      params: { page, size },
+    });
+    return response.data;
+  },
 };

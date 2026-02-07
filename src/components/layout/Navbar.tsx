@@ -188,7 +188,7 @@ export const Navbar = ({ variant = "app" }: NavbarProps) => {
 
               {/* Menu Items */}
               <div className="menu-group">
-                <Link to="/profile" className="menu-item" onClick={() => setShowProfileMenu(false)}>
+                <Link to="/dashboard/profile" className="menu-item" onClick={() => setShowProfileMenu(false)}>
                   <User size={16} />
                   My Profile
                 </Link>

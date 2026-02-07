@@ -82,11 +82,11 @@ export const UserStatsCard = () => {
           <div className="user-stat-label">LEVEL</div>
         </div>
 
-        <div className="user-stat">
+        <div className="user-stat coming-soon">
           <div className="user-stat-icon green">
             <Award size={18} />
           </div>
-          <div className="user-stat-value">0</div>
+          <div className="user-stat-value">COMING SOON</div>
           <div className="user-stat-label">ACHIEVEMENTS</div>
         </div>
       </div>

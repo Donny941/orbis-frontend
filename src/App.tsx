@@ -15,6 +15,8 @@ import { ResourcesPage } from "./pages/ResourcesPage";
 import { ResourceEditorPage } from "./pages/ResourceEditorPage";
 import { ResourceDetailPage } from "./pages/ResourceDetailPage";
 import { MyResourcesPage } from "./pages/MyResourcesPage";
+import { FavouritesPage } from "./pages/FavouritesPage";
+import { ProfilePage } from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -41,7 +43,9 @@ function App() {
                 <Route path="resources/:id" element={<ResourceDetailPage />} />
                 <Route path="resources/:id/edit" element={<ResourceEditorPage />} />
 
-                {/* <Route path="profile" element={<ProfilePage />} /> */}
+                <Route path="favourites" element={<FavouritesPage />} />
+
+                <Route path="profile" element={<ProfilePage />} />
               </Route>
             </Route>
 

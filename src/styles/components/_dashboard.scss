@@ -492,3 +492,10 @@
     transform: rotate(360deg);
   }
 }
+.user-stat.coming-soon {
+  opacity: 0.5;
+
+  .user-stat-value {
+    font-size: $font-size-xl;
+  }
+}

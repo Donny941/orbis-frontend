@@ -157,6 +157,11 @@
   cursor: pointer;
   transition: all $transition-fast;
 
+  svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
   &:hover {
     background: var(--bg-hover);
     border-color: $accent-primary;

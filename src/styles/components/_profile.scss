@@ -1,27 +1,385 @@
 // ==================== PROFILE ====================
 
+.profile-page {
+  width: 100%;
+}
+
+// === Two Column Layout ===
+.profile-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-6;
+  align-items: start;
+
+  @include respond-below(lg) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-main {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-6;
+}
+
+// === Profile Header ===
 .profile-header {
   @include card-base;
-  padding: $spacing-8;
-  margin-bottom: $spacing-6;
-  text-align: center;
+  padding: $spacing-6;
+  display: flex;
+  align-items: center;
+  gap: $spacing-5;
+
+  @include respond-below(sm) {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 .profile-avatar {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: $radius-full;
   @include gradient-bg;
   @include flex-center;
-  font-size: $font-size-4xl;
+  font-size: $font-size-3xl;
   font-weight: $font-weight-bold;
   color: white;
-  margin: 0 auto $spacing-4;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: $radius-full;
+    object-fit: cover;
+  }
 }
 
-.profile-stats {
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: var(--text-primary);
+  margin: 0 0 $spacing-1;
+}
+
+.profile-username {
+  font-size: $font-size-sm;
+  color: var(--text-muted);
+  margin: 0 0 $spacing-2;
+}
+
+.profile-bio {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  margin: 0 0 $spacing-3;
+  line-height: $line-height-relaxed;
+}
+
+.profile-joined {
+  @include flex-start;
+  gap: $spacing-2;
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+
+  @include respond-below(sm) {
+    justify-content: center;
+  }
+}
+
+// === Level Card ===
+.level-card {
+  @include card-base;
+  padding: $spacing-5;
+}
+
+.level-header {
+  @include flex-between;
+  margin-bottom: $spacing-4;
+}
+
+.level-badge {
+  @include flex-start;
+  gap: $spacing-2;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $accent-primary;
+}
+
+.level-name {
+  @include badge-base;
+  background: $accent-muted;
+  color: $accent-primary;
+  font-size: $font-size-xs;
+  padding: $spacing-1 $spacing-3;
+}
+
+.level-progress-container {
+  .level-progress-bar {
+    height: 8px;
+    background: var(--bg-input);
+    border-radius: $radius-full;
+    overflow: hidden;
+    margin-bottom: $spacing-2;
+  }
+
+  .level-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, $accent-primary 0%, $accent-hover 100%);
+    border-radius: $radius-full;
+    transition: width $transition-slow;
+  }
+
+  .level-progress-info {
+    @include flex-between;
+    font-size: $font-size-xs;
+    color: var(--text-muted);
+  }
+}
+
+// === Stats Grid ===
+.profile-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: $spacing-4;
-  margin-top: $spacing-6;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-3;
+
+  @include respond-below(sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-stat-card {
+  @include card-base;
+  padding: $spacing-4;
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: $radius-md;
+    @include flex-center;
+    flex-shrink: 0;
+
+    &.purple {
+      background: rgba($accent-primary, 0.15);
+      color: $accent-primary;
+    }
+
+    &.orange {
+      background: rgba($warning, 0.15);
+      color: $warning;
+    }
+
+    &.green {
+      background: rgba($success, 0.15);
+      color: $success;
+    }
+
+    &.blue {
+      background: rgba($info, 0.15);
+      color: $info;
+    }
+
+    &.yellow {
+      background: rgba(#eab308, 0.15);
+      color: #eab308;
+    }
+
+    &.teal {
+      background: rgba(#14b8a6, 0.15);
+      color: #14b8a6;
+    }
+  }
+
+  .stat-content {
+    @include flex-column;
+  }
+
+  .stat-value {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: $spacing-1;
+  }
+
+  .stat-label {
+    font-size: $font-size-xs;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+// === Achievements Sidebar ===
+.profile-sidebar {
+  position: sticky;
+  top: $spacing-4;
+
+  @include respond-below(lg) {
+    position: static;
+  }
+}
+
+.achievements-card {
+  @include card-base;
+  overflow: hidden;
+}
+
+.achievements-header {
+  @include flex-between;
+  padding: $spacing-4 $spacing-5;
+  border-bottom: 1px solid var(--border-secondary);
+
+  h2 {
+    @include flex-start;
+    gap: $spacing-2;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .achievements-count {
+    font-size: $font-size-sm;
+    color: var(--text-muted);
+    font-weight: $font-weight-medium;
+  }
+}
+
+.achievements-list {
+  max-height: 600px;
+  overflow-y: auto;
+  @include custom-scrollbar;
+}
+
+.achievement-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-4 $spacing-5;
+  border-bottom: 1px solid var(--border-secondary);
+  transition: background $transition-fast;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: var(--bg-hover);
+  }
+
+  &.locked {
+    opacity: 0.6;
+  }
+
+  &.unlocked {
+    .achievement-icon {
+      background: $accent-muted;
+      color: $accent-primary;
+    }
+  }
+}
+
+.achievement-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-md;
+  @include flex-center;
+  flex-shrink: 0;
+  background: var(--bg-hover);
+  color: var(--text-muted);
+  transition: all $transition-base;
+}
+
+.achievement-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.achievement-name {
+  display: block;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.achievement-description {
+  display: block;
+  font-size: $font-size-xs;
+  color: var(--text-muted);
+  margin-bottom: $spacing-2;
+}
+
+.achievement-progress {
+  height: 4px;
+  background: var(--bg-input);
+  border-radius: $radius-full;
+  overflow: hidden;
+
+  .achievement-progress-fill {
+    height: 100%;
+    background: $accent-primary;
+    border-radius: $radius-full;
+    transition: width $transition-slow;
+  }
+}
+
+.achievement-check {
+  width: 24px;
+  height: 24px;
+  border-radius: $radius-full;
+  background: $success;
+  color: white;
+  @include flex-center;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  flex-shrink: 0;
+}
+// === Coming Soon State ===
+.coming-soon-badge {
+  background: $warning-muted;
+  color: $warning;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+}
+
+.achievements-coming-soon {
+  @include flex-column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-10 $spacing-6;
+  text-align: center;
+  color: var(--text-muted);
+
+  .coming-soon-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: $radius-full;
+    background: var(--bg-hover);
+    @include flex-center;
+    margin-bottom: $spacing-4;
+    opacity: 0.5;
+  }
+
+  h3 {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: var(--text-primary);
+    margin: 0 0 $spacing-2;
+  }
+
+  p {
+    font-size: $font-size-sm;
+    margin: 0;
+    max-width: 250px;
+  }
 }

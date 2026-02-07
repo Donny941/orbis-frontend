@@ -6,6 +6,8 @@ import type { Resource } from "../../../types";
 interface ResourcesState {
   resources: Resource[];
   myResources: Resource[];
+  favourites: Resource[];
+  isLoadingFavourites: boolean;
   currentResource: Resource | null;
   isLoading: boolean;
   isLoadingMore: boolean; // Necessario per ResourceList.tsx
@@ -28,6 +30,8 @@ interface ResourcesState {
 const initialState: ResourcesState = {
   resources: [],
   myResources: [],
+  favourites: [],
+  isLoadingFavourites: false,
   currentResource: null,
   isLoading: false,
   isLoadingMore: false,
@@ -205,6 +209,15 @@ export const toggleResourceOrb = createAsyncThunk(
   },
 );
 
+export const fetchFavourites = createAsyncThunk("resources/fetchFavourites", async (params: { page?: number; size?: number } = {}, { rejectWithValue }) => {
+  try {
+    return await resourceService.getFavourites(params.page, params.size);
+  } catch (error: unknown) {
+    const err = error as { response?: { data?: { message?: string } } };
+    return rejectWithValue(err.response?.data?.message || "Failed to fetch favourites");
+  }
+});
+
 // --- Slice ---
 
 const resourcesSlice = createSlice({
@@ -244,6 +257,19 @@ const resourcesSlice = createSlice({
       })
       .addCase(fetchResources.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      // Fetch Favourites
+      .addCase(fetchFavourites.pending, (state) => {
+        state.isLoadingFavourites = true;
+        state.error = null;
+      })
+      .addCase(fetchFavourites.fulfilled, (state, action) => {
+        state.isLoadingFavourites = false;
+        state.favourites = action.payload.data;
+      })
+      .addCase(fetchFavourites.rejected, (state, action) => {
+        state.isLoadingFavourites = false;
         state.error = action.payload as string;
       })
 

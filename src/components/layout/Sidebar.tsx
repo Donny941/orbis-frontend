@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Compass, BookOpen, TrendingUp, Calendar, Settings, PlusCircle } from "lucide-react";
+import { Home, Compass, BookOpen, Settings, PlusCircle, Heart } from "lucide-react";
 import logoImg from "../../assets/logo.png";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { fetchMyOrbs } from "../../store/slices/orbsSlice";
@@ -49,13 +49,9 @@ export const Sidebar = () => {
             <BookOpen size={18} />
             <span>My Resources</span>
           </Link>
-          <Link to="/dashboard/progress" className={`nav-item ${isActive("/dashboard/progress") ? "active" : ""}`}>
-            <TrendingUp size={18} />
-            <span>Progress</span>
-          </Link>
-          <Link to="/dashboard/calendar" className={`nav-item ${isActive("/dashboard/calendar") ? "active" : ""}`}>
-            <Calendar size={18} />
-            <span>Calendar</span>
+          <Link to="/dashboard/favourites" className={`nav-item ${isActive("/dashboard/favourites") ? "active" : ""}`}>
+            <Heart size={18} />
+            <span>Favourite Orbs</span>
           </Link>
         </div>
       </nav>
