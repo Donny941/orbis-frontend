@@ -9,9 +9,10 @@ interface TipTapEditorProps {
   onChange: (content: string) => void;
   placeholder?: string;
   editable?: boolean;
+  editorRef?: React.MutableRefObject<{ appendText: (text: string) => void } | null>;
 }
 
-export const TipTapEditor = ({ content, onChange, placeholder = "Start writing your resource...", editable = true }: TipTapEditorProps) => {
+export const TipTapEditor = ({ content, onChange, placeholder = "Start writing your resource...", editable = true, editorRef }: TipTapEditorProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -34,6 +35,23 @@ export const TipTapEditor = ({ content, onChange, placeholder = "Start writing y
       }
     }
   }, [content, editor]);
+
+  // Esponi appendText tramite editorRef per la dettatura vocale
+  useEffect(() => {
+    if (editor && editorRef) {
+      editorRef.current = {
+        appendText: (text: string) => {
+          editor.chain().focus("end").insertContent(text).run();
+        },
+      };
+    }
+
+    return () => {
+      if (editorRef) {
+        editorRef.current = null;
+      }
+    };
+  }, [editor, editorRef]);
 
   // useEditorState per rendere la toolbar reattiva
   const editorState = useEditorState({

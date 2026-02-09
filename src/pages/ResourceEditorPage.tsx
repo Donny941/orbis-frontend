@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { createResource, updateResource, fetchResource, clearCurrentResource } from "../store/slices/resourcesSlice";
@@ -6,6 +6,7 @@ import { fetchAllOrbs } from "../store/slices/orbsSlice";
 import { TipTapEditor } from "../components/resources/TipTapEditor";
 import { FilterDropdown } from "../components/ui/FilterDropdown";
 import { ArrowLeft, Save, Send, Loader2, X } from "lucide-react";
+import { VoiceDictation } from "../components/resources/VoiceDictation";
 
 type ResourceType = "Note" | "Article" | "Code" | "Link";
 type Difficulty = "Beginner" | "Intermediate" | "Advanced";
@@ -28,6 +29,9 @@ export const ResourceEditorPage = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+
+  // Ref per accedere all'editor TipTap e inserire testo senza resettare il cursore
+  const editorRef = useRef<{ appendText: (text: string) => void } | null>(null);
 
   // Fetch orbs on mount
   useEffect(() => {
@@ -146,6 +150,25 @@ export const ResourceEditorPage = () => {
     { value: "Advanced", label: "🔴 Advanced" },
   ];
 
+  // Dettatura vocale: inserisce il testo finale nell'editor
+  const handleContentDictation = useCallback((text: string) => {
+    if (editorRef.current) {
+      // Se abbiamo accesso diretto all'editor, usiamo appendText
+      editorRef.current.appendText(text);
+    } else {
+      // Fallback: aggiorna lo state content (funziona se TipTap sincronizza dall'esterno)
+      setContent((prev) => {
+        if (!prev || prev === "<p></p>") return `<p>${text}</p>`;
+        // Inserisci il testo prima del tag di chiusura dell'ultimo paragrafo
+        const lastPClose = prev.lastIndexOf("</p>");
+        if (lastPClose !== -1) {
+          return prev.slice(0, lastPClose) + text + prev.slice(lastPClose);
+        }
+        return prev + `<p>${text}</p>`;
+      });
+    }
+  }, []);
+
   return (
     <div className="resource-editor-page">
       {/* Header */}
@@ -235,8 +258,16 @@ export const ResourceEditorPage = () => {
 
           {/* Content Editor */}
           <div className="form-group form-group-editor">
-            <label>Content *</label>
-            <TipTapEditor content={content} onChange={setContent} placeholder="Share your knowledge... You can use markdown formatting." />
+            <div className="editor-label-row">
+              <label>Content *</label>
+              <VoiceDictation onTranscript={handleContentDictation} />
+            </div>
+            <TipTapEditor
+              content={content}
+              onChange={setContent}
+              placeholder="Share your knowledge... You can use markdown formatting."
+              editorRef={editorRef}
+            />
           </div>
         </div>
       </div>
