@@ -103,7 +103,17 @@
     > * + * {
       margin-top: 0.75em;
     }
+    // Emoji support
+    img.emoji {
+      display: inline;
+      height: 1.2em;
+      width: 1.2em;
+      margin: 0 0.05em 0 0.1em;
+      vertical-align: -0.1em;
+    }
 
+    // Unicode emoji rendering
+    font-family: "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", var(--text-font, system-ui), sans-serif;
     // Placeholder
     p.is-editor-empty:first-child::before {
       content: attr(data-placeholder);
