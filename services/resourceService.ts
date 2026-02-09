@@ -8,6 +8,7 @@ export const resourceService = {
     type?: string;
     difficulty?: string;
     sort?: "recent" | "popular" | "views";
+    search?: string;
     page?: number;
     size?: number;
   }): Promise<PaginatedResponse<Resource>> => {

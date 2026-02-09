@@ -2,8 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Search, Bell, LogOut, User, Settings, FileText, Award, HelpCircle, ChevronDown, Menu, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { logout } from "../../store/slices/authSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logoImg from "../../assets/logo.png";
+import { SearchOverlay } from "../layout/SearchOverlay";
 
 interface NavbarProps {
   variant?: "landing" | "app";
@@ -15,6 +16,7 @@ export const Navbar = ({ variant = "app" }: NavbarProps) => {
   const navigate = useNavigate();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -35,6 +37,17 @@ export const Navbar = ({ variant = "app" }: NavbarProps) => {
     const levels = ["Novice", "Student", "Scholar", "Expert", "Master"];
     return levels[level - 1] || "Novice";
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setShowSearch(true);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Landing Navbar
   if (variant === "landing") {
@@ -125,9 +138,11 @@ export const Navbar = ({ variant = "app" }: NavbarProps) => {
     <nav className="top-navbar">
       {/* Search - Hide on mobile */}
       <div className="navbar-left desktop-only">
-        <div className="search-wrapper">
+        <div className="search-wrapper" onClick={() => setShowSearch(true)}>
           <Search size={16} className="search-icon" />
-          <input type="text" className="search-input" placeholder="Search..." />
+          <div className="search-input search-trigger" role="button" tabIndex={0}>
+            Search...
+          </div>
           <div className="search-kbd">⌘K</div>
         </div>
       </div>
@@ -135,10 +150,9 @@ export const Navbar = ({ variant = "app" }: NavbarProps) => {
       {/* Right Side */}
       <div className="navbar-right">
         {/* Search icon for mobile */}
-        <button className="icon-btn mobile-only">
+        <button className="icon-btn mobile-only" onClick={() => setShowSearch(true)}>
           <Search size={18} />
         </button>
-
         {/* Notifications */}
         <button className="icon-btn">
           <Bell size={18} />
@@ -227,6 +241,7 @@ export const Navbar = ({ variant = "app" }: NavbarProps) => {
           )}
         </div>
       </div>
+      <SearchOverlay isOpen={showSearch} onClose={() => setShowSearch(false)} />
     </nav>
   );
 };

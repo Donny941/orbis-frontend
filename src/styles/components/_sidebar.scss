@@ -175,14 +175,90 @@
 
 // ==================== MOBILE ====================
 
+// ==================== MOBILE BOTTOM BAR ====================
+
 @media (max-width: 768px) {
   .sidebar {
-    transform: translateX(-100%);
-    transition: transform $transition-base;
+    // Reset desktop styles
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    transform: none;
+    flex-direction: row;
+    padding: 0;
+    border-right: none;
+    border-top: 1px solid var(--border-secondary);
+    background: var(--bg-surface);
     z-index: 1000;
+    overflow: visible;
+  }
 
-    &.sidebar-open {
-      transform: translateX(0);
+  // Hide everything except main nav
+  .logo,
+  .nav-label,
+  .nav-badge,
+  .orb-indicator,
+  .nav-section:not(:first-of-type) {
+    display: none;
+  }
+
+  .nav-section:first-of-type {
+    width: 100%;
+    margin: 0;
+  }
+
+  .nav-list {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 0;
+    padding: $spacing-2 0;
+    padding-bottom: env(safe-area-inset-bottom, $spacing-2);
+  }
+
+  .nav-item {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: $spacing-2 $spacing-3;
+    border-radius: $radius-md;
+    font-size: 10px;
+    min-width: 0;
+    flex: 1;
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    // Show label text
+    span:not(.nav-badge):not(.orb-indicator) {
+      font-size: 10px;
+      font-weight: $font-weight-medium;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 72px;
+      text-align: center;
+    }
+
+    &.active {
+      background: var(--accent-muted);
+      color: var(--accent);
+
+      // Remove left bar indicator
+      &::before {
+        display: none;
+      }
+    }
+
+    &:hover {
+      background: transparent;
     }
   }
 }
