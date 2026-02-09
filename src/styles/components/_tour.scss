@@ -1,0 +1,98 @@
+// ==================== SHEPHERD TOUR ====================
+
+.shepherd-modal-overlay-container {
+  z-index: 9998;
+}
+
+.shepherd-element {
+  z-index: 9999;
+}
+
+// Override shepherd default styles
+.orbis-tour.shepherd-element {
+  max-width: 380px;
+  border-radius: $radius-lg;
+  border: 1px solid var(--border-primary);
+  background: var(--bg-card);
+  box-shadow:
+    $shadow-lg,
+    0 0 40px rgba($accent-primary, 0.15);
+  overflow: hidden;
+
+  .shepherd-arrow::before {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+  }
+
+  .shepherd-header {
+    background: transparent;
+    padding: $spacing-5 $spacing-5 0;
+
+    .shepherd-title {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+      color: var(--text-primary);
+      font-family: $font-sans;
+    }
+
+    .shepherd-cancel-icon {
+      color: var(--text-muted);
+      font-size: $font-size-xl;
+      transition: color $transition-fast;
+
+      &:hover {
+        color: var(--text-primary);
+      }
+    }
+  }
+
+  .shepherd-text {
+    padding: $spacing-3 $spacing-5;
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    line-height: $line-height-relaxed;
+    font-family: $font-sans;
+  }
+
+  .shepherd-footer {
+    padding: 0 $spacing-5 $spacing-5;
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-2;
+  }
+
+  .shepherd-button-primary {
+    @include button-base;
+    @include button-primary;
+    font-size: $font-size-sm;
+    padding: $spacing-2 $spacing-4;
+  }
+
+  .shepherd-button-secondary {
+    @include button-base;
+    @include button-ghost;
+    font-size: $font-size-sm;
+    padding: $spacing-2 $spacing-4;
+  }
+}
+
+// Progress dots (opzionale)
+.shepherd-progress {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-2;
+  padding: 0 $spacing-5 $spacing-4;
+
+  .shepherd-progress-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: $radius-full;
+    background: var(--bg-hover);
+    transition: all $transition-fast;
+
+    &.active {
+      background: $accent-primary;
+      transform: scale(1.2);
+    }
+  }
+}

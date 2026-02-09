@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { commentService } from "../../../services/commentService";
-import type { Comment } from "../../../types";
+import type { Comment, User } from "../../../types";
 
 interface CommentsState {
   comments: Comment[];
@@ -29,9 +29,17 @@ export const fetchComments = createAsyncThunk("comments/fetchComments", async (r
 
 export const createComment = createAsyncThunk(
   "comments/createComment",
-  async ({ resourceId, content }: { resourceId: string; content: string }, { rejectWithValue }) => {
+  async ({ resourceId, content }: { resourceId: string; content: string }, { rejectWithValue, getState }) => {
     try {
-      return await commentService.createComment(resourceId, content);
+      const state = getState() as { auth: { user: User | null } };
+      const currentUser = state.auth.user;
+      const comment = await commentService.createComment(resourceId, content);
+
+      if (currentUser && (!comment.author || !comment.author.displayName)) {
+        comment.author = { ...currentUser };
+      }
+
+      return comment;
     } catch (error: unknown) {
       const err = error as { response?: { data?: { message?: string } } };
       return rejectWithValue(err.response?.data?.message || "Failed to create comment");

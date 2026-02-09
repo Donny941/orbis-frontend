@@ -1,0 +1,129 @@
+import { useEffect, useRef, useCallback } from "react";
+import { useLocation } from "react-router-dom";
+import Shepherd from "shepherd.js";
+import type { Tour } from "shepherd.js";
+import "shepherd.js/dist/css/shepherd.css";
+
+const TOUR_COMPLETED_KEY = "orbis_tour_completed";
+
+export const useOnboardingTour = () => {
+  const location = useLocation();
+  const tourRef = useRef<Tour | null>(null);
+
+  const completeTour = useCallback((tour: Tour) => {
+    localStorage.setItem(TOUR_COMPLETED_KEY, "true");
+    tour.complete();
+  }, []);
+
+  const restartTour = useCallback(() => {
+    localStorage.removeItem(TOUR_COMPLETED_KEY);
+    window.location.reload();
+  }, []);
+
+  useEffect(() => {
+    if (location.pathname !== "/dashboard") return;
+    if (localStorage.getItem(TOUR_COMPLETED_KEY)) return;
+
+    const timeout = setTimeout(() => {
+      const tour = new Shepherd.Tour({
+        useModalOverlay: true,
+        defaultStepOptions: {
+          classes: "orbis-tour",
+          scrollTo: { behavior: "smooth", block: "center" },
+          cancelIcon: { enabled: true },
+          modalOverlayOpeningPadding: 8,
+          modalOverlayOpeningRadius: 12,
+        },
+      });
+
+      tourRef.current = tour;
+
+      tour.addStep({
+        id: "welcome",
+        title: "Welcome to Orbis!",
+        text: "Let's take a quick tour to help you get started on your learning journey.",
+        buttons: [
+          { text: "Skip Tour", action: () => completeTour(tour), classes: "shepherd-button-secondary" },
+          { text: "Let's Go →", action: tour.next, classes: "shepherd-button-primary" },
+        ],
+      });
+
+      tour.addStep({
+        id: "sidebar",
+        title: "Navigation",
+        text: "Use the sidebar to navigate between your Dashboard, Orbs, Resources, and Favourites.",
+        attachTo: { element: ".sidebar", on: "right" },
+        buttons: [
+          { text: "← Back", action: tour.back, classes: "shepherd-button-secondary" },
+          { text: "Next →", action: tour.next, classes: "shepherd-button-primary" },
+        ],
+      });
+
+      tour.addStep({
+        id: "explore-orbs",
+        title: "Explore Orbs",
+        text: "Orbs are themed learning communities. Join orbs that match your interests to see their resources in your feed.",
+        attachTo: { element: 'a[href="/dashboard/orbs"]', on: "right" },
+        buttons: [
+          { text: "← Back", action: tour.back, classes: "shepherd-button-secondary" },
+          { text: "Next →", action: tour.next, classes: "shepherd-button-primary" },
+        ],
+      });
+
+      tour.addStep({
+        id: "user-stats",
+        title: "Your Progress",
+        text: "Track your Orb Points, level, and streak here. Every action earns points — post resources, give orbs, keep your streak alive!",
+        attachTo: { element: ".user-stats-card", on: "left" },
+        buttons: [
+          { text: "← Back", action: tour.back, classes: "shepherd-button-secondary" },
+          { text: "Next →", action: tour.next, classes: "shepherd-button-primary" },
+        ],
+      });
+
+      tour.addStep({
+        id: "search",
+        title: "Search Resources",
+        text: "Use the search bar or press ⌘K to quickly find resources across all communities.",
+        attachTo: { element: ".search-wrapper", on: "bottom" },
+        buttons: [
+          { text: "← Back", action: tour.back, classes: "shepherd-button-secondary" },
+          { text: "Next →", action: tour.next, classes: "shepherd-button-primary" },
+        ],
+      });
+
+      tour.addStep({
+        id: "create-resource",
+        title: "Share Knowledge",
+        text: "Click here to create your first resource — notes, articles, code snippets, or links. Share what you know!",
+        attachTo: { element: 'a[href="/dashboard/resources/new"]', on: "bottom" },
+        buttons: [
+          { text: "← Back", action: tour.back, classes: "shepherd-button-secondary" },
+          { text: "Next →", action: tour.next, classes: "shepherd-button-primary" },
+        ],
+      });
+
+      tour.addStep({
+        id: "profile",
+        title: "Your Profile",
+        text: "View your stats, edit your bio, and track your progress. Level up from Novice to Master!",
+        attachTo: { element: ".profile-trigger", on: "bottom" },
+        buttons: [
+          { text: "← Back", action: tour.back, classes: "shepherd-button-secondary" },
+          { text: "Start Exploring!", action: () => completeTour(tour), classes: "shepherd-button-primary" },
+        ],
+      });
+
+      tour.start();
+    }, 800);
+
+    return () => {
+      clearTimeout(timeout);
+      if (tourRef.current) {
+        tourRef.current.cancel();
+      }
+    };
+  }, [location.pathname, completeTour]);
+
+  return { restartTour };
+};

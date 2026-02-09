@@ -7,7 +7,6 @@ import { RecentResourcesCard } from "../components/dashboard/RecentResourcesCard
 export const DashboardHome = () => {
   return (
     <>
-      {/* Page Header */}
       <div className="page-header">
         <div>
           <h1 className="page-title">Dashboard</h1>
@@ -19,7 +18,6 @@ export const DashboardHome = () => {
         </Link>
       </div>
 
-      {/* Dashboard Grid */}
       <div className="dashboard-grid">
         <div className="dashboard-main">
           <RecentResourcesCard />

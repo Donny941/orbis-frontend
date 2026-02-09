@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Bell, LogOut, User, Settings, FileText, Award, HelpCircle, ChevronDown, Menu, X } from "lucide-react";
+import { Search, Bell, LogOut, User, Settings, HelpCircle, ChevronDown, Menu, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { logout } from "../../store/slices/authSlice";
 import { useEffect, useState } from "react";
@@ -8,9 +8,10 @@ import { SearchOverlay } from "../layout/SearchOverlay";
 
 interface NavbarProps {
   variant?: "landing" | "app";
+  onTourStart?: () => void;
 }
 
-export const Navbar = ({ variant = "app" }: NavbarProps) => {
+export const Navbar = ({ variant = "app", onTourStart }: NavbarProps) => {
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -153,6 +154,14 @@ export const Navbar = ({ variant = "app" }: NavbarProps) => {
         <button className="icon-btn mobile-only" onClick={() => setShowSearch(true)}>
           <Search size={18} />
         </button>
+
+        {/* Tour Help */}
+        {onTourStart && (
+          <button className="icon-btn" onClick={onTourStart} title="Take a tour">
+            <HelpCircle size={18} />
+          </button>
+        )}
+
         {/* Notifications */}
         <button className="icon-btn">
           <Bell size={18} />
@@ -213,17 +222,6 @@ export const Navbar = ({ variant = "app" }: NavbarProps) => {
               </div>
 
               <div className="menu-divider" />
-
-              <div className="menu-group">
-                <Link to="/my-resources" className="menu-item" onClick={() => setShowProfileMenu(false)}>
-                  <FileText size={16} />
-                  My Resources
-                </Link>
-                <Link to="/achievements" className="menu-item" onClick={() => setShowProfileMenu(false)}>
-                  <Award size={16} />
-                  Achievements
-                </Link>
-              </div>
 
               <div className="menu-divider" />
 
