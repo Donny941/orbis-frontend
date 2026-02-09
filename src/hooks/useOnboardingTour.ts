@@ -1,43 +1,22 @@
 import { useEffect, useRef, useCallback } from "react";
 import { useLocation } from "react-router-dom";
+import { useAppSelector } from "../store/hooks";
 import Shepherd from "shepherd.js";
 import type { Tour } from "shepherd.js";
 import "shepherd.js/dist/css/shepherd.css";
 
-const TOUR_COMPLETED_KEY = "orbis_tour_completed";
-
 export const useOnboardingTour = () => {
   const location = useLocation();
   const tourRef = useRef<Tour | null>(null);
+  const hasStarted = useRef(false);
+  const { user } = useAppSelector((state) => state.auth);
 
   const completeTour = useCallback((tour: Tour) => {
-    localStorage.setItem(TOUR_COMPLETED_KEY, "true");
     tour.complete();
   }, []);
 
-  const restartTour = useCallback(() => {
-    localStorage.removeItem(TOUR_COMPLETED_KEY);
-    window.location.reload();
-  }, []);
-
-  useEffect(() => {
-    if (location.pathname !== "/dashboard") return;
-    if (localStorage.getItem(TOUR_COMPLETED_KEY)) return;
-
-    const timeout = setTimeout(() => {
-      const tour = new Shepherd.Tour({
-        useModalOverlay: true,
-        defaultStepOptions: {
-          classes: "orbis-tour",
-          scrollTo: { behavior: "smooth", block: "center" },
-          cancelIcon: { enabled: true },
-          modalOverlayOpeningPadding: 8,
-          modalOverlayOpeningRadius: 12,
-        },
-      });
-
-      tourRef.current = tour;
-
+  const addSteps = useCallback(
+    (tour: Tour) => {
       tour.addStep({
         id: "welcome",
         title: "Welcome to Orbis!",
@@ -113,9 +92,44 @@ export const useOnboardingTour = () => {
           { text: "Start Exploring!", action: () => completeTour(tour), classes: "shepherd-button-primary" },
         ],
       });
+    },
+    [completeTour],
+  );
 
+  // Auto-start solo al primo login (lastLoginAt è null)
+  useEffect(() => {
+    console.log("Tour debug:", {
+      pathname: location.pathname,
+      user: !!user,
+      lastLoginAt: user?.lastLoginAt,
+      hasStarted: hasStarted.current,
+    });
+
+    if (location.pathname !== "/dashboard") return;
+    if (!user) return;
+    if (user.lastLoginAt) return;
+    if (hasStarted.current) return;
+
+    const timeout = setTimeout(() => {
+      if (!document.querySelector(".sidebar")) return;
+
+      hasStarted.current = true;
+
+      const tour = new Shepherd.Tour({
+        useModalOverlay: true,
+        defaultStepOptions: {
+          classes: "orbis-tour",
+          scrollTo: { behavior: "smooth", block: "center" },
+          cancelIcon: { enabled: true },
+          modalOverlayOpeningPadding: 8,
+          modalOverlayOpeningRadius: 12,
+        },
+      });
+
+      tourRef.current = tour;
+      addSteps(tour);
       tour.start();
-    }, 800);
+    }, 1200);
 
     return () => {
       clearTimeout(timeout);
@@ -123,7 +137,34 @@ export const useOnboardingTour = () => {
         tourRef.current.cancel();
       }
     };
-  }, [location.pathname, completeTour]);
+  }, [location.pathname, user, addSteps]);
+
+  // Restart manuale (dal bottone ? nella navbar)
+  const restartTour = useCallback(() => {
+    if (tourRef.current) {
+      tourRef.current.cancel();
+    }
+    hasStarted.current = false;
+
+    setTimeout(() => {
+      if (!document.querySelector(".sidebar")) return;
+
+      const tour = new Shepherd.Tour({
+        useModalOverlay: true,
+        defaultStepOptions: {
+          classes: "orbis-tour",
+          scrollTo: { behavior: "smooth", block: "center" },
+          cancelIcon: { enabled: true },
+          modalOverlayOpeningPadding: 8,
+          modalOverlayOpeningRadius: 12,
+        },
+      });
+
+      tourRef.current = tour;
+      addSteps(tour);
+      tour.start();
+    }, 300);
+  }, [addSteps]);
 
   return { restartTour };
 };
