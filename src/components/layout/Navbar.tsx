@@ -215,7 +215,7 @@ export const Navbar = ({ variant = "app", onTourStart }: NavbarProps) => {
                   <User size={16} />
                   My Profile
                 </Link>
-                <Link to="/settings" className="menu-item" onClick={() => setShowProfileMenu(false)}>
+                <Link to="dashboard/settings" className="menu-item" onClick={() => setShowProfileMenu(false)}>
                   <Settings size={16} />
                   Settings
                 </Link>
@@ -226,7 +226,7 @@ export const Navbar = ({ variant = "app", onTourStart }: NavbarProps) => {
               <div className="menu-divider" />
 
               <div className="menu-group">
-                <Link to="/help" className="menu-item" onClick={() => setShowProfileMenu(false)}>
+                <Link to="dashboard/help" className="menu-item" onClick={() => setShowProfileMenu(false)}>
                   <HelpCircle size={16} />
                   Help & FAQ
                 </Link>

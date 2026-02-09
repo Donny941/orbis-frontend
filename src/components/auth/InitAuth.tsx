@@ -12,8 +12,6 @@ export const InitAuth = ({ children }: InitAuthProps) => {
   const { token, user, isLoading } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    console.log("InitAuth - token:", token, "user:", user);
-
     if (token && !user) {
       dispatch(fetchUserThunk());
     }

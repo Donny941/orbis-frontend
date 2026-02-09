@@ -20,7 +20,6 @@ export const RegisterPage = () => {
     confirmPassword: "",
   });
 
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [validationError, setValidationError] = useState("");
@@ -36,7 +35,7 @@ export const RegisterPage = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (formData.password !== confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       setValidationError("Passwords do not match");
       return;
     }
@@ -50,7 +49,6 @@ export const RegisterPage = () => {
       await dispatch(
         registerThunk({
           ...formData,
-          confirmPassword,
         }),
       ).unwrap();
 
@@ -188,9 +186,9 @@ export const RegisterPage = () => {
                 name="confirmPassword"
                 className="form-control input-with-toggle"
                 placeholder="Repeat your password"
-                value={confirmPassword}
+                value={formData.confirmPassword}
                 onChange={(e) => {
-                  setConfirmPassword(e.target.value);
+                  handleChange(e);
                   if (validationError) setValidationError("");
                 }}
                 required
