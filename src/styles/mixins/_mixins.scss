@@ -61,7 +61,7 @@
 
 // Card style
 @mixin card-base {
-  background: var(--bg-card);
+  background: var(--bg-primary);
   border: 1px solid var(--border-secondary);
   border-radius: $radius-lg;
   box-shadow: $shadow-sm;

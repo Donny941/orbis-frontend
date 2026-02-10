@@ -17,6 +17,8 @@ import { ResourceDetailPage } from "./pages/ResourceDetailPage";
 import { MyResourcesPage } from "./pages/MyResourcesPage";
 import { FavouritesPage } from "./pages/FavouritesPage";
 import { ProfilePage } from "./pages/ProfilePage";
+import { HelpPage } from "./pages/HelpPage";
+import { SettingsPage } from "./pages/SettingsPage";
 
 function App() {
   return (
@@ -46,6 +48,8 @@ function App() {
                 <Route path="favourites" element={<FavouritesPage />} />
 
                 <Route path="profile" element={<ProfilePage />} />
+                <Route path="settings" element={<SettingsPage />} />
+                <Route path="help" element={<HelpPage />} />
               </Route>
             </Route>
 

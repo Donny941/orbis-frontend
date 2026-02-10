@@ -7,7 +7,7 @@
 .tiptap-editor {
   border: 1px solid var(--border-color, #333);
   border-radius: var(--radius-lg, 8px);
-  background: var(--bg-primary, #1a1a2e);
+  background: var(--bg-primary);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -242,7 +242,7 @@
   padding: 0.375rem 0.75rem;
   border: 1px solid var(--border-color, #333);
   border-radius: 9999px;
-  background: var(--bg-primary, #1a1a2e);
+  background: var(--bg-primary);
   color: var(--text-secondary, #888);
   font-weight: 500;
   cursor: pointer;
@@ -340,7 +340,7 @@
 // ==========================================
 
 .resource-card {
-  background: var(--bg-primary, #1a1a2e);
+  background: var(--bg-primary);
   border: 1px solid var(--border-color, #333);
   border-radius: var(--radius-lg, 8px);
   padding: 1.25rem;

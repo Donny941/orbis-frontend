@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Bell, LogOut, User, Settings, HelpCircle, ChevronDown, Menu, X } from "lucide-react";
+import { Search, Bell, LogOut, User, Settings, HelpCircle, ChevronDown, Menu, X, Sun, Moon } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { logout } from "../../store/slices/authSlice";
 import { useEffect, useState } from "react";
@@ -8,10 +8,12 @@ import { SearchOverlay } from "../layout/SearchOverlay";
 
 interface NavbarProps {
   variant?: "landing" | "app";
+  theme?: "dark" | "light";
+  onThemeToggle?: () => void;
   onTourStart?: () => void;
 }
 
-export const Navbar = ({ variant = "app", onTourStart }: NavbarProps) => {
+export const Navbar = ({ variant = "app", onTourStart, theme, onThemeToggle }: NavbarProps) => {
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -154,7 +156,12 @@ export const Navbar = ({ variant = "app", onTourStart }: NavbarProps) => {
         <button className="icon-btn mobile-only" onClick={() => setShowSearch(true)}>
           <Search size={18} />
         </button>
-
+        {/* Theme Toggle */}
+        {onThemeToggle && (
+          <button className="icon-btn" onClick={onThemeToggle} title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}>
+            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+        )}
         {/* Tour Help */}
         {onTourStart && (
           <button className="icon-btn" onClick={onTourStart} title="Take a tour">
@@ -215,7 +222,7 @@ export const Navbar = ({ variant = "app", onTourStart }: NavbarProps) => {
                   <User size={16} />
                   My Profile
                 </Link>
-                <Link to="dashboard/settings" className="menu-item" onClick={() => setShowProfileMenu(false)}>
+                <Link to="/dashboard/settings" className="menu-item" onClick={() => setShowProfileMenu(false)}>
                   <Settings size={16} />
                   Settings
                 </Link>
@@ -226,7 +233,7 @@ export const Navbar = ({ variant = "app", onTourStart }: NavbarProps) => {
               <div className="menu-divider" />
 
               <div className="menu-group">
-                <Link to="dashboard/help" className="menu-item" onClick={() => setShowProfileMenu(false)}>
+                <Link to="/dashboard/help" className="menu-item" onClick={() => setShowProfileMenu(false)}>
                   <HelpCircle size={16} />
                   Help & FAQ
                 </Link>

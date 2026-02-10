@@ -98,13 +98,6 @@ export const useOnboardingTour = () => {
 
   // Auto-start solo al primo login (lastLoginAt è null)
   useEffect(() => {
-    console.log("Tour debug:", {
-      pathname: location.pathname,
-      user: !!user,
-      lastLoginAt: user?.lastLoginAt,
-      hasStarted: hasStarted.current,
-    });
-
     if (location.pathname !== "/dashboard") return;
     if (!user) return;
     if (user.lastLoginAt) return;

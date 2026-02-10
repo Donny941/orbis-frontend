@@ -44,7 +44,7 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem 1.25rem;
-  background: var(--bg-primary, #1a1a2e);
+  background: var(--bg-primary);
   border: 1px solid var(--border-color, #333);
   border-radius: 12px;
 
@@ -126,7 +126,7 @@
 
 // Resources Table
 .resources-table {
-  background: var(--bg-primary, #1a1a2e);
+  background: var(--bg-primary);
   border: 1px solid var(--border-color, #333);
   border-radius: 12px;
   overflow: hidden;
