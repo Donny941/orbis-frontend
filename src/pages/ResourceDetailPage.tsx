@@ -158,7 +158,11 @@ export const ResourceDetailPage = () => {
 
           {/* Author Info */}
           {resource.author && (
-            <div className="resource-detail-author">
+            <Link
+              to={resource.isAuthor ? "/dashboard/profile" : `/dashboard/users/${resource.author.id}`}
+              className="resource-detail-author"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
               <div className="author-avatar" style={{ backgroundColor: resource.orb?.color || "#8b5cf6" }}>
                 {resource.author.profilePicture ? (
                   <img src={resource.author.profilePicture} alt={resource.author.displayName} />
@@ -176,7 +180,7 @@ export const ResourceDetailPage = () => {
                   {resource.viewCount || 0} views
                 </div>
               </div>
-            </div>
+            </Link>
           )}
 
           {/* Tags */}

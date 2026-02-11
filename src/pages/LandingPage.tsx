@@ -39,16 +39,16 @@ export const LandingPage = () => {
             {/* Stats */}
             <div className="hero-stats">
               <div className="hero-stat">
-                <span className="hero-stat-value">10K+</span>
-                <span className="hero-stat-label">Active Learners</span>
-              </div>
-              <div className="hero-stat">
-                <span className="hero-stat-value">50+</span>
+                <span className="hero-stat-value">6</span>
                 <span className="hero-stat-label">Learning Orbs</span>
               </div>
               <div className="hero-stat">
-                <span className="hero-stat-value">100K+</span>
-                <span className="hero-stat-label">Resources Shared</span>
+                <span className="hero-stat-value">Free</span>
+                <span className="hero-stat-label">Forever</span>
+              </div>
+              <div className="hero-stat">
+                <span className="hero-stat-value">Open</span>
+                <span className="hero-stat-label">Community</span>
               </div>
             </div>
           </div>
@@ -172,8 +172,8 @@ export const LandingPage = () => {
       <section id="orbs" className="orbs-section">
         <div className="container">
           <div className="section-header-center">
-            <h2 className="section-title">Popular Orbs</h2>
-            <p className="section-subtitle">Explore our most active learning communities</p>
+            <h2 className="section-title">Explore Orbs</h2>
+            <p className="section-subtitle">Discover our learning communities</p>
           </div>
 
           <div className="orbs-preview-grid">
@@ -186,7 +186,7 @@ export const LandingPage = () => {
                     <polyline points="8 6 2 12 8 18" />
                   </svg>
                 </div>
-                <span className="orb-preview-badge">1.2K members</span>
+                <span className="orb-preview-badge">New community</span>
               </div>
               <h3 className="orb-preview-title">Programming</h3>
               <p className="orb-preview-description">Master algorithms, data structures, and software engineering fundamentals</p>
@@ -201,7 +201,7 @@ export const LandingPage = () => {
                     <line x1="2" y1="12" x2="22" y2="12" />
                   </svg>
                 </div>
-                <span className="orb-preview-badge">890 members</span>
+                <span className="orb-preview-badge">New community</span>
               </div>
               <h3 className="orb-preview-title">Web Development</h3>
               <p className="orb-preview-description">Learn modern web technologies, frameworks, and best practices</p>
@@ -216,7 +216,7 @@ export const LandingPage = () => {
                     <path d="M22 12A10 10 0 0 0 12 2v10z" />
                   </svg>
                 </div>
-                <span className="orb-preview-badge">654 members</span>
+                <span className="orb-preview-badge">New community</span>
               </div>
               <h3 className="orb-preview-title">Data Science</h3>
               <p className="orb-preview-description">Dive into ML, statistics, and data analysis with Python and R</p>
@@ -231,7 +231,7 @@ export const LandingPage = () => {
                     <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
                   </svg>
                 </div>
-                <span className="orb-preview-badge">432 members</span>
+                <span className="orb-preview-badge">New community</span>
               </div>
               <h3 className="orb-preview-title">Design</h3>
               <p className="orb-preview-description">UI/UX design principles, tools, and creative workflows</p>
@@ -251,7 +251,7 @@ export const LandingPage = () => {
         <div className="container">
           <div className="cta-content">
             <h2 className="cta-title">Ready to Start Learning?</h2>
-            <p className="cta-subtitle">Join thousands of learners already growing their skills on Orbis</p>
+            <p className="cta-subtitle">Join the Orbis community and start growing your skills today</p>
             <Link to="/register" className="btn btn-primary btn-lg">
               <Sparkles size={20} />
               Create Free Account

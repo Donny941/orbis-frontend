@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Compass, BookOpen, Settings, PlusCircle, Heart } from "lucide-react";
+import { Home, Compass, BookOpen, Settings, PlusCircle, Heart, Trophy } from "lucide-react";
 import logoImg from "../../assets/logo.png";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { fetchMyOrbs } from "../../store/slices/orbsSlice";
@@ -87,6 +87,10 @@ export const Sidebar = () => {
       {/* Settings */}
       <nav className="nav-section nav-section-bottom">
         <div className="nav-list">
+          <Link to="/dashboard/leaderboard" className={`nav-item ${isActive("/dashboard/leaderboard") ? "active" : ""}`}>
+            <Trophy size={18} />
+            <span>Leaderboard</span>
+          </Link>
           <Link to="/dashboard/settings" className={`nav-item ${isActive("/dashboard/settings") ? "active" : ""}`}>
             <Settings size={18} />
             <span>Settings</span>

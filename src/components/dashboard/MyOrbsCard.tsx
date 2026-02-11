@@ -54,7 +54,7 @@ export const MyOrbsCard = () => {
     <div className="card">
       <div className="card-header">
         <h3 className="card-title">My Orbs</h3>
-        <Link to="/explore" className="card-link">
+        <Link to="/dashboard/orbs" className="card-link">
           <Plus size={16} />
           Join More
         </Link>
@@ -63,7 +63,7 @@ export const MyOrbsCard = () => {
       {orbs.length === 0 ? (
         <div className="card-empty">
           <p>You haven't joined any orbs yet.</p>
-          <Link to="/explore" className="btn btn-primary btn-sm">
+          <Link to="/dashboard/orbs" className="btn btn-primary btn-sm">
             Explore Orbs
           </Link>
         </div>

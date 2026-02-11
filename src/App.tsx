@@ -19,6 +19,11 @@ import { FavouritesPage } from "./pages/FavouritesPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { HelpPage } from "./pages/HelpPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { TermsPage } from "./pages/TermsPage";
+import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
+import { CookieBanner } from "./components/ui/CookieBanner";
+import { LeaderboardPage } from "./pages/LeaderboardPage";
+import { UserProfilePage } from "./pages/UserProfilePage";
 
 function App() {
   return (
@@ -38,7 +43,7 @@ function App() {
                 <Route path="orbs" element={<OrbsPage />} />
 
                 <Route path="my-resources" element={<MyResourcesPage />} />
-                {/* Future routes */}
+
                 <Route path="orbs/:id" element={<OrbDetailPage />} />
                 <Route path="resources" element={<ResourcesPage />} />
                 <Route path="resources/new" element={<ResourceEditorPage />} />
@@ -47,6 +52,10 @@ function App() {
 
                 <Route path="favourites" element={<FavouritesPage />} />
 
+                <Route path="leaderboard" element={<LeaderboardPage />} />
+
+                <Route path="users/:id" element={<UserProfilePage />} />
+
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />
                 <Route path="help" element={<HelpPage />} />
@@ -54,10 +63,13 @@ function App() {
             </Route>
 
             {/* 404 */}
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </InitAuth>
       </ErrorBoundary>
+      <CookieBanner />
     </BrowserRouter>
   );
 }

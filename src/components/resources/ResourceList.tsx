@@ -59,12 +59,10 @@ export const ResourceList = ({ orbId, type, difficulty, sort = "recent" }: Resou
   }
 
   return (
-    <div className="resource-list">
-      <div className="resource-list-grid">
-        {resources.map((resource) => (
-          <ResourceCard key={resource.id} resource={resource} onOrbToggle={handleOrbToggle} />
-        ))}
-      </div>
+    <div className="resource-list-grid">
+      {resources.map((resource) => (
+        <ResourceCard key={resource.id} resource={resource} onOrbToggle={handleOrbToggle} />
+      ))}
 
       {/* Load More */}
       {pagination.page < pagination.totalPages && (

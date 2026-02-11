@@ -4,13 +4,39 @@
 import axios, { AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from "axios";
 import type { Store } from "@reduxjs/toolkit";
 import type { RootState } from "../src/store/store";
-import type { ApiError } from "../types";
+import type { ApiError, PaginatedResponse, Resource } from "../types";
 
 import type { logout, setTokens } from "../src/store/slices/authSlice";
 
 interface AuthActions {
   logout: typeof logout;
   setTokens: typeof setTokens;
+}
+
+export interface PublicUserProfile {
+  id: string;
+  displayName: string;
+  username: string;
+  bio: string | null;
+  profilePicture: string | null;
+  totalOrbPoints: number;
+  level: number;
+  currentStreak: number;
+  longestStreak: number;
+  createdAt: string;
+}
+
+export interface PublicUserProfile {
+  id: string;
+  displayName: string;
+  username: string;
+  bio: string | null;
+  profilePicture: string | null;
+  totalOrbPoints: number;
+  level: number;
+  currentStreak: number;
+  longestStreak: number;
+  createdAt: string;
 }
 
 let store: Store<RootState> | null = null;
@@ -72,6 +98,33 @@ const handleLogout = () => {
 
   window.location.href = "/login";
 };
+
+// RETRY INTERCEPTOR - ritenta le richieste fallite (cold start Azure)
+api.interceptors.response.use(undefined, async (error) => {
+  const config = error.config;
+
+  // Non ritentare se non c'è config, o se abbiamo già ritentato 3 volte
+  if (!config || (config._retryCount ?? 0) >= 3) {
+    return Promise.reject(error);
+  }
+
+  // Ritenta solo su errori di rete o 5xx (server errors)
+  const shouldRetry =
+    !error.response || // Network error
+    (error.response.status >= 500 && error.response.status < 600); // Server error
+
+  if (!shouldRetry) {
+    return Promise.reject(error);
+  }
+
+  config._retryCount = (config._retryCount ?? 0) + 1;
+
+  // Attesa esponenziale: 1s, 2s, 4s
+  const delay = Math.pow(2, config._retryCount - 1) * 1000;
+  await new Promise((resolve) => setTimeout(resolve, delay));
+
+  return api(config);
+});
 
 api.interceptors.response.use(
   (response) => response,
@@ -160,6 +213,26 @@ export const getValidationErrors = (error: unknown): Record<string, string> => {
     }
   }
   return {};
+};
+
+export const userService = {
+  getUserProfile: async (userId: string): Promise<PublicUserProfile> => {
+    const response = await api.get(`/auth/users/${userId}`);
+    return response.data;
+  },
+
+  getUserResources: async (userId: string, page: number = 1, size: number = 10): Promise<PaginatedResponse<Resource>> => {
+    const response = await api.get(`/resources/by-user/${userId}`, {
+      params: { page, size },
+    });
+    return {
+      data: response.data.data,
+      page: response.data.pagination.currentPage,
+      pageSize: response.data.pagination.pageSize,
+      totalCount: response.data.pagination.totalCount,
+      totalPages: response.data.pagination.totalPages,
+    };
+  },
 };
 
 export default api;

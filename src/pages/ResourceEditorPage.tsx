@@ -137,29 +137,27 @@ export const ResourceEditorPage = () => {
   const orbOptions = [{ value: "", label: "Select an Orb..." }, ...availableOrbs.map((orb) => ({ value: orb.id, label: orb.name }))];
 
   const typeOptions = [
-    { value: "Note", label: "📝 Note" },
-    { value: "Article", label: "📄 Article" },
-    { value: "Code", label: "💻 Code" },
-    { value: "Link", label: "🔗 Link" },
+    { value: "Note", label: "Note" },
+    { value: "Article", label: "Article" },
+    { value: "Code", label: "Code" },
+    { value: "Link", label: "Link" },
   ];
 
   const difficultyOptions = [
     { value: "", label: "None" },
-    { value: "Beginner", label: "🟢 Beginner" },
-    { value: "Intermediate", label: "🟡 Intermediate" },
-    { value: "Advanced", label: "🔴 Advanced" },
+    { value: "Beginner", label: "Beginner" },
+    { value: "Intermediate", label: "Intermediate" },
+    { value: "Advanced", label: "Advanced" },
   ];
 
-  // Dettatura vocale: inserisce il testo finale nell'editor
   const handleContentDictation = useCallback((text: string) => {
     if (editorRef.current) {
-      // Se abbiamo accesso diretto all'editor, usiamo appendText
       editorRef.current.appendText(text);
     } else {
-      // Fallback: aggiorna lo state content (funziona se TipTap sincronizza dall'esterno)
+      // Fallback
       setContent((prev) => {
         if (!prev || prev === "<p></p>") return `<p>${text}</p>`;
-        // Inserisci il testo prima del tag di chiusura dell'ultimo paragrafo
+
         const lastPClose = prev.lastIndexOf("</p>");
         if (lastPClose !== -1) {
           return prev.slice(0, lastPClose) + text + prev.slice(lastPClose);
