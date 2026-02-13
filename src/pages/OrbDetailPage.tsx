@@ -65,21 +65,18 @@ export const OrbDetailPage = () => {
   const dispatch = useAppDispatch();
   const { allOrbs, isLoading } = useAppSelector((state) => state.orbs);
 
-  // Trova l'orb dallo store
   const orb = allOrbs.find((o) => o.id === id);
 
   const [resources, setResources] = useState<Resource[]>([]);
   const [isLoadingResources, setIsLoadingResources] = useState(true);
   const [isJoining, setIsJoining] = useState(false);
 
-  // Fetch orbs se non ci sono nello store
   useEffect(() => {
     if (allOrbs.length === 0) {
       dispatch(fetchAllOrbs());
     }
   }, [dispatch, allOrbs.length]);
 
-  // Fetch resources quando abbiamo l'orb
   useEffect(() => {
     if (id && orb) {
       fetchResources();

@@ -70,8 +70,6 @@ export const fetchResources = createAsyncThunk(
 );
 
 export const fetchMoreResources = createAsyncThunk("resources/fetchMoreResources", async (_, { getState, rejectWithValue }) => {
-  // Invece di RootState dello store, castiamo allo stato locale del reducer
-  // Questo rompe la dipendenza circolare
   const state = getState() as { resources: ResourcesState };
   const { pagination, filters } = state.resources;
 
@@ -86,14 +84,10 @@ export const fetchMoreResources = createAsyncThunk("resources/fetchMoreResources
     return rejectWithValue(err.response?.data?.message || "Failed to fetch more resources");
   }
 });
+
 export const fetchMyResources = createAsyncThunk("resources/fetchMyResources", async (_, { rejectWithValue }) => {
   try {
-    try {
-      return await resourceService.getMyResources();
-    } catch {
-      const drafts = await resourceService.getMyDrafts(1, 100);
-      return drafts.data;
-    }
+    return await resourceService.getMyResources();
   } catch (error: unknown) {
     const err = error as { response?: { data?: { message?: string } } };
     return rejectWithValue(err.response?.data?.message || "Failed to fetch your resources");
@@ -145,13 +139,12 @@ export const updateResource = createAsyncThunk(
         content?: string;
         type?: string;
         difficulty?: string;
-        tags?: string[]; // Qui forziamo string[] per essere coerenti con il componente
+        tags?: string[];
       };
     },
     { rejectWithValue },
   ) => {
     try {
-      // Passiamo i dati puliti al servizio
       const response = await resourceService.updateResource(id, data);
       return response;
     } catch (error: unknown) {
