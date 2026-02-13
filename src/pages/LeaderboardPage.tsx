@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Trophy, Flame, TrendingUp, Medal, Crown, Award, Loader2 } from "lucide-react";
-import { leaderboardService, type LeaderboardUser } from "../../services/leaderboardService";
+import { leaderboardService, type LeaderboardUser } from "../services/leaderboardService";
 import { useAppSelector } from "../store/hooks";
 
 export const LeaderboardPage = () => {

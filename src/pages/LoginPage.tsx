@@ -6,7 +6,7 @@ import { loginThunk } from "../store/slices/authThunks";
 import { clearError } from "../store/slices/authSlice";
 import type { LoginCredentials } from "../../types";
 import logoImg from "../assets/logo.png";
-import { orbisToast } from "../../services/orbisToast";
+import { orbisToast } from "../services/orbisToast";
 
 export const LoginPage = () => {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { createComment } from "../../store/slices/commentSlice";
 import { Send, Loader2 } from "lucide-react";
-import { orbisToast } from "../../../services/orbisToast";
+import { orbisToast } from "../../services/orbisToast";
 
 interface CommentFormProps {
   resourceId: string;

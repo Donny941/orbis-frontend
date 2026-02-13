@@ -6,7 +6,7 @@ import { registerThunk } from "../store/slices/authThunks";
 import { clearError, logout } from "../store/slices/authSlice";
 import type { RegisterData } from "../../types";
 import logoImg from "../assets/logo.png";
-import { orbisToast } from "../../services/orbisToast";
+import { orbisToast } from "../services/orbisToast";
 
 export const RegisterPage = () => {
   const navigate = useNavigate();

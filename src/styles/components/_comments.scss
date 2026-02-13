@@ -203,3 +203,41 @@
     text-align: right;
   }
 }
+.comment-delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: $spacing-1;
+  border-radius: $radius-sm;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    color: $danger;
+    background: rgba($danger, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+.comment-delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: $spacing-1;
+  border-radius: $radius-sm;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    color: $danger;
+    background: rgba($danger, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

@@ -1,9 +1,9 @@
 import { useState, useRef } from "react";
 import { Camera, Loader2, X } from "lucide-react";
-import { cloudinaryService } from "../../../services/cloudinaryService";
+import { cloudinaryService } from "../../services/cloudinaryService";
 import { useAppDispatch } from "../../store/hooks";
 import { updateProfileThunk } from "../../store/slices/authThunks";
-import { orbisToast } from "../../../services/orbisToast";
+import { orbisToast } from "../../services/orbisToast";
 import { getInitials } from "../../utils/helpers";
 
 interface AvatarUploadProps {

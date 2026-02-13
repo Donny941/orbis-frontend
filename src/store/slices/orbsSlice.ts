@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { orbService } from "../../../services/orbService";
+import { orbService } from "../../services/orbService";
 import type { Orb } from "../../../types";
 
 interface OrbsState {

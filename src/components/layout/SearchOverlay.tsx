@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, X, Loader2, ArrowRight } from "lucide-react";
-import { resourceService } from "../../../services/resourceService";
+import { resourceService } from "../../services/resourceService";
 import type { Resource } from "../../../types";
 
 interface SearchOverlayProps {

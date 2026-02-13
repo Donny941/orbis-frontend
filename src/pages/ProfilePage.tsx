@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { updateProfileThunk } from "../store/slices/authThunks";
 import { User, Star, Flame, Trophy, Calendar, FileText, TrendingUp, Award, Pencil, Check, X, Loader2 } from "lucide-react";
-import { orbisToast } from "../../services/orbisToast";
+import { orbisToast } from "../services/orbisToast";
 
 import { formatDateFriendly, getLevelName, getLevelProgress, getPointsToNextLevel } from "../utils/helpers";
 import { AvatarUpload } from "../components/profile/AvatarUpload";

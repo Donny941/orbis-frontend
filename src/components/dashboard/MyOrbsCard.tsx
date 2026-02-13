@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Plus, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { orbService } from "../../../services/orbService";
+import { orbService } from "../../services/orbService";
 import type { Orb } from "../../../types";
 
 export const MyOrbsCard = () => {

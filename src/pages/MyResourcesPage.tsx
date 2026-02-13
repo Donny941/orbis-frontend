@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchMyResources, publishResource, deleteResource } from "../store/slices/resourcesSlice";
 import { Plus, FileText, BookOpen, Code, Link as LinkIcon, Eye, Clock, Edit, Globe, Lock, Loader2, Trash2 } from "lucide-react";
-import { orbisToast } from "../../services/orbisToast";
+import { orbisToast } from "../services/orbisToast";
 import { ConfirmModal } from "../components/ui/ConfirmModal";
 import { formatDateFriendly, parseTags } from "../utils/helpers";
 

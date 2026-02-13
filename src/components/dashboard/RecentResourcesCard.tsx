@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Clock, MessageCircle, Eye, Circle, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { resourceService } from "../../../services/resourceService";
+import { resourceService } from "../../services/resourceService";
 import type { Resource } from "../../../types";
 import { timeAgo, getAuthorName, getAuthorInitial, getAvatarUrl } from "../../utils/helpers";
 

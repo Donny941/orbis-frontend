@@ -4,7 +4,7 @@ import { deleteComment, toggleCommentOrb } from "../../store/slices/commentSlice
 import { OrbButton } from "../resources/OrbButton";
 import { Trash2, Loader2 } from "lucide-react";
 import type { Comment } from "../../../types";
-import { orbisToast } from "../../../services/orbisToast";
+import { orbisToast } from "../../services/orbisToast";
 import { ConfirmModal } from "../ui/ConfirmModal";
 import { timeAgo, getInitials, getAvatarUrl } from "../../utils/helpers";
 

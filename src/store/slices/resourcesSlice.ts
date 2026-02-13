@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
-import { resourceService } from "../../../services/resourceService";
+import { resourceService } from "../../services/resourceService";
 import type { Resource } from "../../../types";
 
 interface ResourcesState {

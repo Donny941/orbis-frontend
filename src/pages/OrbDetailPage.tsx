@@ -29,9 +29,9 @@ import {
 } from "lucide-react";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { fetchAllOrbs, joinOrb, leaveOrb } from "../store/slices/orbsSlice";
-import { orbService } from "../../services/orbService";
+import { orbService } from "../services/orbService";
 import type { Resource } from "../../types";
-import { orbisToast } from "../../services/orbisToast";
+import { orbisToast } from "../services/orbisToast";
 import { formatDateShort, timeAgo, getAuthorName, getAuthorInitial, getAvatarUrl } from "../utils/helpers";
 
 // Mappa icone

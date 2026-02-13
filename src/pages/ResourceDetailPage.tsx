@@ -6,7 +6,7 @@ import { TipTapEditor } from "../components/resources/TipTapEditor";
 import { OrbButton } from "../components/resources/OrbButton";
 import { CommentList } from "../components/comments/CommentList";
 import { ArrowLeft, Edit, Trash2, Send, Eye, Clock, Loader2, AlertCircle } from "lucide-react";
-import { orbisToast } from "../../services/orbisToast";
+import { orbisToast } from "../services/orbisToast";
 import { ConfirmModal } from "../components/ui/ConfirmModal";
 import { formatDateFull, getInitials, parseTags } from "../utils/helpers";
 

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { commentService } from "../../../services/commentService";
+import { commentService } from "../../services/commentService";
 import type { Comment, User } from "../../../types";
 
 interface CommentsState {
