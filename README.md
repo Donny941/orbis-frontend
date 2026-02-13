@@ -2,6 +2,8 @@
   <img src="src/assets/logo.png" alt="Orbis Logo" width="80" height="80" />
 </p>
 
+<p>API Repo: https://github.com/Donny941/OrbisAPI</p>
+
 <h1 align="center">Orbis</h1>
 
 <p align="center">
@@ -40,7 +42,6 @@
 
 ## 🔮 About the Project
 
-**API Repo** https://github.com/Donny941/OrbisAPI
 **Orbis** is a full-stack collaborative learning platform built as a capstone project. Users join themed communities called **Orbs**, share educational resources using a rich text editor, and progress through a **gamification system** with levels, Orb Points, and daily streaks.
 
 The platform encourages knowledge sharing by rewarding contributions: publishing resources, receiving appreciation (Orbs) from other users, and maintaining daily posting streaks all earn points. Higher-level users' votes carry more weight, creating an organic quality signal.
