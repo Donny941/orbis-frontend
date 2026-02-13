@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Eye, MessageCircle, Clock, FileText, BookOpen, Code, Link as LinkIcon } from "lucide-react";
 import { OrbButton } from "./OrbButton";
 import type { Resource } from "../../../types";
-import { timeAgo, getInitials, parseTags, getDifficultyClass } from "../../utils/helpers";
+import { timeAgo, getInitials, parseTags, getDifficultyClass, getAvatarUrl } from "../../utils/helpers";
 
 interface ResourceCardProps {
   resource: Resource;
@@ -75,7 +75,7 @@ export const ResourceCard = ({ resource, onOrbToggle }: ResourceCardProps) => {
         <div className="resource-author">
           <div className="author-avatar" style={{ backgroundColor: resource.orb?.color || "#8b5cf6" }}>
             {resource.author?.profilePicture ? (
-              <img src={resource.author.profilePicture} alt={resource.author.displayName} />
+              <img src={getAvatarUrl(resource.author.profilePicture)!} alt={resource.author.displayName} />
             ) : (
               getInitials(resource.author?.displayName || resource.author?.userName)
             )}

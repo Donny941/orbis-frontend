@@ -1,0 +1,51 @@
+// ==================== AVATAR UPLOAD ====================
+
+.avatar-upload {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar-upload-wrapper {
+  position: relative;
+  cursor: pointer;
+
+  &:hover .avatar-upload-overlay {
+    opacity: 1;
+  }
+}
+
+.avatar-upload-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: $radius-full;
+  background: rgba(0, 0, 0, 0.5);
+  @include flex-center;
+  color: white;
+  opacity: 0;
+  transition: opacity $transition-fast;
+
+  .spinner {
+    animation: spin 1s linear infinite;
+  }
+}
+
+.avatar-remove-btn {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 24px;
+  height: 24px;
+  border-radius: $radius-full;
+  background: $danger;
+  color: white;
+  border: 2px solid var(--bg-card);
+  @include flex-center;
+  cursor: pointer;
+  padding: 0;
+  transition: transform $transition-fast;
+  z-index: 1;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}

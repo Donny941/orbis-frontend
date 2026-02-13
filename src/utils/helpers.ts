@@ -1,8 +1,3 @@
-// ==================== FORMAT HELPERS ====================
-
-/**
- * Relative time ago (e.g. "Just now", "5m ago", "3d ago")
- */
 export const timeAgo = (dateString?: string): string => {
   if (!dateString) return "Unknown";
   const date = new Date(dateString);
@@ -21,9 +16,6 @@ export const timeAgo = (dateString?: string): string => {
   return date.toLocaleDateString();
 };
 
-/**
- * Friendly date (e.g. "Today", "Yesterday", "3 days ago", or locale date)
- */
 export const formatDateFriendly = (dateString?: string): string => {
   if (!dateString) return "Unknown";
   const date = new Date(dateString);
@@ -39,9 +31,6 @@ export const formatDateFriendly = (dateString?: string): string => {
   return date.toLocaleDateString();
 };
 
-/**
- * Full formatted date (e.g. "January 15, 2026")
- */
 export const formatDateFull = (dateString?: string): string => {
   if (!dateString) return "Unknown date";
   const date = new Date(dateString);
@@ -54,9 +43,6 @@ export const formatDateFull = (dateString?: string): string => {
   });
 };
 
-/**
- * Short formatted date (e.g. "Jan 15, 2026")
- */
 export const formatDateShort = (dateString?: string): string => {
   if (!dateString) return "Unknown";
   const date = new Date(dateString);
@@ -69,11 +55,6 @@ export const formatDateShort = (dateString?: string): string => {
   });
 };
 
-// ==================== USER HELPERS ====================
-
-/**
- * Get initials from a name (e.g. "Alan Donati" → "AD")
- */
 export const getInitials = (name?: string): string => {
   if (!name) return "?";
   return name
@@ -84,17 +65,11 @@ export const getInitials = (name?: string): string => {
     .slice(0, 2);
 };
 
-/**
- * Get level name from level number
- */
 export const getLevelName = (level: number): string => {
   const levels = ["Novice", "Student", "Scholar", "Expert", "Master"];
   return levels[level - 1] || "Novice";
 };
 
-/**
- * Get level progress percentage
- */
 export const getLevelProgress = (level: number, totalOrbPoints: number): number => {
   const thresholds = [0, 101, 501, 1001, 2500];
   if (level >= 5) return 100;
@@ -106,20 +81,12 @@ export const getLevelProgress = (level: number, totalOrbPoints: number): number 
   return Math.min(Math.max(progress, 0), 100);
 };
 
-/**
- * Get points needed to reach next level
- */
 export const getPointsToNextLevel = (level: number, totalOrbPoints: number): number => {
   const thresholds = [101, 501, 1001, 2500];
   if (level >= 5) return 0;
   return thresholds[level - 1] - totalOrbPoints;
 };
 
-// ==================== RESOURCE HELPERS ====================
-
-/**
- * Parse tags from string or array
- */
 export const parseTags = (tags: string | string[] | undefined | null): string[] => {
   if (!tags) return [];
   if (Array.isArray(tags)) return tags;
@@ -132,9 +99,6 @@ export const parseTags = (tags: string | string[] | undefined | null): string[] 
   return [];
 };
 
-/**
- * Get CSS class for difficulty badge
- */
 export const getDifficultyClass = (difficulty?: string): string => {
   switch (difficulty) {
     case "Beginner":
@@ -148,18 +112,18 @@ export const getDifficultyClass = (difficulty?: string): string => {
   }
 };
 
-/**
- * Get author display name safely
- */
 export const getAuthorName = (author?: { displayName?: string; userName?: string }): string => {
   if (!author) return "Unknown";
   return author.displayName || author.userName || "Unknown";
 };
 
-/**
- * Get author initial letter
- */
 export const getAuthorInitial = (author?: { displayName?: string; userName?: string }): string => {
   const name = getAuthorName(author);
   return name.charAt(0).toUpperCase();
+};
+
+export const getAvatarUrl = (url: string | null | undefined): string | null => {
+  if (!url) return null;
+  if (url.includes("c_fill")) return url;
+  return url.replace("/upload/", "/upload/c_fill,w_200,h_200,q_auto/");
 };

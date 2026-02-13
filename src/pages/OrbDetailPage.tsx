@@ -29,7 +29,7 @@ import { fetchAllOrbs, joinOrb, leaveOrb } from "../store/slices/orbsSlice";
 import { orbService } from "../../services/orbService";
 import type { Resource } from "../../types";
 import { orbisToast } from "../../services/orbisToast";
-import { formatDateShort, timeAgo, getAuthorName, getAuthorInitial } from "../utils/helpers";
+import { formatDateShort, timeAgo, getAuthorName, getAuthorInitial, getAvatarUrl } from "../utils/helpers";
 
 // Mappa icone
 const iconMap: Record<string, React.ElementType> = {
@@ -197,7 +197,13 @@ export const OrbDetailPage = () => {
                   <h3 className="resource-title">{resource.title}</h3>
                   <div className="resource-meta">
                     <div className="resource-author">
-                      <div className="avatar">{getAuthorInitial(resource.author)}</div>
+                      <div className="avatar">
+                        {resource.author?.profilePicture ? (
+                          <img src={getAvatarUrl(resource.author.profilePicture)!} alt={getAuthorName(resource.author)} />
+                        ) : (
+                          getAuthorInitial(resource.author)
+                        )}
+                      </div>
                       <span>{getAuthorName(resource.author)}</span>
                     </div>
                     <span>•</span>

@@ -3,7 +3,9 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { updateProfileThunk } from "../store/slices/authThunks";
 import { User, Star, Flame, Trophy, Calendar, FileText, TrendingUp, Award, Pencil, Check, X, Loader2 } from "lucide-react";
 import { orbisToast } from "../../services/orbisToast";
-import { formatDateFriendly, getInitials, getLevelName, getLevelProgress, getPointsToNextLevel } from "../utils/helpers";
+
+import { formatDateFriendly, getLevelName, getLevelProgress, getPointsToNextLevel } from "../utils/helpers";
+import { AvatarUpload } from "../components/profile/AvatarUpload";
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
@@ -71,9 +73,7 @@ export const ProfilePage = () => {
         <div className="profile-main">
           {/* Profile Header */}
           <div className="profile-header">
-            <div className="profile-avatar">
-              {user.profilePicture ? <img src={user.profilePicture} alt={user.displayName} /> : getInitials(user.displayName || user.username)}
-            </div>
+            <AvatarUpload currentImage={user.profilePicture} displayName={user.displayName || user.username} />
             <div className="profile-info">
               {/* Editable Name */}
               {isEditingName ? (

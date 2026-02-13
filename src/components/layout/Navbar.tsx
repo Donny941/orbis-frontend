@@ -159,7 +159,9 @@ export const Navbar = ({ variant = "app", onTourStart, theme, onThemeToggle }: N
         {/* Profile Dropdown */}
         <div className="profile-dropdown">
           <button className="profile-trigger" onClick={() => setShowProfileMenu(!showProfileMenu)}>
-            <div className="avatar">{user && getInitials(user.displayName)}</div>
+            <div className="avatar">
+              {user?.profilePicture ? <img src={user.profilePicture} alt={user.displayName} /> : user && getInitials(user.displayName)}
+            </div>
             <div className="profile-info-nav desktop-only">
               <span className="profile-name-nav">{user?.username}</span>
               <span className="profile-level-nav">
@@ -174,7 +176,9 @@ export const Navbar = ({ variant = "app", onTourStart, theme, onThemeToggle }: N
             <div className="profile-menu">
               {/* Header */}
               <div className="profile-header">
-                <div className="avatar lg">{user && getInitials(user.displayName)}</div>
+                <div className="avatar lg">
+                  {user?.profilePicture ? <img src={user.profilePicture} alt={user.displayName} /> : user && getInitials(user.displayName)}
+                </div>
                 <div className="profile-header-info">
                   <div className="profile-header-name">{user?.displayName}</div>
                   <div className="profile-header-email">{user?.email}</div>

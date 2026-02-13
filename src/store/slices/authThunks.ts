@@ -36,7 +36,7 @@ export const registerThunk = createAsyncThunk<AuthResponse, RegisterData, { reje
 });
 
 // UPDATE PROFILE
-export const updateProfileThunk = createAsyncThunk<User, { displayName?: string; bio?: string }, { rejectValue: string }>(
+export const updateProfileThunk = createAsyncThunk<User, { displayName?: string; bio?: string; profilePicture?: string }, { rejectValue: string }>(
   "auth/updateProfile",
   async (data, { rejectWithValue }) => {
     try {

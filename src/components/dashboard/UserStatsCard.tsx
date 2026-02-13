@@ -1,5 +1,6 @@
 import { TrendingUp, Award, Flame, Target } from "lucide-react";
 import { useAppSelector } from "../../store/hooks";
+import { getInitials } from "../../utils/helpers";
 
 export const UserStatsCard = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -23,14 +24,7 @@ export const UserStatsCard = () => {
     <div className="card user-stats-card">
       {/* Header con Avatar e Nome */}
       <div className="user-stats-header">
-        <div className="user-avatar">
-          {user.displayName
-            .split(" ")
-            .map((n) => n[0])
-            .join("")
-            .toUpperCase()
-            .slice(0, 2)}
-        </div>
+        <div className="user-avatar">{user.profilePicture ? <img src={user.profilePicture} alt={user.displayName} /> : getInitials(user.displayName)}</div>
         <div className="user-info">
           <h3 className="user-name">{user.displayName}</h3>
           <p className="user-username">@{user.username}</p>

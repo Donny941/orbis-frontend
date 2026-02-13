@@ -3,7 +3,7 @@ import { Clock, MessageCircle, Eye, Circle, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { resourceService } from "../../../services/resourceService";
 import type { Resource } from "../../../types";
-import { timeAgo, getAuthorName, getAuthorInitial } from "../../utils/helpers";
+import { timeAgo, getAuthorName, getAuthorInitial, getAvatarUrl } from "../../utils/helpers";
 
 export const RecentResourcesCard = () => {
   const [resources, setResources] = useState<Resource[]>([]);
@@ -93,7 +93,11 @@ export const RecentResourcesCard = () => {
                   </Link>
                   <div className="resource-meta">
                     <div className="resource-author-badge">
-                      <span className="author-initial">{getAuthorInitial(resource.author)}</span>
+                      {resource.author?.profilePicture ? (
+                        <img className="author-initial" src={getAvatarUrl(resource.author.profilePicture)!} alt={getAuthorName(resource.author)} />
+                      ) : (
+                        <span className="author-initial">{getAuthorInitial(resource.author)}</span>
+                      )}
                       <span className="author-name">{getAuthorName(resource.author)}</span>
                     </div>
                     <span className={`level-badge-small level-${resource.author?.level || 1}`}>Level {resource.author?.level || 1}</span>

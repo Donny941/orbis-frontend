@@ -6,7 +6,7 @@ import { Trash2, Loader2 } from "lucide-react";
 import type { Comment } from "../../../types";
 import { orbisToast } from "../../../services/orbisToast";
 import { ConfirmModal } from "../ui/ConfirmModal";
-import { timeAgo, getInitials } from "../../utils/helpers";
+import { timeAgo, getInitials, getAvatarUrl } from "../../utils/helpers";
 
 interface CommentItemProps {
   comment: Comment;
@@ -47,7 +47,7 @@ export const CommentItem = ({ comment }: CommentItemProps) => {
     <div className="comment-item">
       <div className="comment-avatar">
         {comment.author?.profilePicture ? (
-          <img src={comment.author.profilePicture} alt={comment.author.displayName} />
+          <img src={getAvatarUrl(comment.author.profilePicture)!} alt={comment.author.displayName} />
         ) : (
           <div className="avatar-placeholder">{getInitials(comment.author?.displayName || comment.author?.username)}</div>
         )}
