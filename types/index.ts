@@ -38,6 +38,7 @@ export interface Resource {
   status: string;
   difficulty?: string;
   tags: string | string[];
+  commentCount?: number;
   viewCount: number;
   totalOrbsReceived: number;
   createdAt: string;

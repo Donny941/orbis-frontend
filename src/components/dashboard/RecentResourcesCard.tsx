@@ -121,7 +121,7 @@ export const RecentResourcesCard = () => {
                   </div>
                   <div className="resource-stat">
                     <MessageCircle size={16} />
-                    <span>0</span>
+                    <span>{resource.commentCount || 0}</span>
                   </div>
                   <div className="resource-stat">
                     <Eye size={16} />

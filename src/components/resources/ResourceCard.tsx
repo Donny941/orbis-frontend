@@ -96,7 +96,7 @@ export const ResourceCard = ({ resource, onOrbToggle }: ResourceCardProps) => {
           </span>
           <span className="stat">
             <MessageCircle size={14} />
-            {0} {/* TODO: commentCount */}
+            {resource.commentCount || 0}
           </span>
           <OrbButton
             count={resource.totalOrbsReceived || 0}
