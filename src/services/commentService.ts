@@ -1,6 +1,6 @@
 // src/services/commentService.ts
 import api from "./api";
-import type { Comment } from "../types";
+import type { Comment } from "../../types";
 
 export const commentService = {
   // Get all comments for a resource

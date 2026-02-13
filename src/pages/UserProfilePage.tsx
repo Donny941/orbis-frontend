@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { User, Star, Flame, Trophy, Calendar, Award, ArrowLeft, Loader2, BookOpen, Eye, Heart } from "lucide-react";
-import { userService, type PublicUserProfile } from "../../services/api";
+import { userService, type PublicUserProfile } from "../services/api";
 import { useAppSelector } from "../store/hooks";
 import type { Resource } from "../../types";
 

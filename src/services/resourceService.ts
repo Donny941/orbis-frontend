@@ -1,5 +1,5 @@
 import api from "./api";
-import type { Resource, PaginatedResponse } from "../types";
+import type { Resource, PaginatedResponse } from "../../types";
 
 export const resourceService = {
   // Get resources with filters

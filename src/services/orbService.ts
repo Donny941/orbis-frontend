@@ -1,5 +1,5 @@
 import api from "./api";
-import type { Orb } from "../types";
+import type { Orb } from "../../types";
 
 export const orbService = {
   // Get all orbs

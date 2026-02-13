@@ -20,7 +20,6 @@ export const ResourceEditorPage = () => {
   const { currentResource, isLoading, error } = useAppSelector((state) => state.resources);
   const { allOrbs, myOrbs } = useAppSelector((state) => state.orbs);
 
-  // Form state
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [type, setType] = useState<ResourceType>("Note");
@@ -30,7 +29,6 @@ export const ResourceEditorPage = () => {
   const [tagInput, setTagInput] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
-  // Ref per accedere all'editor TipTap e inserire testo senza resettare il cursore
   const editorRef = useRef<{ appendText: (text: string) => void } | null>(null);
 
   // Fetch orbs on mount
@@ -121,8 +119,6 @@ export const ResourceEditorPage = () => {
       }
 
       navigate("/dashboard/resources");
-    } catch {
-      // Error handled by Redux
     } finally {
       setIsSaving(false);
     }

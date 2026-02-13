@@ -90,12 +90,11 @@ const orbsSlice = createSlice({
     builder.addCase(joinOrb.fulfilled, (state, action) => {
       const orbId = action.payload;
 
-      // Aggiorna allOrbs
       const orb = state.allOrbs.find((o) => o.id === orbId);
       if (orb) {
         orb.isJoined = true;
         orb.memberCount += 1;
-        // Aggiungi a myOrbs
+
         state.myOrbs.push({ ...orb });
       }
     });
@@ -104,14 +103,12 @@ const orbsSlice = createSlice({
     builder.addCase(leaveOrb.fulfilled, (state, action) => {
       const orbId = action.payload;
 
-      // Aggiorna allOrbs
       const orb = state.allOrbs.find((o) => o.id === orbId);
       if (orb) {
         orb.isJoined = false;
         orb.memberCount -= 1;
       }
 
-      // Rimuovi da myOrbs
       state.myOrbs = state.myOrbs.filter((o) => o.id !== orbId);
     });
   },

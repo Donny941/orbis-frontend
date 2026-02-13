@@ -1,29 +1,15 @@
-// ==================== AXIOS API CLIENT ====================
 /// <reference types="vite/client" />
 
 import axios, { AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from "axios";
 import type { Store } from "@reduxjs/toolkit";
-import type { RootState } from "../src/store/store";
-import type { ApiError, PaginatedResponse, Resource } from "../types";
+import type { RootState } from "../store/store";
+import type { ApiError, PaginatedResponse, Resource } from "../../types";
 
-import type { logout, setTokens } from "../src/store/slices/authSlice";
+import type { logout, setTokens } from "../store/slices/authSlice";
 
 interface AuthActions {
   logout: typeof logout;
   setTokens: typeof setTokens;
-}
-
-export interface PublicUserProfile {
-  id: string;
-  displayName: string;
-  username: string;
-  bio: string | null;
-  profilePicture: string | null;
-  totalOrbPoints: number;
-  level: number;
-  currentStreak: number;
-  longestStreak: number;
-  createdAt: string;
 }
 
 export interface PublicUserProfile {
@@ -91,7 +77,6 @@ const handleLogout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("refreshToken");
 
-  // Utilizziamo le dipendenze iniettate in modo sicuro
   if (store && authActions) {
     store.dispatch(authActions.logout());
   }
@@ -99,19 +84,15 @@ const handleLogout = () => {
   window.location.href = "/login";
 };
 
-// RETRY INTERCEPTOR - ritenta le richieste fallite (cold start Azure)
+// RETRY INTERCEPTOR
 api.interceptors.response.use(undefined, async (error) => {
   const config = error.config;
 
-  // Non ritentare se non c'è config, o se abbiamo già ritentato 3 volte
   if (!config || (config._retryCount ?? 0) >= 3) {
     return Promise.reject(error);
   }
 
-  // Ritenta solo su errori di rete o 5xx (server errors)
-  const shouldRetry =
-    !error.response || // Network error
-    (error.response.status >= 500 && error.response.status < 600); // Server error
+  const shouldRetry = !error.response || (error.response.status >= 500 && error.response.status < 600);
 
   if (!shouldRetry) {
     return Promise.reject(error);
@@ -119,8 +100,7 @@ api.interceptors.response.use(undefined, async (error) => {
 
   config._retryCount = (config._retryCount ?? 0) + 1;
 
-  // Attesa esponenziale: 1s, 2s, 4s
-  const delay = Math.pow(2, config._retryCount - 1) * 1000;
+  const delay = Math.pow(2, config._retryCount - 1) * 3000;
   await new Promise((resolve) => setTimeout(resolve, delay));
 
   return api(config);

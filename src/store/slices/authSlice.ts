@@ -51,7 +51,7 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Gestione Login
+    // Login
     builder
       .addCase(loginThunk.pending, (state) => {
         state.isLoading = true;
@@ -71,7 +71,7 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       });
 
-    // Gestione Register
+    // Register
     builder
       .addCase(registerThunk.pending, (state) => {
         state.isLoading = true;
@@ -91,7 +91,7 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       });
 
-    // Gestione FetchUser
+    // FetchUser
     builder
       .addCase(fetchUserThunk.pending, (state) => {
         state.isLoading = true;
@@ -111,7 +111,7 @@ const authSlice = createSlice({
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
       });
-    // Gestione Update Profile
+    // Update Profile
     builder
       .addCase(updateProfileThunk.pending, (state) => {
         state.isUpdating = true;

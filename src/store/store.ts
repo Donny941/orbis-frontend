@@ -11,13 +11,7 @@ export const store = configureStore({
     resources: resourcesReducer,
     comments: commentsReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
 });
-
-// persist reducer   redux persist can be added here if needed
 
 // Export types
 export type RootState = ReturnType<typeof store.getState>;
