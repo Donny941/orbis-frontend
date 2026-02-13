@@ -1,8 +1,7 @@
+<p align="center">API Repo: https://github.com/Donny941/OrbisAPI</p>
 <p align="center">
   <img src="src/assets/logo.png" alt="Orbis Logo" width="80" height="80" />
 </p>
-
-<p align="center">API Repo: https://github.com/Donny941/OrbisAPI</p>
 
 <h1 align="center">Orbis</h1>
 
