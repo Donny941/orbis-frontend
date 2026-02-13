@@ -6,6 +6,7 @@ import { registerThunk } from "../store/slices/authThunks";
 import { clearError, logout } from "../store/slices/authSlice";
 import type { RegisterData } from "../../types";
 import logoImg from "../assets/logo.png";
+import { orbisToast } from "../../services/orbisToast";
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
@@ -51,11 +52,10 @@ export const RegisterPage = () => {
           ...formData,
         }),
       ).unwrap();
+      orbisToast.success("Account created! Please sign in.");
 
-      // Logout automatico dopo registrazione per sicurezza
       dispatch(logout());
 
-      // Redirect al login con messaggio di successo
       navigate("/login", {
         state: {
           message: "Account created successfully! Please log in with your credentials.",

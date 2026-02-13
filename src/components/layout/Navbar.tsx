@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Bell, LogOut, User, Settings, HelpCircle, ChevronDown, Menu, X, Sun, Moon } from "lucide-react";
+import { Search, LogOut, User, Settings, HelpCircle, ChevronDown, Menu, X, Sun, Moon } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { logout } from "../../store/slices/authSlice";
 import { useEffect, useState } from "react";
 import logoImg from "../../assets/logo.png";
 import { SearchOverlay } from "../layout/SearchOverlay";
+import { getInitials, getLevelName } from "../../utils/helpers";
 
 interface NavbarProps {
   variant?: "landing" | "app";
@@ -25,20 +26,6 @@ export const Navbar = ({ variant = "app", onTourStart, theme, onThemeToggle }: N
     dispatch(logout());
     navigate("/");
     setShowProfileMenu(false);
-  };
-
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2);
-  };
-
-  const getLevelName = (level: number) => {
-    const levels = ["Novice", "Student", "Scholar", "Expert", "Master"];
-    return levels[level - 1] || "Novice";
   };
 
   useEffect(() => {
@@ -168,12 +155,6 @@ export const Navbar = ({ variant = "app", onTourStart, theme, onThemeToggle }: N
             <HelpCircle size={18} />
           </button>
         )}
-
-        {/* Notifications */}
-        <button className="icon-btn">
-          <Bell size={18} />
-          <span className="badge">3</span>
-        </button>
 
         {/* Profile Dropdown */}
         <div className="profile-dropdown">

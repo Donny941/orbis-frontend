@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchResource, clearCurrentResource, toggleResourceOrb, deleteResource, publishResource } from "../store/slices/resourcesSlice";
@@ -6,11 +6,15 @@ import { TipTapEditor } from "../components/resources/TipTapEditor";
 import { OrbButton } from "../components/resources/OrbButton";
 import { CommentList } from "../components/comments/CommentList";
 import { ArrowLeft, Edit, Trash2, Send, Eye, Clock, Loader2, AlertCircle } from "lucide-react";
+import { orbisToast } from "../../services/orbisToast";
+import { ConfirmModal } from "../components/ui/ConfirmModal";
+import { formatDateFull, getInitials, parseTags } from "../utils/helpers";
 
 export const ResourceDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const { currentResource: resource, isLoading, error } = useAppSelector((state) => state.resources);
 
@@ -25,57 +29,25 @@ export const ResourceDetailPage = () => {
 
   const handleOrbToggle = () => {
     if (resource) {
-      dispatch(
-        toggleResourceOrb({
-          resourceId: resource.id,
-          hasOrbed: resource.hasUserOrbed || false,
-        }),
-      );
+      dispatch(toggleResourceOrb({ resourceId: resource.id, hasOrbed: resource.hasUserOrbed || false }));
+      if (!resource.hasUserOrbed) {
+        orbisToast.orb("Orb given!");
+      }
     }
   };
 
   const handleDelete = async () => {
-    if (resource && window.confirm("Are you sure you want to delete this resource?")) {
+    if (resource) {
       await dispatch(deleteResource(resource.id));
+      orbisToast.success("Resource deleted");
       navigate("/dashboard/resources");
     }
   };
-
   const handlePublish = async () => {
     if (resource && resource.status === "Draft") {
       await dispatch(publishResource(resource.id));
+      orbisToast.success("Resource published!");
     }
-  };
-
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return "Unknown date";
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const getInitials = (name?: string) => {
-    if (!name) return "?";
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2);
-  };
-
-  const parseTags = (tags: string | string[] | undefined): string[] => {
-    if (!tags) return [];
-    if (Array.isArray(tags)) return tags;
-    if (typeof tags === "string" && tags.trim()) {
-      return tags
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean);
-    }
-    return [];
   };
 
   if (isLoading) {
@@ -123,7 +95,7 @@ export const ResourceDetailPage = () => {
               <Edit size={16} />
               Edit
             </Link>
-            <button className="btn btn-ghost btn-danger" onClick={handleDelete}>
+            <button className="btn btn-ghost btn-danger" onClick={() => setShowDeleteConfirm(true)}>
               <Trash2 size={16} />
             </button>
           </div>
@@ -174,7 +146,7 @@ export const ResourceDetailPage = () => {
                 <span className="author-name">{resource.author.displayName || resource.author.userName}</span>
                 <div className="resource-date">
                   <Clock size={14} />
-                  {formatDate(resource.publishedAt || resource.createdAt)}
+                  {formatDateFull(resource.publishedAt || resource.createdAt)}
                   <span className="separator">·</span>
                   <Eye size={14} />
                   {resource.viewCount || 0} views
@@ -218,6 +190,17 @@ export const ResourceDetailPage = () => {
           </aside>
         )}
       </div>
+      <ConfirmModal
+        isOpen={showDeleteConfirm}
+        title="Delete Resource"
+        message={`Are you sure you want to delete "${resource?.title}"?`}
+        confirmText="Delete"
+        onConfirm={() => {
+          setShowDeleteConfirm(false);
+          handleDelete();
+        }}
+        onCancel={() => setShowDeleteConfirm(false)}
+      />
     </div>
   );
 };

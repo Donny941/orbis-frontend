@@ -28,6 +28,8 @@ import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { fetchAllOrbs, joinOrb, leaveOrb } from "../store/slices/orbsSlice";
 import { orbService } from "../../services/orbService";
 import type { Resource } from "../../types";
+import { orbisToast } from "../../services/orbisToast";
+import { formatDateShort, timeAgo, getAuthorName, getAuthorInitial } from "../utils/helpers";
 
 // Mappa icone
 const iconMap: Record<string, React.ElementType> = {
@@ -50,46 +52,6 @@ const iconMap: Record<string, React.ElementType> = {
 
 const getIcon = (iconName: string) => {
   return iconMap[iconName] || Sparkles;
-};
-
-// Format date
-const formatDate = (dateString?: string) => {
-  if (!dateString) return "Unknown";
-  const date = new Date(dateString);
-  if (isNaN(date.getTime())) return "Unknown";
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-};
-
-// Time ago
-const timeAgo = (dateString?: string) => {
-  if (!dateString) return "Unknown";
-  const date = new Date(dateString);
-  if (isNaN(date.getTime())) return "Unknown";
-
-  const now = new Date();
-  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-  if (seconds < 60) return "just now";
-  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
-  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
-  if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
-  return formatDate(dateString);
-};
-
-// Get author display name
-const getAuthorName = (author?: Resource["author"]) => {
-  if (!author) return "Unknown";
-  return author.displayName || author.userName || "Unknown";
-};
-
-// Get author initial
-const getAuthorInitial = (author?: Resource["author"]) => {
-  const name = getAuthorName(author);
-  return name.charAt(0).toUpperCase();
 };
 
 export const OrbDetailPage = () => {
@@ -137,10 +99,13 @@ export const OrbDetailPage = () => {
       setIsJoining(true);
       if (orb.isJoined) {
         await dispatch(leaveOrb(orb.id)).unwrap();
+        orbisToast.info("Left orb");
       } else {
         await dispatch(joinOrb(orb.id)).unwrap();
+        orbisToast.success("Joined orb!");
       }
     } catch (err) {
+      orbisToast.error("Failed to update orb membership");
       console.error("Failed to join/leave orb:", err);
     } finally {
       setIsJoining(false);
@@ -190,7 +155,7 @@ export const OrbDetailPage = () => {
             </span>
             <span>
               <Calendar size={16} />
-              Created {formatDate(orb.createdAt)}
+              Created {formatDateShort(orb.createdAt)}
             </span>
           </div>
         </div>

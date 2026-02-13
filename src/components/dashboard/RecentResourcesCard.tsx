@@ -3,6 +3,7 @@ import { Clock, MessageCircle, Eye, Circle, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { resourceService } from "../../../services/resourceService";
 import type { Resource } from "../../../types";
+import { timeAgo, getAuthorName, getAuthorInitial } from "../../utils/helpers";
 
 export const RecentResourcesCard = () => {
   const [resources, setResources] = useState<Resource[]>([]);
@@ -25,32 +26,6 @@ export const RecentResourcesCard = () => {
 
     fetchResources();
   }, []);
-
-  const getTimeAgo = (date?: string) => {
-    if (!date) return "Unknown";
-    const now = new Date();
-    const past = new Date(date);
-    if (isNaN(past.getTime())) return "Unknown";
-
-    const diffMs = now.getTime() - past.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMins / 60);
-    const diffDays = Math.floor(diffHours / 24);
-
-    if (diffDays > 0) return `${diffDays}d ago`;
-    if (diffHours > 0) return `${diffHours}h ago`;
-    if (diffMins > 0) return `${diffMins}m ago`;
-    return "just now";
-  };
-
-  const getAuthorName = (author?: Resource["author"]) => {
-    if (!author) return "Unknown";
-    return author.displayName || author.userName || "Unknown";
-  };
-
-  const getAuthorInitial = (author?: Resource["author"]) => {
-    return getAuthorName(author).charAt(0).toUpperCase();
-  };
 
   const isHot = (resource: Resource) => {
     return (resource.totalOrbsReceived || 0) > 50 && (resource.viewCount || 0) > 200;
@@ -129,7 +104,7 @@ export const RecentResourcesCard = () => {
                     )}
                     <span className="resource-time">
                       <Clock size={12} />
-                      {getTimeAgo(resource.publishedAt || resource.createdAt)}
+                      {timeAgo(resource.publishedAt || resource.createdAt)}
                     </span>
                   </div>
                 </div>

@@ -6,6 +6,7 @@ import { loginThunk } from "../store/slices/authThunks";
 import { clearError } from "../store/slices/authSlice";
 import type { LoginCredentials } from "../../types";
 import logoImg from "../assets/logo.png";
+import { orbisToast } from "../../services/orbisToast";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -36,8 +37,12 @@ export const LoginPage = () => {
 
     try {
       await dispatch(loginThunk(formData)).unwrap();
+      orbisToast.success("Welcome back!");
+
       navigate("/dashboard");
     } catch (err) {
+      orbisToast.error("Login failed. Check your credentials.");
+
       console.error("Login failed:", err);
     }
   };

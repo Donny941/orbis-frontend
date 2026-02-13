@@ -3,12 +3,16 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchMyResources, publishResource, deleteResource } from "../store/slices/resourcesSlice";
 import { Plus, FileText, BookOpen, Code, Link as LinkIcon, Eye, Clock, Edit, Globe, Lock, Loader2, Trash2 } from "lucide-react";
+import { orbisToast } from "../../services/orbisToast";
+import { ConfirmModal } from "../components/ui/ConfirmModal";
+import { formatDateFriendly, parseTags } from "../utils/helpers";
 
 type FilterStatus = "all" | "Published" | "Draft";
 
 export const MyResourcesPage = () => {
   const dispatch = useAppDispatch();
   const { myResources, isLoadingMine, error } = useAppSelector((state) => state.resources);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
 
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -22,7 +26,9 @@ export const MyResourcesPage = () => {
       setActionLoading(resourceId);
       try {
         await dispatch(publishResource(resourceId)).unwrap();
+        orbisToast.success("Resource published!");
       } catch (err) {
+        orbisToast.error("Failed to publish");
         console.error("Failed to publish:", err);
       } finally {
         setActionLoading(null);
@@ -30,30 +36,16 @@ export const MyResourcesPage = () => {
     }
   };
 
-  const handleDelete = async (resourceId: string, title: string) => {
-    if (window.confirm(`Are you sure you want to delete "${title}"? This action cannot be undone.`)) {
-      setActionLoading(resourceId);
-      try {
-        await dispatch(deleteResource(resourceId)).unwrap();
-      } catch (err) {
-        console.error("Failed to delete:", err);
-      } finally {
-        setActionLoading(null);
-      }
+  const handleDelete = async (resourceId: string) => {
+    setActionLoading(resourceId);
+    try {
+      await dispatch(deleteResource(resourceId)).unwrap();
+      orbisToast.success("Resource deleted");
+    } catch {
+      orbisToast.error("Failed to delete");
+    } finally {
+      setActionLoading(null);
     }
-  };
-
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return "Unknown";
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffDays < 1) return "Today";
-    if (diffDays === 1) return "Yesterday";
-    if (diffDays < 7) return `${diffDays} days ago`;
-    return date.toLocaleDateString();
   };
 
   const getTypeIcon = (type: string) => {
@@ -69,19 +61,6 @@ export const MyResourcesPage = () => {
       default:
         return <FileText size={16} />;
     }
-  };
-
-  // Parse tags helper
-  const parseTags = (tags: string | string[] | undefined | null): string[] => {
-    if (!tags) return [];
-    if (Array.isArray(tags)) return tags;
-    if (typeof tags === "string" && tags.trim()) {
-      return tags
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean);
-    }
-    return [];
   };
 
   // Filter resources
@@ -249,7 +228,7 @@ export const MyResourcesPage = () => {
                 {/* Date */}
                 <div className="col-date">
                   <Clock size={14} />
-                  {formatDate(resource.updatedAt)}
+                  {formatDateFriendly(resource.updatedAt)}
                 </div>
 
                 {/* Actions */}
@@ -257,7 +236,7 @@ export const MyResourcesPage = () => {
                   <Link to={`/dashboard/resources/${resource.id}/edit`} className="action-btn" title="Edit">
                     <Edit size={16} />
                   </Link>
-                  <button className="action-btn danger" onClick={() => handleDelete(resource.id, resource.title)} disabled={isActionLoading} title="Delete">
+                  <button onClick={() => setDeleteTarget({ id: resource.id, title: resource.title })} className="action-btn danger" title="Delete">
                     <Trash2 size={16} />
                   </button>
                 </div>
@@ -266,6 +245,17 @@ export const MyResourcesPage = () => {
           })}
         </div>
       )}
+      <ConfirmModal
+        isOpen={!!deleteTarget}
+        title="Delete Resource"
+        message={`Are you sure you want to delete "${deleteTarget?.title}"?`}
+        confirmText="Delete"
+        onConfirm={() => {
+          if (deleteTarget) handleDelete(deleteTarget.id);
+          setDeleteTarget(null);
+        }}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 };

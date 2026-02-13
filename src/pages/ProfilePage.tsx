@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { updateProfileThunk } from "../store/slices/authThunks";
 import { User, Star, Flame, Trophy, Calendar, FileText, TrendingUp, Award, Pencil, Check, X, Loader2 } from "lucide-react";
+import { orbisToast } from "../../services/orbisToast";
+import { formatDateFriendly, getInitials, getLevelName, getLevelProgress, getPointsToNextLevel } from "../utils/helpers";
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
@@ -22,49 +24,6 @@ export const ProfilePage = () => {
     );
   }
 
-  const getInitials = (name?: string) => {
-    if (!name) return "?";
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2);
-  };
-
-  const getLevelName = (level: number) => {
-    const levels = ["Novice", "Student", "Scholar", "Expert", "Master"];
-    return levels[level - 1] || "Novice";
-  };
-
-  const getLevelProgress = () => {
-    const thresholds = [0, 101, 501, 1001, 2500];
-    const currentLevel = user.level;
-
-    if (currentLevel >= 5) return 100;
-
-    const currentThreshold = thresholds[currentLevel - 1];
-    const nextThreshold = thresholds[currentLevel];
-    const progress = ((user.totalOrbPoints - currentThreshold) / (nextThreshold - currentThreshold)) * 100;
-
-    return Math.min(Math.max(progress, 0), 100);
-  };
-
-  const getPointsToNextLevel = () => {
-    const thresholds = [101, 501, 1001, 2500];
-    if (user.level >= 5) return 0;
-    return thresholds[user.level - 1] - user.totalOrbPoints;
-  };
-
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return "Unknown";
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
   // Edit handlers
   const handleEditName = () => {
     setEditName(user.displayName || "");
@@ -74,6 +33,7 @@ export const ProfilePage = () => {
   const handleSaveName = async () => {
     if (editName.trim() && editName !== user.displayName) {
       await dispatch(updateProfileThunk({ displayName: editName.trim() }));
+      orbisToast.success("Name updated!");
     }
     setIsEditingName(false);
   };
@@ -91,6 +51,7 @@ export const ProfilePage = () => {
   const handleSaveBio = async () => {
     if (editBio !== user.bio) {
       await dispatch(updateProfileThunk({ bio: editBio }));
+      orbisToast.success("Bio updated!");
     }
     setIsEditingBio(false);
   };
@@ -177,7 +138,7 @@ export const ProfilePage = () => {
 
               <div className="profile-joined">
                 <Calendar size={14} />
-                Joined {formatDate(user.createdAt)}
+                Joined {formatDateFriendly(user.createdAt)}
               </div>
             </div>
           </div>
@@ -193,13 +154,13 @@ export const ProfilePage = () => {
             </div>
             <div className="level-progress-container">
               <div className="level-progress-bar">
-                <div className="level-progress-fill" style={{ width: `${getLevelProgress()}%` }} />
+                <div className="level-progress-fill" style={{ width: `${getLevelProgress(user.level, user.totalOrbPoints)}%` }} />
               </div>
               <div className="level-progress-info">
                 <span>{user.totalOrbPoints} Orb Points</span>
                 {user.level < 5 && (
                   <span>
-                    {getPointsToNextLevel()} points to Level {user.level + 1}
+                    {getPointsToNextLevel(user.level, user.totalOrbPoints)} points to Level {user.level + 1}
                   </span>
                 )}
               </div>

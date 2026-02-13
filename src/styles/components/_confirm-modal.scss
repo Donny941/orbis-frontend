@@ -1,0 +1,51 @@
+// ==================== CONFIRM MODAL (Bootstrap Override) ====================
+
+.orbis-confirm-modal {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-primary) !important;
+  border-radius: $radius-xl !important;
+  box-shadow: $shadow-lg;
+
+  .modal-title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: var(--text-primary);
+  }
+
+  .orbis-confirm-message {
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    line-height: $line-height-relaxed;
+    margin: 0;
+  }
+
+  .orbis-confirm-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: $radius-full;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &.text-danger {
+      background: $danger-muted;
+      color: $danger;
+    }
+
+    &.text-warning {
+      background: $warning-muted;
+      color: $warning;
+    }
+
+    &.text-primary {
+      background: $accent-muted;
+      color: $accent-primary;
+    }
+  }
+}
+
+// Backdrop override for Orbis theme
+.modal-backdrop.show {
+  opacity: 0.65;
+  backdrop-filter: blur(4px);
+}

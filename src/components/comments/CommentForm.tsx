@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { createComment } from "../../store/slices/commentSlice";
 import { Send, Loader2 } from "lucide-react";
+import { orbisToast } from "../../../services/orbisToast";
 
 interface CommentFormProps {
   resourceId: string;
@@ -22,7 +23,9 @@ export const CommentForm = ({ resourceId }: CommentFormProps) => {
     try {
       await dispatch(createComment({ resourceId, content: content.trim() })).unwrap();
       setContent("");
+      orbisToast.success("Comment posted!");
     } catch (error) {
+      orbisToast.error("Failed to post comment");
       console.error("Failed to create comment:", error);
     }
   };

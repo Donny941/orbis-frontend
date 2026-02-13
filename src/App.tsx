@@ -24,10 +24,12 @@ import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { CookieBanner } from "./components/ui/CookieBanner";
 import { LeaderboardPage } from "./pages/LeaderboardPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <BrowserRouter>
+      <Toaster position="top-center" />
       <ErrorBoundary>
         <InitAuth>
           <Routes>
