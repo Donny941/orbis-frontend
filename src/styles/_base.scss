@@ -255,3 +255,14 @@ body {
   gap: $spacing-3;
   justify-content: center;
 }
+.page-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+
+  .spinner {
+    animation: spin 1s linear infinite;
+    color: var(--accent);
+  }
+}
