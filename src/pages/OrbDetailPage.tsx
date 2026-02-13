@@ -20,6 +20,9 @@ import {
   BookOpen,
   Music,
   Camera,
+  Code2,
+  BarChart3,
+  MessageSquare,
   Gamepad2,
   FlaskConical,
   Circle,
@@ -34,6 +37,7 @@ import { formatDateShort, timeAgo, getAuthorName, getAuthorInitial, getAvatarUrl
 // Mappa icone
 const iconMap: Record<string, React.ElementType> = {
   Code,
+  Code2,
   Palette,
   Brain,
   Database,
@@ -48,6 +52,8 @@ const iconMap: Record<string, React.ElementType> = {
   Gamepad2,
   FlaskConical,
   Sparkles,
+  BarChart3,
+  MessageSquare,
 };
 
 const getIcon = (iconName: string) => {

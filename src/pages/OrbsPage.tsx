@@ -8,6 +8,7 @@ import {
   AlertCircle,
   Sparkles,
   Code,
+  Code2,
   Palette,
   Brain,
   Database,
@@ -21,14 +22,16 @@ import {
   Camera,
   Gamepad2,
   FlaskConical,
+  BarChart3,
+  MessageSquare,
 } from "lucide-react";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { fetchAllOrbs, joinOrb, leaveOrb } from "../store/slices/orbsSlice";
 import type { Orb } from "../../types";
 
-// Mappa icone Lucide
 const iconMap: Record<string, React.ElementType> = {
   Code,
+  Code2,
   Palette,
   Brain,
   Database,
@@ -43,6 +46,8 @@ const iconMap: Record<string, React.ElementType> = {
   Gamepad2,
   FlaskConical,
   Sparkles,
+  BarChart3,
+  MessageSquare,
 };
 
 const getIcon = (iconName: string) => {
