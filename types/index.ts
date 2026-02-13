@@ -61,6 +61,7 @@ export interface Resource {
   hasUserOrbed?: boolean;
   isAuthor?: boolean;
 }
+
 export type ResourceType = "Note" | "Article" | "Code" | "Link";
 export type ResourceStatus = "Draft" | "Published";
 export type Difficulty = "Beginner" | "Intermediate" | "Advanced";

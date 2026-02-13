@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchMyResources, publishResource, deleteResource } from "../store/slices/resourcesSlice";
-import { Plus, FileText, BookOpen, Code, Link as LinkIcon, Eye, Clock, Edit, Globe, Lock, Loader2, Trash2 } from "lucide-react";
+import { Plus, FileText, BookOpen, Code, Link as LinkIcon, Eye, Clock, Edit, Globe, Lock, Loader2, Trash2, Send } from "lucide-react";
 import { orbisToast } from "../services/orbisToast";
 import { ConfirmModal } from "../components/ui/ConfirmModal";
 import { formatDateFriendly, parseTags } from "../utils/helpers";
@@ -13,6 +13,7 @@ export const MyResourcesPage = () => {
   const dispatch = useAppDispatch();
   const { myResources, isLoadingMine, error } = useAppSelector((state) => state.resources);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+  const [publishTarget, setPublishTarget] = useState<{ id: string; title: string } | null>(null);
 
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -21,18 +22,16 @@ export const MyResourcesPage = () => {
     dispatch(fetchMyResources());
   }, [dispatch]);
 
-  const handleToggleStatus = async (resourceId: string, currentStatus: string) => {
-    if (currentStatus === "Draft") {
-      setActionLoading(resourceId);
-      try {
-        await dispatch(publishResource(resourceId)).unwrap();
-        orbisToast.success("Resource published!");
-      } catch (err) {
-        orbisToast.error("Failed to publish");
-        console.error("Failed to publish:", err);
-      } finally {
-        setActionLoading(null);
-      }
+  const handlePublish = async (resourceId: string) => {
+    setActionLoading(resourceId);
+    try {
+      await dispatch(publishResource(resourceId)).unwrap();
+      orbisToast.success("Resource published!");
+    } catch (err) {
+      orbisToast.error("Failed to publish");
+      console.error("Failed to publish:", err);
+    } finally {
+      setActionLoading(null);
     }
   };
 
@@ -69,17 +68,14 @@ export const MyResourcesPage = () => {
     return resource.status === filterStatus;
   });
 
-  // Stats
   const publishedCount = myResources.filter((r) => r.status === "Published").length;
   const draftCount = myResources.filter((r) => r.status === "Draft").length;
 
-  if (isLoadingMine && myResources.length === 0) {
+  if (isLoadingMine) {
     return (
-      <div className="my-resources-page">
-        <div className="page-loading">
-          <Loader2 className="spin" size={32} />
-          <p>Loading your resources...</p>
-        </div>
+      <div className="loading-state">
+        <Loader2 className="spin" size={32} />
+        <p>Loading your resources...</p>
       </div>
     );
   }
@@ -88,57 +84,26 @@ export const MyResourcesPage = () => {
     <div className="my-resources-page">
       {/* Header */}
       <div className="page-header">
-        <div className="page-header-left">
-          <h1>My Resources</h1>
+        <div>
+          <h1 className="page-title">My Resources</h1>
           <p className="page-subtitle">Manage your published resources and drafts</p>
         </div>
         <Link to="/dashboard/resources/new" className="btn btn-primary">
           <Plus size={18} />
-          Create Resource
+          New Resource
         </Link>
       </div>
 
-      {/* Stats Cards */}
-      <div className="stats-row">
-        <div className="stat-card">
-          <div className="stat-icon published">
-            <Globe size={20} />
-          </div>
-          <div className="stat-info">
-            <span className="stat-value">{publishedCount}</span>
-            <span className="stat-label">Published</span>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon draft">
-            <Lock size={20} />
-          </div>
-          <div className="stat-info">
-            <span className="stat-value">{draftCount}</span>
-            <span className="stat-label">Drafts</span>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon views">
-            <Eye size={20} />
-          </div>
-          <div className="stat-info">
-            <span className="stat-value">{myResources.reduce((sum, r) => sum + (r.viewCount || 0), 0)}</span>
-            <span className="stat-label">Total Views</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Filter Tabs */}
-      <div className="filter-tabs">
-        <button className={`filter-tab ${filterStatus === "all" ? "active" : ""}`} onClick={() => setFilterStatus("all")}>
+      {/* Filters */}
+      <div className="status-filters">
+        <button className={`filter-btn ${filterStatus === "all" ? "active" : ""}`} onClick={() => setFilterStatus("all")}>
           All ({myResources.length})
         </button>
-        <button className={`filter-tab ${filterStatus === "Published" ? "active" : ""}`} onClick={() => setFilterStatus("Published")}>
+        <button className={`filter-btn ${filterStatus === "Published" ? "active" : ""}`} onClick={() => setFilterStatus("Published")}>
           <Globe size={14} />
           Published ({publishedCount})
         </button>
-        <button className={`filter-tab ${filterStatus === "Draft" ? "active" : ""}`} onClick={() => setFilterStatus("Draft")}>
+        <button className={`filter-btn ${filterStatus === "Draft" ? "active" : ""}`} onClick={() => setFilterStatus("Draft")}>
           <Lock size={14} />
           Drafts ({draftCount})
         </button>
@@ -210,7 +175,7 @@ export const MyResourcesPage = () => {
                   {resource.status === "Draft" ? (
                     <button
                       className="status-toggle draft"
-                      onClick={() => handleToggleStatus(resource.id, resource.status)}
+                      onClick={() => setPublishTarget({ id: resource.id, title: resource.title })}
                       disabled={isActionLoading}
                       title="Click to publish"
                     >
@@ -223,6 +188,14 @@ export const MyResourcesPage = () => {
                       Published
                     </span>
                   )}
+                </div>
+
+                {/* Stats */}
+                <div className="col-stats">
+                  <span className="stat">
+                    <Eye size={14} />
+                    {resource.viewCount || 0}
+                  </span>
                 </div>
 
                 {/* Date */}
@@ -245,16 +218,34 @@ export const MyResourcesPage = () => {
           })}
         </div>
       )}
+
+      {/* Delete Confirm Modal */}
       <ConfirmModal
         isOpen={!!deleteTarget}
         title="Delete Resource"
-        message={`Are you sure you want to delete "${deleteTarget?.title}"?`}
+        message={`Are you sure you want to delete "${deleteTarget?.title}"? This action cannot be undone.`}
         confirmText="Delete"
+        variant="danger"
         onConfirm={() => {
           if (deleteTarget) handleDelete(deleteTarget.id);
           setDeleteTarget(null);
         }}
         onCancel={() => setDeleteTarget(null)}
+      />
+
+      {/* Publish Confirm Modal */}
+      <ConfirmModal
+        isOpen={!!publishTarget}
+        title="Publish Resource"
+        message={`Are you sure you want to publish "${publishTarget?.title}"? It will be visible to all community members.`}
+        confirmText="Publish"
+        variant="default"
+        icon={<Send size={28} />}
+        onConfirm={() => {
+          if (publishTarget) handlePublish(publishTarget.id);
+          setPublishTarget(null);
+        }}
+        onCancel={() => setPublishTarget(null)}
       />
     </div>
   );

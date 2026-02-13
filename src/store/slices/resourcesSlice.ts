@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import { resourceService } from "../../services/resourceService";
+import { fetchUserThunk } from "./authThunks";
 import type { Resource } from "../../../types";
 
 interface ResourcesState {
@@ -115,10 +116,15 @@ export const createResource = createAsyncThunk(
       tags: string[];
       status?: "Draft" | "Published";
     },
-    { rejectWithValue },
+    { dispatch, rejectWithValue },
   ) => {
     try {
-      return await resourceService.createResource(data);
+      const result = await resourceService.createResource(data);
+      // Refresh user data if published (points/streak were awarded)
+      if (data.status === "Published") {
+        dispatch(fetchUserThunk());
+      }
+      return result;
     } catch (error: unknown) {
       const err = error as { response?: { data?: { message?: string } } };
       return rejectWithValue(err.response?.data?.message || "Failed to create resource");
@@ -154,9 +160,11 @@ export const updateResource = createAsyncThunk(
   },
 );
 
-export const publishResource = createAsyncThunk("resources/publishResource", async (id: string, { rejectWithValue }) => {
+export const publishResource = createAsyncThunk("resources/publishResource", async (id: string, { dispatch, rejectWithValue }) => {
   try {
     const response = await resourceService.publishResource(id);
+    // Refresh user data to reflect new points/level/streak
+    dispatch(fetchUserThunk());
     return { id, resource: response };
   } catch (error: unknown) {
     const err = error as { response?: { data?: { message?: string } } };
@@ -174,9 +182,11 @@ export const unpublishResource = createAsyncThunk("resources/unpublishResource",
   }
 });
 
-export const deleteResource = createAsyncThunk("resources/deleteResource", async (id: string, { rejectWithValue }) => {
+export const deleteResource = createAsyncThunk("resources/deleteResource", async (id: string, { dispatch, rejectWithValue }) => {
   try {
     await resourceService.deleteResource(id);
+    // Refresh user data (points may have been deducted for published resource)
+    dispatch(fetchUserThunk());
     return id;
   } catch (error: unknown) {
     const err = error as { response?: { data?: { message?: string } } };
@@ -254,18 +264,16 @@ const resourcesSlice = createSlice({
       // Fetch Favourites
       .addCase(fetchFavourites.pending, (state) => {
         state.isLoadingFavourites = true;
-        state.error = null;
       })
       .addCase(fetchFavourites.fulfilled, (state, action) => {
         state.isLoadingFavourites = false;
         state.favourites = action.payload.data;
       })
-      .addCase(fetchFavourites.rejected, (state, action) => {
+      .addCase(fetchFavourites.rejected, (state) => {
         state.isLoadingFavourites = false;
-        state.error = action.payload as string;
       })
 
-      // Fetch More Resources (Incremental)
+      // Fetch More Resources (Pagination)
       .addCase(fetchMoreResources.pending, (state) => {
         state.isLoadingMore = true;
       })
@@ -279,9 +287,8 @@ const resourcesSlice = createSlice({
           totalPages: action.payload.totalPages,
         };
       })
-      .addCase(fetchMoreResources.rejected, (state, action) => {
+      .addCase(fetchMoreResources.rejected, (state) => {
         state.isLoadingMore = false;
-        state.error = action.payload as string;
       })
 
       // Fetch My Resources
@@ -313,20 +320,8 @@ const resourcesSlice = createSlice({
       })
 
       // Create Resource
-      .addCase(createResource.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
       .addCase(createResource.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.myResources.unshift(action.payload);
-        if (action.payload.status === "Published") {
-          state.resources.unshift(action.payload);
-        }
-      })
-      .addCase(createResource.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload as string;
       })
 
       // Update Resource

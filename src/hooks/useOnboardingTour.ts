@@ -5,6 +5,8 @@ import Shepherd from "shepherd.js";
 import type { Tour } from "shepherd.js";
 import "shepherd.js/dist/css/shepherd.css";
 
+const TOUR_COMPLETED_KEY = "orbis_tour_completed";
+
 export const useOnboardingTour = () => {
   const location = useLocation();
   const tourRef = useRef<Tour | null>(null);
@@ -12,11 +14,17 @@ export const useOnboardingTour = () => {
   const { user } = useAppSelector((state) => state.auth);
 
   const completeTour = useCallback((tour: Tour) => {
+    localStorage.setItem(TOUR_COMPLETED_KEY, "true");
     tour.complete();
   }, []);
 
   const addSteps = useCallback(
     (tour: Tour) => {
+      // Mark as completed also on cancel/close
+      tour.on("cancel", () => {
+        localStorage.setItem(TOUR_COMPLETED_KEY, "true");
+      });
+
       tour.addStep({
         id: "welcome",
         title: "Welcome to Orbis!",
@@ -96,12 +104,12 @@ export const useOnboardingTour = () => {
     [completeTour],
   );
 
-  // Auto-start solo al primo login (lastLoginAt è null)
   useEffect(() => {
     if (location.pathname !== "/dashboard") return;
     if (!user) return;
     if (user.lastLoginAt) return;
     if (hasStarted.current) return;
+    if (localStorage.getItem(TOUR_COMPLETED_KEY) === "true") return;
 
     const timeout = setTimeout(() => {
       if (!document.querySelector(".sidebar")) return;
@@ -132,7 +140,6 @@ export const useOnboardingTour = () => {
     };
   }, [location.pathname, user, addSteps]);
 
-  // Restart manuale (dal bottone ? nella navbar)
   const restartTour = useCallback(() => {
     if (tourRef.current) {
       tourRef.current.cancel();

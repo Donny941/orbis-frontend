@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { AlertTriangle } from "lucide-react";
 
@@ -9,6 +9,7 @@ interface ConfirmModalProps {
   confirmText?: string;
   cancelText?: string;
   variant?: "danger" | "warning" | "default";
+  icon?: ReactNode;
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -20,6 +21,7 @@ export const ConfirmModal = ({
   confirmText = "Confirm",
   cancelText = "Cancel",
   variant = "danger",
+  icon,
   onConfirm,
   onCancel,
 }: ConfirmModalProps) => {
@@ -60,9 +62,7 @@ export const ConfirmModal = ({
           <div className="modal-content orbis-confirm-modal">
             <div className="modal-body text-center p-4">
               {/* Icon */}
-              <div className={`orbis-confirm-icon ${iconColorClass} mb-3`}>
-                <AlertTriangle size={28} />
-              </div>
+              <div className={`orbis-confirm-icon ${iconColorClass} mb-3`}>{icon || <AlertTriangle size={28} />}</div>
 
               {/* Title */}
               <h5 className="modal-title mb-2">{title}</h5>
@@ -75,7 +75,11 @@ export const ConfirmModal = ({
                 <button className="btn btn-secondary flex-fill" onClick={onCancel}>
                   {cancelText}
                 </button>
-                <button className={`btn btn-${variant === "default" ? "primary" : "danger"} flex-fill`} onClick={onConfirm} autoFocus>
+                <button
+                  className={`btn btn-${variant === "default" ? "primary" : variant === "danger" ? "danger" : "primary"} flex-fill`}
+                  onClick={onConfirm}
+                  autoFocus
+                >
                   {confirmText}
                 </button>
               </div>
